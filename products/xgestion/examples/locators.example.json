@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "calibration": {
+    "status": "draft",
+    "app_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "verified_by": "",
+    "verified_at": "",
+    "jab_version": ""
+  },
+  "windows": {
+    "login": "CALIBRAR LOGIN",
+    "main": "CALIBRAR XGESTION",
+    "error": "CALIBRAR Error",
+    "payment_picker": "CALIBRAR PickerPago",
+    "payment": "CALIBRAR Cobro",
+    "cancel": "CALIBRAR Confirmación"
+  },
+  "elements": {
+    "login.user": {
+      "window": "login",
+      "query": "CALIBRAR selector observado para login.user"
+    },
+    "login.password": {
+      "window": "login",
+      "query": "CALIBRAR selector observado para login.password"
+    },
+    "login.submit": {
+      "window": "login",
+      "query": "CALIBRAR selector observado para login.submit"
+    },
+    "login.error": {
+      "window": "error",
+      "query": "CALIBRAR selector observado para login.error"
+    },
+    "login.error_ok": {
+      "window": "error",
+      "query": "CALIBRAR selector observado para login.error_ok"
+    },
+    "main.company": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para main.company"
+    },
+    "main.branch": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para main.branch"
+    },
+    "main.user": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para main.user"
+    },
+    "menu.products": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para menu.products"
+    },
+    "menu.products_list": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para menu.products_list"
+    },
+    "products.search": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para products.search"
+    },
+    "products.search_button": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para products.search_button"
+    },
+    "products.known_result": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para products.known_result"
+    },
+    "products.empty_result": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para products.empty_result"
+    },
+    "menu.sales": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para menu.sales"
+    },
+    "menu.new_sale": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para menu.new_sale"
+    },
+    "sale.quantity": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.quantity"
+    },
+    "sale.code": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.code"
+    },
+    "sale.total": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.total"
+    },
+    "sale.document": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.document"
+    },
+    "sale.non_fiscal_option": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.non_fiscal_option"
+    },
+    "sale.close": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.close"
+    },
+    "sale.cancel": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.cancel"
+    },
+    "sale.cancel_confirm": {
+      "window": "cancel",
+      "query": "CALIBRAR selector observado para sale.cancel_confirm"
+    },
+    "sale.closed_indicator": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.closed_indicator"
+    },
+    "payment.cash_option": {
+      "window": "payment_picker",
+      "query": "CALIBRAR selector observado para payment.cash_option"
+    },
+    "payment.cash_accept": {
+      "window": "payment_picker",
+      "query": "CALIBRAR selector observado para payment.cash_accept"
+    },
+    "payment.amount": {
+      "window": "payment",
+      "query": "CALIBRAR selector observado para payment.amount"
+    },
+    "payment.confirm": {
+      "window": "payment",
+      "query": "CALIBRAR selector observado para payment.confirm"
+    }
+  }
+}

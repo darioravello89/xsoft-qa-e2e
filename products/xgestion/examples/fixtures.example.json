@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "context": {
+    "empresa": 90001,
+    "sucursal": 1,
+    "computadora": 1,
+    "usuario_id": 90001,
+    "empresa_label": "CALIBRAR nombre visible QA",
+    "sucursal_label": "CALIBRAR sucursal visible",
+    "usuario_label": "CALIBRAR usuario visible"
+  },
+  "product": {
+    "id": 90001,
+    "code": "QA-E2E-001",
+    "name": "Producto ficticio QA",
+    "unit_price": "1000.00",
+    "quantity": 2
+  },
+  "sale": {
+    "cash_payment_id": 1,
+    "non_fiscal_document_id": 99
+  },
+  "nonexistent_product_code": "QA-E2E-NO-EXISTE",
+  "ui": {
+    "products_empty_text": "CALIBRAR indicador vacío"
+  }
+}
