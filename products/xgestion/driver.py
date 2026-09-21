@@ -219,6 +219,112 @@ class SemanticDriver:
             raise QAError(f"No se pudo abrir la edición de la fila de {alias}; revisar la calibración JAB.") from None
         diagnostic("Edición de fila solicitada", control=alias, row_count=row_count, column_count=column_count)
 
+    @staticmethod
+    def _states(element):
+        return {state.strip().lower() for state in element.node.context_info.states.split(",")}
+
+    def _focus_element(self, alias):
+        element = self.find(alias)
+        if not element.enabled:
+            raise QAError(f"Control deshabilitado: {alias}.")
+        diagnostic("Esperar foco del control", control=alias)
+        deadline = time.monotonic() + 20
+        element.node.request_focus()
+        while True:
+            element.node.refresh()
+            if "focused" in self._states(element):
+                return element
+            if time.monotonic() >= deadline:
+                raise QAError(f"No se confirmó el foco del control {alias}.")
+            time.sleep(0.25)
+
+    def select_sale_row(self, alias, code_column, expected_code):
+        """Seleccionar una fila única sólo con JAB y teclado, sin coordenadas."""
+        if (type(code_column) is not int or code_column < 0
+                or not isinstance(expected_code, str) or not expected_code.strip()):
+            raise QAError("La selección requiere una columna calibrada y la identidad del producto.")
+        try:
+            with private_input():
+                table, cells, row_count, column_count = self._table_cells(alias)
+                if not table.enabled or code_column >= column_count:
+                    raise QAError(f"La tabla {alias} no permite seleccionar la columna calibrada.")
+                matches = [index for index, row in enumerate(cells)
+                           if str(row[code_column].text or row[code_column].name or "").strip() == expected_code]
+                if len(matches) != 1:
+                    raise QAError(f"La tabla {alias} no identifica una única fila del producto esperado.")
+                target_row = matches[0]
+                self._focus_element(alias)
+                self.bridge.press_keys("ctrl", "home")
+                for _ in range(target_row):
+                    self.bridge.press_keys("down")
+                _, refreshed, refreshed_rows, refreshed_columns = self._table_cells(alias)
+                if (refreshed_rows != row_count or refreshed_columns != column_count):
+                    raise QAError(f"La tabla {alias} cambió mientras se seleccionaba el producto.")
+                row = refreshed[target_row]
+                if str(row[code_column].text or row[code_column].name or "").strip() != expected_code:
+                    raise QAError(f"La identidad de la fila de {alias} cambió durante la selección.")
+                selected = False
+                for cell in row:
+                    cell.node.refresh()
+                    selected = selected or "selected" in self._states(cell)
+                if not selected:
+                    raise QAError(f"JAB no confirmó la selección de la fila en {alias}.")
+        except QAError:
+            raise
+        except Exception:
+            raise QAError(f"No se pudo seleccionar la fila de {alias}; revisar la calibración JAB.") from None
+        diagnostic("Fila de venta seleccionada", control=alias, row_index=target_row)
+        return target_row
+
+    def expect_sale_row_selected(self, alias, code_column, expected_code):
+        """Comprobar identidad y estado selected sin cambiar la selección."""
+        try:
+            with private_input():
+                _, cells, _, column_count = self._table_cells(alias)
+                if type(code_column) is not int or not 0 <= code_column < column_count:
+                    raise QAError(f"Columna calibrada inválida para {alias}.")
+                matches = [row for row in cells
+                           if str(row[code_column].text or row[code_column].name or "").strip() == expected_code]
+                if len(matches) != 1:
+                    raise QAError(f"La tabla {alias} no identifica una única fila del producto esperado.")
+                selected = False
+                for cell in matches[0]:
+                    cell.node.refresh()
+                    selected = selected or "selected" in self._states(cell)
+                if not selected:
+                    raise QAError(f"La fila esperada de {alias} no conserva la selección.")
+        except QAError:
+            raise
+        except Exception:
+            raise QAError(f"No se pudo comprobar la selección de {alias}.") from None
+
+    def expect_focus(self, alias):
+        """Comprobar foco JAB sin forzarlo para no ocultar una regresión de la pantalla."""
+        element = self.find(alias)
+        deadline = time.monotonic() + 20
+        while True:
+            element.node.refresh()
+            if "focused" in self._states(element):
+                diagnostic("Foco conservado", control=alias)
+                return
+            if time.monotonic() >= deadline:
+                raise QAError(f"El control {alias} no conserva el foco esperado.")
+            time.sleep(0.25)
+
+    def shortcut(self, alias, shortcut):
+        """Enviar únicamente el acorde aprobado para editar una venta."""
+        if not isinstance(shortcut, str) or shortcut.lower() != "ctrl+e":
+            raise QAError("Sólo se permite el atajo Ctrl+E por esta acción semántica.")
+        try:
+            with private_input():
+                self._focus_element(alias)
+                self.bridge.press_keys("ctrl", "e")
+        except QAError:
+            raise
+        except Exception:
+            raise QAError(f"No se pudo enviar Ctrl+E al control {alias}.") from None
+        diagnostic("Atajo permitido enviado", control=alias, shortcut="Ctrl+E")
+
     def keys(self, alias, *keys):
         """Enviar Tab o Esc al control propio sólo después de confirmar su foco."""
         # RPA interpreta varios argumentos como un acorde, no como una secuencia.
@@ -226,20 +332,7 @@ class SemanticDriver:
             raise QAError("Sólo se permite una tecla Tab o Esc por acción semántica.")
         try:
             with private_input():
-                element = self.find(alias)
-                if not element.enabled:
-                    raise QAError(f"Control deshabilitado: {alias}.")
-                diagnostic("Esperar foco del control", control=alias)
-                deadline = time.monotonic() + 20
-                element.node.request_focus()
-                while True:
-                    element.node.refresh()
-                    states = {state.strip().lower() for state in element.node.context_info.states.split(",")}
-                    if "focused" in states:
-                        break
-                    if time.monotonic() >= deadline:
-                        raise QAError(f"No se confirmó el foco del control {alias}.")
-                    time.sleep(0.25)
+                self._focus_element(alias)
                 self.bridge.press_keys(keys[0].lower())
         except QAError:
             raise

@@ -4,7 +4,7 @@ import logging
 import sys
 import traceback
 from types import SimpleNamespace
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, call, patch
 
 import pytest
 
@@ -188,6 +188,40 @@ def test_keys_never_go_to_disabled_control_or_unconfirmed_focus():
         with pytest.raises(QAError, match="foco"):
             driver.keys(ALIAS, "esc")
     bridge.press_keys.assert_not_called()
+
+
+def keyboard_cell(text, states="enabled,showing"):
+    node = SimpleNamespace(context_info=SimpleNamespace(states=states), refresh=Mock())
+    return SimpleNamespace(text=text, name="", node=node)
+
+
+def test_select_sale_row_uses_table_focus_ctrl_home_arrows_and_confirms_selection():
+    driver, bridge, table = make_driver(3, 1)
+    before = [[keyboard_cell("A")], [keyboard_cell(CANARY)], [keyboard_cell("C")]]
+    after = [[keyboard_cell("A")], [keyboard_cell(CANARY, "enabled,showing,selected")], [keyboard_cell("C")]]
+    bridge.read_table.side_effect = [before, after]
+
+    assert driver.select_sale_row(ALIAS, 0, CANARY) == 1
+
+    table.node.request_focus.assert_called_once()
+    assert bridge.press_keys.call_args_list == [call("ctrl", "home"), call("down")]
+
+
+def test_select_sale_row_rejects_ambiguous_identity_before_keyboard_input():
+    driver, bridge, _ = make_driver(2, 1)
+    bridge.read_table.return_value = [[keyboard_cell(CANARY)], [keyboard_cell(CANARY)]]
+    with pytest.raises(QAError, match="única fila"):
+        driver.select_sale_row(ALIAS, 0, CANARY)
+    bridge.press_keys.assert_not_called()
+
+
+def test_only_ctrl_e_shortcut_is_allowed_and_requires_focus():
+    driver, bridge, table = make_driver()
+    driver.shortcut(ALIAS, "ctrl+e")
+    table.node.request_focus.assert_called_once()
+    bridge.press_keys.assert_called_once_with("ctrl", "e")
+    with pytest.raises(QAError, match="Ctrl.E"):
+        driver.shortcut(ALIAS, "ctrl+x")
 
 
 @pytest.mark.parametrize("stage", ["request_focus", "refresh", "press_keys"])

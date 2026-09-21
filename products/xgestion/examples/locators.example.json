@@ -186,6 +186,14 @@
       "window": "editor",
       "query": "CALIBRAR selector observado para editor.save"
     },
+    "editor.cancel": {
+      "window": "editor",
+      "query": "CALIBRAR selector observado para editor.cancel"
+    },
+    "sale.edit": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.edit"
+    },
     "sale.cancel_reject": {
       "window": "cancel",
       "query": "CALIBRAR selector observado para sale.cancel_reject"

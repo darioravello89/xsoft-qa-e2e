@@ -21,6 +21,8 @@ JOURNEY_ELEMENTS = (
     "payment.total", "payment.change", "payment.cancel",
     "sale.cancel_reject", "editor.product", "editor.quantity", "editor.save",
 )
+KEYBOARD_FEATURE = "ventas-teclado-v1"
+KEYBOARD_ELEMENTS = ("sale.edit", "editor.cancel")
 
 
 def validate_elements(locators, aliases):
@@ -67,7 +69,14 @@ def validate_journeys(fixtures, locators):
         raise QAError("Falta perfil/calibración completa ventas-etapa1: revisar sales_journeys, "
                       "defaults, columnas JAB y calibration.verified_features. Ver docs/calibracion.md.") from None
     aliases = JOURNEY_ELEMENTS + (("sale.unknown_dismiss",) if profile["unknown_notice"] == "dialog" else ())
+    if KEYBOARD_FEATURE in features:
+        aliases += KEYBOARD_ELEMENTS
     validate_elements(locators, aliases)
+
+
+def has_verified_feature(locators, feature):
+    features = locators.get("calibration", {}).get("verified_features", [])
+    return isinstance(features, list) and feature in features
 
 
 def file_sha256(path):

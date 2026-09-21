@@ -5,7 +5,7 @@ import copy
 import pytest
 
 from framework.errors import QAError
-from products.xgestion.contracts import JOURNEY_ELEMENTS, validate_journeys
+from products.xgestion.contracts import JOURNEY_ELEMENTS, KEYBOARD_ELEMENTS, validate_journeys
 
 
 def journey_assets():
@@ -83,3 +83,14 @@ def test_dialog_profile_requires_its_own_dismiss_alias():
     fixtures["sales_journeys"]["unknown_notice"] = "dialog"
     locators["elements"]["sale.unknown_dismiss"] = {"window": "main", "query": "role:push button and name:OK"}
     validate_journeys(fixtures, locators)
+
+
+def test_keyboard_feature_requires_its_own_verified_aliases():
+    fixtures, locators = journey_assets()
+    locators["calibration"]["verified_features"].append("ventas-teclado-v1")
+    for alias in KEYBOARD_ELEMENTS:
+        locators["elements"][alias] = {"window": "main", "query": f"role:push button and name:{alias}"}
+    validate_journeys(fixtures, locators)
+    locators["elements"].pop("editor.cancel")
+    with pytest.raises(QAError):
+        validate_journeys(fixtures, locators)

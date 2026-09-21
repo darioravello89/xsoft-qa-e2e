@@ -10,7 +10,7 @@ from robot.api.deco import keyword
 
 from framework.errors import QAError
 from framework.events import assertion_failed, business_step, diagnostic
-from products.xgestion.contracts import load_assets, validate_journeys
+from products.xgestion.contracts import KEYBOARD_FEATURE, has_verified_feature, load_assets, validate_journeys
 from products.xgestion.driver import JarProcess, SemanticDriver, create_bridge, private_input
 from products.xgestion.oracles import XGestionOracle, assert_cancelled, assert_unchanged
 
@@ -67,6 +67,7 @@ class XGestionLibrary:
         self.persisted_sale_id = None
         self.received = Decimal("2000")
         self.journeys = False
+        self.keyboard_sales = False
 
     @keyword("Iniciar XGestion QA")
     def start(self, extension=None):
@@ -80,6 +81,7 @@ class XGestionLibrary:
         self.before = self.after_paid = self.persisted_sale_id = None
         self.received = Decimal("2000")
         self.journeys = extension == "ventas-etapa1"
+        self.keyboard_sales = self.journeys and has_verified_feature(locators, KEYBOARD_FEATURE)
         if extension is not None:
             if not self.journeys:
                 raise QAError("Extensión de escenarios desconocida.")
@@ -338,11 +340,28 @@ class XGestionLibrary:
     @keyword("Modificar Cantidad Del Producto Cargado")
     def edit_sale_quantity(self):
         self._require_journeys()
-        self._assert_sale_content(1)
+        estado_inicial = self._assert_sale_content(1)
         business_step("Abrir el producto cargado y cambiar su cantidad a dos unidades")
         column = self.driver.locators["elements"]["sale.lines"]["columns"]["code"]
-        self.driver.edit_sale_row("sale.lines", column, self.fixtures["product"]["code"])
+        if self.keyboard_sales:
+            self.driver.select_sale_row("sale.lines", column, self.fixtures["product"]["code"])
+            self.driver.click("sale.edit")
+            self.driver.expect("editor.product", self.fixtures["product"]["name"])
+            self.driver.expect_focus("editor.quantity")
+            business_step("Cancelar la edición y comprobar que venta, selección y foco se conservan")
+            self.driver.click("editor.cancel")
+            self.driver.wait_gone("editor.cancel")
+            self._assert_same_sale(estado_inicial)
+            self.driver.expect_sale_row_selected("sale.lines", column, self.fixtures["product"]["code"])
+            self.driver.expect_focus("sale.lines")
+            business_step("Reabrir el renglón con Ctrl+E y guardar la cantidad dos")
+            self.driver.shortcut("sale.lines", "ctrl+e")
+        else:
+            # Compatibilidad temporal con paquetes anteriores a ventas-teclado-v1.
+            self.driver.edit_sale_row("sale.lines", column, self.fixtures["product"]["code"])
         self.driver.expect("editor.product", self.fixtures["product"]["name"])
+        if self.keyboard_sales:
+            self.driver.expect_focus("editor.quantity")
         self.driver.type("editor.quantity", "2")
         self.driver.click("editor.save")
         self.driver.wait_gone("editor.save")

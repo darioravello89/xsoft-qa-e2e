@@ -2004,7 +2004,7 @@
     },
     {
       "path": "products/xgestion/README.md",
-      "sha256": "af563a3c20d5a52e2dd4967c354ed08e5ff4e35e7906f4b8b87388d1259ff4de",
+      "sha256": "39749df9558236bfc3b46c98988ee6fc89297f306018a231893aa95476ddce50",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/README.md"
     },
     {
@@ -2014,7 +2014,7 @@
     },
     {
       "path": "products/xgestion/docs/roadmap.md",
-      "sha256": "ce5a11be0f088569d1267f109cf697de76b1d1d3ca8d728db87bf0b5d39a2a17",
+      "sha256": "8ce2b23fc767a4161265b8c7c184874b45f4996045c7be63902b6b072abf286c",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md"
     },
     {
@@ -2059,7 +2059,7 @@
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-003.md",
-      "sha256": "5fbf2a7e89088726c1d53eb74ab712d64f03119a0a642c5e06d3a43ea02dfd34",
+      "sha256": "d2da0976b8a7a7dbbad8a34184fe6d5611a3028d935fdf44755a06a1f6271036",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-003.md"
     },
     {
@@ -2079,7 +2079,7 @@
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-007.md",
-      "sha256": "9883c28e6bca411c3365c071f59e0dcb3d3351e17a57aef1e065b3789b820f92",
+      "sha256": "610650694bebfef01664dcf17ef30293372eabf63fd9666582b3f2bd26fe9c75",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-007.md"
     },
     {

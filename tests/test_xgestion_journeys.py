@@ -92,6 +92,26 @@ def test_edit_changes_existing_product_and_checks_result(sale):
     assert identity < edit < save
 
 
+def test_keyboard_edit_cancels_without_changes_then_reopens_with_ctrl_e(sale):
+    library, texts, _ = sale
+    library.keyboard_sales = True
+    initial = [["QA", "Artículo QA", "1.0", "$ 1.000,00", "$ 1.000,00"]]
+    final = [["QA", "Artículo QA", "2.0", "$ 1.000,00", "$ 2.000,00"]]
+    library.driver.table_rows.side_effect = [initial, initial, final]
+    library.driver.text.side_effect = ["1.000,00", "1.000,00", texts["sale.total"]]
+
+    library.edit_sale_quantity()
+
+    library.driver.select_sale_row.assert_called_once_with("sale.lines", 0, "QA")
+    assert ("click", ("sale.edit",), {}) in library.driver.method_calls
+    assert ("expect_focus", ("editor.quantity",), {}) in library.driver.method_calls
+    assert ("click", ("editor.cancel",), {}) in library.driver.method_calls
+    assert ("expect_sale_row_selected", ("sale.lines", 0, "QA"), {}) in library.driver.method_calls
+    assert ("expect_focus", ("sale.lines",), {}) in library.driver.method_calls
+    assert ("shortcut", ("sale.lines", "ctrl+e"), {}) in library.driver.method_calls
+    library.driver.edit_sale_row.assert_not_called()
+
+
 def test_wrong_editor_product_prevents_saving(sale):
     library, texts, _ = sale
     library.driver.table_rows.return_value[0][2:] = ["1.0", "$ 1.000,00", "$ 1.000,00"]
