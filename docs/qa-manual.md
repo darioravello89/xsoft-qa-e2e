@@ -2,7 +2,7 @@
 
 Estado inicial: **pendiente** de paquete privado legítimo, calibración y ejecución sobre XGestion. Completar este protocolo antes de acreditar la plataforma para QA rutinaria.
 
-La ampliación de roadmap/grupos/logs se revisa primero **sin abrir XGestion**: `qa.cmd check`, `list --groups`, `list --group ventas`, menú y dry-run deben mostrar siete casos implementados y siete planificados. Los planificados no se ejecutan; las referencias R01–R20 de Restobar no cuentan como fichas. Usar los tests del framework con canarios sintéticos para revisar sanitización y fallos en INFO/DEBUG/TRACE. Eso acepta el funcionamiento técnico de la ampliación, no el producto.
+La ampliación de roadmap/grupos/logs se revisa primero **sin abrir XGestion**: `qa.cmd check`, `list --groups`, `list --group ventas`, menú y dry-run deben mostrar catorce casos implementados y ninguno planificado. Los planificados no se ejecutan; las referencias R01–R20 de Restobar no cuentan como fichas. Usar los tests del framework con canarios sintéticos para revisar sanitización y fallos en INFO/DEBUG/TRACE. Eso acepta el funcionamiento técnico de la ampliación, no el producto.
 
 ```text
 QA MANUAL — XSOFT QA E2E
@@ -28,7 +28,8 @@ QA MANUAL — XSOFT QA E2E
    mediante los tests del framework, sin desactivar controles para operar.
 
 5. Completar docs/calibracion.md para el JAR recibido. Confirmar acceso,
-   contexto, búsqueda, grilla y diálogos de venta. Registrar evidencia privada
+   contexto, búsqueda, grilla y diálogos de venta. Preparar sales_journeys
+   con columnas, aviso y defaults calibrados para los siete casos nuevos. Registrar evidencia privada
    y calibración asociada al SHA-256 del JAR. No inventar selectores.
    Si doctor bloquea sólo por calibración inicial, usar inspect según esa guía;
    la inspección mantiene los demás controles. Importar el mapa y repetir doctor.
@@ -36,9 +37,9 @@ QA MANUAL — XSOFT QA E2E
 6. Ejecutar .\qa.cmd list --product xgestion --groups y
    .\qa.cmd list --product xgestion --group ventas.
    Abrir .\qa.cmd sin argumentos, Ver grupos y Ejecutar grupo.
-   Esperado: nombres/descripciones/conteos comprensibles; siete casos
-   implementados y siete planned en el catálogo general. En ventas hay
-   dos implementados y siete planned. Los pendientes no pueden ejecutarse.
+   Esperado: nombres/descripciones/conteos comprensibles; catorce casos
+   implementados y ninguno planned en el catálogo general. En ventas hay
+   nueve implementados y ninguno planned. Los pendientes no pueden ejecutarse.
    Elegir nivel 1 Resumen, 2 Paso a paso o 3 Diagnóstico en el menú.
 
 7. Ejecutar .\qa.cmd run --product xgestion --group smoke.
@@ -48,6 +49,9 @@ QA MANUAL — XSOFT QA E2E
 8. Ejecutar .\qa.cmd run --product xgestion --group ventas.
    Esperado: cancelación no persiste ni altera stock/caja; venta efectiva
    registra las dos unidades, total esperado y deltas de stock/caja correctos.
+   Comprobar aviso de código ausente; recibido 3000/vuelto 1000; cancelación
+   intermedia sin persistencia y un solo cobro posterior. VEN-008 mantiene
+   la misma ventana tras cobrar; VEN-009 reabre sin reiniciar el proceso.
 
 9. Repetir la regresión completa tres veces, una ejecución a la vez:
    .\qa.cmd run --product xgestion --group regression
@@ -80,4 +84,4 @@ No marcar este protocolo aprobado si falta un paso real. Documentar el bloqueo
 y el requisito faltante; no subir paquetes, bases, secretos o reportes a GitHub.
 ```
 
-La futura aceptación de Venta cotidiana incorpora XG-VEN-003 a XG-VEN-009 solo después de implementarlos/calibrarlos. Probar cada uno de forma independiente y en grupo, incluidos los dos recorridos consecutivos dentro del mismo proceso. No cambiar sus estados ni afirmar que se ejecutaron como parte de la revisión documental. Seguir [roadmap](../products/xgestion/docs/roadmap.md) y [cobertura](../products/xgestion/docs/cobertura.md).
+La aceptación de Venta cotidiana incorpora los siete casos nuevos implementados después de calibrar el paquete. Probar cada uno de forma independiente y en grupo, incluidos los dos recorridos consecutivos dentro del mismo proceso. VEN-003/007 requieren comprobar el doble clic sobre la celda JAB, identidad del producto del editor y cambio de la misma fila; en 007, también rechazo del abandono sin mutaciones intermedias. Una revisión documental o técnica no acredita ejecución real. Seguir [roadmap](../products/xgestion/docs/roadmap.md) y [cobertura](../products/xgestion/docs/cobertura.md).

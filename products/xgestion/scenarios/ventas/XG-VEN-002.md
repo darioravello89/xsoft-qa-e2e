@@ -27,7 +27,7 @@ Automatización implementada; **ejecución real pendiente** de paquete privado, 
 
 ## Recuperación y límites
 
-Si falla, conservar el reporte privado y el paso observado. El runner cierra solo su proceso y prepara el baseline en la siguiente ejecución. No reparar resultados borrando datos ni modificar controles de seguridad. Abandonar una venta nueva no equivale a anular una cobrada. Puede existir auditoría de abandono sin venta. Rechazar el descarte se planifica en XG-VEN-007.
+Si falla, conservar el reporte privado y el paso observado. El runner cierra solo su proceso y prepara el baseline en la siguiente ejecución. No reparar resultados borrando datos ni modificar controles de seguridad. Abandonar una venta nueva no equivale a anular una cobrada. Puede existir auditoría de abandono sin venta. Rechazar el descarte y continuar se comprueba en XG-VEN-007, con validación real pendiente.
 
 ## Evidencia para QA
 

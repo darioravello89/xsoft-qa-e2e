@@ -27,7 +27,7 @@ Automatización implementada; **ejecución real pendiente** de paquete privado, 
 
 ## Recuperación y límites
 
-Si falla, conservar el reporte privado y el paso observado. El runner cierra solo su proceso y prepara el baseline en la siguiente ejecución. No reparar resultados borrando datos ni modificar controles de seguridad. Cobra el importe exacto. El vuelto se planifica en XG-VEN-005. No emitir F9, imprimir ni usar pagos externos.
+Si falla, conservar el reporte privado y el paso observado. El runner cierra solo su proceso y prepara el baseline en la siguiente ejecución. No reparar resultados borrando datos ni modificar controles de seguridad. Cobra el importe exacto. El vuelto se comprueba en XG-VEN-005, con validación real pendiente. No emitir F9, imprimir ni usar pagos externos.
 
 ## Evidencia para QA
 
@@ -35,6 +35,6 @@ INFO muestra ID, resultado y resumen; DEBUG añade pasos; TRACE diagnóstico san
 
 ## Anexo técnico y trazabilidad
 
-Se toma una referencia de lectura antes de operar. El oráculo exige una venta nueva por empresa/sucursal/computadora/ID, activa y cerrada, del usuario QA; comprobante 99 sin CAE; un detalle del artículo fixture, cantidad 2, precio 1000 y total 2000; efectivo inmediato por 2000; stock −2 y caja +2000 vinculados a esa venta. Lee ventas, ventas_cuerpo, ventas_pagos, movimientos_articulos y movimientos_finanzas. No escribe SQL. Fuente: FormVenta.java, formTicketCierre.java y TicketVenta.java; contrato actual: products/xgestion/oracles.py.
+Se toma una referencia de lectura antes de operar. El oráculo exige una venta nueva por empresa/sucursal/computadora/ID, activa y cerrada, del usuario QA; comprobante 99 sin CAE; un detalle del artículo fixture, cantidad 2, precio 1000 y total 2000; efectivo inmediato por 2000 (`Pagado=2000`, `Vuelto=0`); stock −2 y caja +2000 vinculados a esa venta. El efectivo simple no crea filas en `ventas_pagos`; esa ausencia es válida y se distingue del cobro múltiple. Lee ventas, ventas_cuerpo, ventas_pagos, movimientos_articulos y movimientos_finanzas. No escribe SQL. Fuente: FormVenta.java, formTicketCierre.java y TicketVenta.java; contrato actual: products/xgestion/oracles.py.
 
 La [cobertura](../../docs/cobertura.md) identifica la referencia XGestion2 `release/189-lts`, `f34238183d494259bed1279dd7d9aac0ce16a3ae`. Fuente y tests orientan expectativas; no demuestran equivalencia del JAR ni ejecución real. Se mantienen IDs, tags y archivo Robot existentes.

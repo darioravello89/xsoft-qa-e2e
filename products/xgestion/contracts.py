@@ -16,6 +16,58 @@ REQUIRED_ELEMENTS = (
     "sale.cancel_confirm", "sale.closed_indicator", "payment.cash_option",
     "payment.cash_accept", "payment.amount", "payment.confirm",
 )
+JOURNEY_ELEMENTS = (
+    "sale.lines", "sale.customer", "sale.price_list", "sale.unknown_notice",
+    "payment.total", "payment.change", "payment.cancel",
+    "sale.cancel_reject", "editor.product", "editor.quantity", "editor.save",
+)
+
+
+def validate_elements(locators, aliases):
+    try:
+        windows = locators["windows"]
+        elements = locators["elements"]
+        for alias in aliases:
+            entry = elements.get(alias, {})
+            title = windows.get(entry.get("window"))
+            query = entry.get("query")
+            if not isinstance(title, str) or not title.strip() or not isinstance(query, str) or not query.strip():
+                raise QAError(f"Falta locator semántico y ventana verificada: {alias}")
+            if "CALIBRAR" in query.upper() or "CALIBRAR" in title.upper():
+                raise QAError(f"El locator {alias} sigue siendo una plantilla sin calibrar.")
+            if "index" in entry:
+                raise QAError(f"El locator {alias} debe identificar un único elemento, sin índice arbitrario.")
+    except (KeyError, TypeError, AttributeError):
+        raise QAError("Mapa de localizadores con estructura inválida.") from None
+
+
+def validate_journeys(fixtures, locators):
+    """La calibración de los primeros siete casos no habilita los controles nuevos."""
+    try:
+        features = locators["calibration"].get("verified_features", [])
+        if not isinstance(features, list) or "ventas-etapa1" not in features:
+            raise ValueError()
+        profile = fixtures["sales_journeys"]
+        if (profile["schema_version"] != 1 or profile["currency"] != "ARS"
+                or profile["cash_dialog"] is not True or profile["abandon_requires_supervisor"] is not False
+                or profile["unknown_notice"] not in ("status", "dialog")
+                or type(profile["repeated_product_rows"]) is not int or profile["repeated_product_rows"] not in (1, 2)):
+            raise ValueError()
+        for value in [profile["unknown_notice_text"], *(profile["defaults"][key]
+                       for key in ("customer", "price_list", "document"))]:
+            if not isinstance(value, str) or not value.strip() or "CALIBRAR" in value.upper():
+                raise ValueError()
+        table = locators["elements"]["sale.lines"]
+        count = table["column_count"]
+        columns = [table["columns"][name] for name in ("code", "name", "quantity", "unit_price", "total")]
+        if (type(count) is not int or not 5 <= count <= 30 or len(set(columns)) != 5
+                or any(type(column) is not int or not 0 <= column < count for column in columns)):
+            raise ValueError()
+    except (KeyError, TypeError, ValueError, AttributeError):
+        raise QAError("Falta perfil/calibración completa ventas-etapa1: revisar sales_journeys, "
+                      "defaults, columnas JAB y calibration.verified_features. Ver docs/calibracion.md.") from None
+    aliases = JOURNEY_ELEMENTS + (("sale.unknown_dismiss",) if profile["unknown_notice"] == "dialog" else ())
+    validate_elements(locators, aliases)
 
 
 def file_sha256(path):
@@ -80,16 +132,10 @@ def load_assets(profile):
         raise QAError("Falta evidencia de calibración (persona, fecha y versión JAB).") from None
     if calibration.get("app_sha256", "").lower() != file_sha256(profile.asset("app")):
         raise QAError("SHA256 del JAR distinto del utilizado para calibrar locators.json.")
-    windows = locators.get("windows", {})
-    elements = locators.get("elements", {})
-    for alias in REQUIRED_ELEMENTS:
-        entry = elements.get(alias, {})
-        title = windows.get(entry.get("window"))
-        query = entry.get("query")
-        if not isinstance(title, str) or not title.strip() or not isinstance(query, str) or not query.strip():
-            raise QAError(f"Falta locator semántico y ventana verificada: {alias}")
-        if "CALIBRAR" in query.upper() or "CALIBRAR" in title.upper():
-            raise QAError(f"El locator {alias} sigue siendo una plantilla sin calibrar.")
-        if "index" in entry:
-            raise QAError(f"El locator {alias} debe identificar un único elemento, sin índice arbitrario.")
+    validate_elements(locators, REQUIRED_ELEMENTS)
+    features = calibration.get("verified_features", [])
+    if not isinstance(features, list):
+        raise QAError("calibration.verified_features debe ser una lista de extensiones verificadas.")
+    if "ventas-etapa1" in features:
+        validate_journeys(fixtures, locators)
     return fixtures, locators

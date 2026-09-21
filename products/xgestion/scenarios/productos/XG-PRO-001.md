@@ -32,6 +32,6 @@ INFO muestra ID, resultado y resumen; DEBUG añade pasos; TRACE diagnóstico san
 
 ## Anexo técnico y trazabilidad
 
-Se contrasta código/nombre con fixtures.product y un control de resultado calibrado. La carga en venta se planifica por separado en XG-VEN-003.
+Se contrasta código/nombre con fixtures.product y un control de resultado calibrado. La carga y edición dentro de la venta se comprueba por separado en XG-VEN-003, con validación real pendiente.
 
 La [cobertura](../../docs/cobertura.md) identifica la referencia XGestion2 `release/189-lts`, `f34238183d494259bed1279dd7d9aac0ce16a3ae`. Fuente y tests orientan expectativas; no demuestran equivalencia del JAR ni ejecución real. Se mantienen IDs, tags y archivo Robot existentes.

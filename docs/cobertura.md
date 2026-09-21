@@ -14,7 +14,7 @@ El archivo responde qué está implementado, qué está planificado y qué falta
 | Por detallar | Familias y recorridos pendientes de convertirse en escenarios completos. | Incluye el backlog de Restobar, sin hacerlo pasar por casos ejecutables. |
 | Ejemplos seed | Ejemplos comerciales y expectativas de la batería pública. | Son ejemplos pendientes de validar con el perfil y el JAR, no resultados observados. |
 
-La foto inicial distingue **14 fichas: 7 implementadas y 7 planificadas**, con **0 validaciones reales registradas en este mapa público**. Ese cero no afirma que nadie haya ejecutado pruebas en privado: el generador no lee reportes de QA. Los 20 recorridos R01–R20 de Restobar y los 26 ejemplos de cálculo del seed tienen su propio espacio; no se suman a las 14 fichas ni a los 7 casos implementados.
+La foto actual distingue **14 fichas: 14 implementadas y 0 planificadas**, con **0 validaciones reales registradas en este mapa público**. Ese cero no afirma que nadie haya ejecutado pruebas en privado: el generador no lee reportes de QA. Los 20 recorridos R01–R20 de Restobar y los 26 ejemplos de cálculo del seed tienen su propio espacio; no se suman a las 14 fichas ni a los 14 casos implementados. La mejora de accesibilidad del editor se registra en un backlog independiente; la especificación inicial del mapa conserva sus conteos históricos y las fuentes actuales determinan cada regeneración.
 
 Un grupo sin casos implementados muestra una oportunidad de ampliación. Un caso planificado no equivale a una prueba fallida. Una familia con alguna automatización tampoco implica que todas sus variantes estén cubiertas. Para elegir qué desarrollar después, revisar sus dependencias, datos, configuración y criterios en el roadmap.
 

@@ -23,7 +23,7 @@
         "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/cobertura.md#L51",
         "id": "familia-cargar-corregir-venta",
         "product": "xgestion",
-        "source_status": "Carga básica incluida en VEN-001/002; variantes VEN-003/004/007 planificadas.",
+        "source_status": "Carga, código ausente y edición incluidos en VEN-001/002/003/004/007; calibración y E2E real pendientes.",
         "title": "Cargar/corregir venta",
         "validation": "pending",
         "variants": "Cantidad, código ausente, conservar líneas y continuar."
@@ -32,7 +32,7 @@
         "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/cobertura.md#L52",
         "id": "familia-efectivo-cancelacion",
         "product": "xgestion",
-        "source_status": "VEN-001/002 disponibles; VEN-005/006/008/009 planificados.",
+        "source_status": "VEN-001/002/005/006/008/009 disponibles; requieren calibración y ejecución real.",
         "title": "Efectivo/cancelación",
         "validation": "pending",
         "variants": "Exacto, vuelto, cancelar/retomar, abandono y operación siguiente."
@@ -140,7 +140,7 @@
         "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/cobertura.md#L64",
         "id": "familia-recuperacion-transversal",
         "product": "xgestion",
-        "source_status": "Abandono simple disponible; recuperación restante pendiente por familia.",
+        "source_status": "Abandono, rechazo con continuación, edición, cancelar/retomar cobro y siguiente operación disponibles; otras familias pendientes.",
         "title": "Recuperación transversal",
         "validation": "pending",
         "variants": "Rechazar, cancelar, corregir/reintentar, límites y fallas sin datos parciales/duplicados."
@@ -149,7 +149,7 @@
     "restobar": [
       {
         "dependencies": "Venta cotidiana",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L111",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L113",
         "id": "R01",
         "priority": "P0",
         "product": "xgestion",
@@ -160,7 +160,7 @@
       },
       {
         "dependencies": "datos de salón",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L112",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L114",
         "id": "R02",
         "priority": "P0",
         "product": "xgestion",
@@ -171,7 +171,7 @@
       },
       {
         "dependencies": "catálogo de carta",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L113",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L115",
         "id": "R03",
         "priority": "P1",
         "product": "xgestion",
@@ -182,7 +182,7 @@
       },
       {
         "dependencies": "carta con opciones",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L114",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L116",
         "id": "R04",
         "priority": "P1",
         "product": "xgestion",
@@ -193,7 +193,7 @@
       },
       {
         "dependencies": "perfiles comerciales",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L115",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L117",
         "id": "R05",
         "priority": "P1",
         "product": "xgestion",
@@ -204,7 +204,7 @@
       },
       {
         "dependencies": "dispositivo real en etapa 6",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L116",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L118",
         "id": "R06",
         "priority": "P1",
         "product": "xgestion",
@@ -215,7 +215,7 @@
       },
       {
         "dependencies": "roles QA",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L117",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L119",
         "id": "R07",
         "priority": "P0",
         "product": "xgestion",
@@ -226,7 +226,7 @@
       },
       {
         "dependencies": "cocina/KDS y salida de impresión si aplica",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L118",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L120",
         "id": "R08",
         "priority": "P0",
         "product": "xgestion",
@@ -237,7 +237,7 @@
       },
       {
         "dependencies": "primera comanda",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L119",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L121",
         "id": "R09",
         "priority": "P0",
         "product": "xgestion",
@@ -248,7 +248,7 @@
       },
       {
         "dependencies": "impresión en etapa 6",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L120",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L122",
         "id": "R10",
         "priority": "P0",
         "product": "xgestion",
@@ -259,7 +259,7 @@
       },
       {
         "dependencies": "comensales e impresión",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L121",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L123",
         "id": "R11",
         "priority": "P1",
         "product": "xgestion",
@@ -270,7 +270,7 @@
       },
       {
         "dependencies": "dos mesas",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L122",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L124",
         "id": "R12",
         "priority": "P0",
         "product": "xgestion",
@@ -281,7 +281,7 @@
       },
       {
         "dependencies": "cobro simple",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L123",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L125",
         "id": "R13",
         "priority": "P0",
         "product": "xgestion",
@@ -292,7 +292,7 @@
       },
       {
         "dependencies": "etapa 3",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L124",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L126",
         "id": "R14",
         "priority": "P0",
         "product": "xgestion",
@@ -303,7 +303,7 @@
       },
       {
         "dependencies": "laboratorio fiscal etapa 6",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L125",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L127",
         "id": "R15",
         "priority": "P0",
         "product": "xgestion",
@@ -314,7 +314,7 @@
       },
       {
         "dependencies": "datos de reparto",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L126",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L128",
         "id": "R16",
         "priority": "P1",
         "product": "xgestion",
@@ -325,7 +325,7 @@
       },
       {
         "dependencies": "canal y KDS",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L127",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L129",
         "id": "R17",
         "priority": "P0",
         "product": "xgestion",
@@ -336,7 +336,7 @@
       },
       {
         "dependencies": "canal mozo y etapa 6 para red",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L128",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L130",
         "id": "R18",
         "priority": "P0",
         "product": "xgestion",
@@ -347,7 +347,7 @@
       },
       {
         "dependencies": "varios puestos, etapa 6",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L129",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L131",
         "id": "R19",
         "priority": "P0",
         "product": "xgestion",
@@ -358,7 +358,7 @@
       },
       {
         "dependencies": "políticas QR, canal y pagos de QA",
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L130",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L132",
         "id": "R20",
         "priority": "P0",
         "product": "xgestion",
@@ -370,7 +370,7 @@
     ],
     "roadmap_variants": [
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L56",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L58",
         "groups": [
           "carga-productos",
           "corregir-venta"
@@ -385,7 +385,7 @@
         "variants": "Código y búsqueda; repetido; variantes padre/hijo; cancelar selección; cantidades previas, decimales, bultos e ingreso por importe."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L57",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L59",
         "groups": [
           "stock"
         ],
@@ -399,7 +399,7 @@
         "variants": "Disponible, insuficiente, repetido en varias líneas, sucursal; bloqueo habilitado/deshabilitado y reglas del cierre anual."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L58",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L60",
         "groups": [
           "precios"
         ],
@@ -413,7 +413,7 @@
         "variants": "Lista seleccionada, cliente, sucursal, turno y cantidad; cambio de lista; edición manual, vacío/cero y precisión."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L59",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L61",
         "groups": [
           "promociones",
           "descuentos"
@@ -428,7 +428,7 @@
         "variants": "Porcentaje, importe, cantidad y combos; vigencia/aplicabilidad; descuento de ítem/global, cambio de cliente y líneas con notas diferentes."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L60",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L62",
         "groups": [
           "precios",
           "comprobantes"
@@ -443,7 +443,7 @@
         "variants": "Inclusión/desglose según producto y documento; combinación con descuentos; precisión y redondeos en línea/total."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L61",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L63",
         "groups": [
           "descuentos"
         ],
@@ -457,7 +457,7 @@
         "variants": "Cliente identificado/consumidor final, saldo/vencimiento, uso parcial/total, límites y cambio de cliente."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L71",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L73",
         "groups": [
           "cobros",
           "efectivo"
@@ -472,7 +472,7 @@
         "variants": "Diálogo habilitado/deshabilitado, exacto, vuelto, insuficiente, cancelar; pago simple/múltiple, parcial cuando el flujo lo permita, descuentos por pago."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L72",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L74",
         "groups": [
           "monedas"
         ],
@@ -486,7 +486,7 @@
         "variants": "ARS/USD en artículos, listas y moneda contable; cotización de empresa/venta válida, nula o no positiva; cambio autorizado, redondeos; alternar/editar/borrar importe pagado."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L73",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L75",
         "groups": [
           "presupuestos"
         ],
@@ -500,7 +500,7 @@
         "variants": "Guardar ARS/USD o cancelar; abrir venta/preventa/presupuesto; convertir a venta; abierta frente a cerrada/anulada."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L74",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L76",
         "groups": [
           "cuenta-corriente"
         ],
@@ -514,7 +514,7 @@
         "variants": "Cliente, saldo/límite, autorización, anticipo, cuotas y recálculo del plan."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L75",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L77",
         "groups": [
           "comprobantes"
         ],
@@ -528,7 +528,7 @@
         "variants": "Tipo permitido, datos del cliente, consulta y relación con la operación original."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L97",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L99",
         "groups": [
           "mostrador",
           "mesas"
@@ -543,7 +543,7 @@
         "variants": "Crear/retomar cuenta, mesa libre/ocupada, varios consumos y comensales; mover una cuenta a una mesa libre; cambio de sector."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L98",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L100",
         "groups": [
           "preparacion",
           "kds"
@@ -558,7 +558,7 @@
         "variants": "Agregar/corregir pedido, observaciones, envío y avance de preparación; repetir/cancelar según permiso."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L99",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L101",
         "groups": [
           "precuenta",
           "cobros"
@@ -573,7 +573,7 @@
         "variants": "Revisar consumos, precuenta, comensales, cobrar y liberar la mesa."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L100",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L102",
         "groups": [
           "delivery"
         ],
@@ -587,7 +587,7 @@
         "variants": "Pedido, cliente/dirección, preparación, entrega y cobro según flujo confirmado."
       },
       {
-        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L101",
+        "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md#L103",
         "groups": [
           "mozos-qr"
         ],
@@ -607,9 +607,9 @@
     "backlog_restobar": 20,
     "documented": 14,
     "groups": 35,
-    "implemented": 7,
+    "implemented": 14,
     "manual": 0,
-    "planned": 7,
+    "planned": 0,
     "real_validated": 0,
     "roadmap_variant_families": 16,
     "seed_examples": 26
@@ -641,9 +641,9 @@
     {
       "counts": {
         "documented": 14,
-        "implemented": 7,
+        "implemented": 14,
         "manual": 0,
-        "planned": 7,
+        "planned": 0,
         "real_validated": 0
       },
       "description": "Reunir los escenarios implementados; no implica cubrir todo el ERP.",
@@ -732,9 +732,9 @@
     {
       "counts": {
         "documented": 9,
-        "implemented": 2,
+        "implemented": 9,
         "manual": 0,
-        "planned": 7,
+        "planned": 0,
         "real_validated": 0
       },
       "description": "Cargar productos, cobrar, cancelar y continuar vendiendo.",
@@ -759,9 +759,9 @@
     {
       "counts": {
         "documented": 2,
-        "implemented": 0,
+        "implemented": 2,
         "manual": 0,
-        "planned": 2,
+        "planned": 0,
         "real_validated": 0
       },
       "description": "Agregar artículos por código o búsqueda y establecer sus cantidades.",
@@ -772,16 +772,16 @@
       ],
       "product": "xgestion",
       "stage": 1,
-      "status": "planned",
+      "status": "partial",
       "title": "Cargar productos en la venta",
       "validation": "pending"
     },
     {
       "counts": {
         "documented": 2,
-        "implemented": 0,
+        "implemented": 2,
         "manual": 0,
-        "planned": 2,
+        "planned": 0,
         "real_validated": 0
       },
       "description": "Cambiar cantidades, quitar renglones y revisar el total antes de confirmar.",
@@ -792,16 +792,16 @@
       ],
       "product": "xgestion",
       "stage": 1,
-      "status": "planned",
+      "status": "partial",
       "title": "Corregir una venta",
       "validation": "pending"
     },
     {
       "counts": {
         "documented": 3,
-        "implemented": 1,
+        "implemented": 3,
         "manual": 0,
-        "planned": 2,
+        "planned": 0,
         "real_validated": 0
       },
       "description": "Confirmar el importe recibido, el vuelto y la continuación de la venta.",
@@ -888,9 +888,9 @@
     {
       "counts": {
         "documented": 2,
-        "implemented": 1,
+        "implemented": 2,
         "manual": 0,
-        "planned": 1,
+        "planned": 0,
         "real_validated": 0
       },
       "description": "Seleccionar medios de pago y verificar importes y cancelaciones del cobro.",
@@ -1274,9 +1274,9 @@
     {
       "counts": {
         "documented": 14,
-        "implemented": 7,
+        "implemented": 14,
         "manual": 0,
-        "planned": 7,
+        "planned": 0,
         "real_validated": 0
       },
       "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/README.md",
@@ -1485,9 +1485,9 @@
       "priority_basis": "roadmap-stage",
       "product": "xgestion",
       "stage": 1,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/ventas.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/ventas.robot",
       "title": "Cargar un producto y modificar su cantidad",
       "validation": "pending"
     },
@@ -1505,9 +1505,9 @@
       "priority_basis": "roadmap-stage",
       "product": "xgestion",
       "stage": 1,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/ventas.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/ventas.robot",
       "title": "Buscar un código inexistente sin alterar la venta",
       "validation": "pending"
     },
@@ -1525,9 +1525,9 @@
       "priority_basis": "roadmap-stage",
       "product": "xgestion",
       "stage": 1,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/ventas.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/ventas.robot",
       "title": "Cobrar en efectivo con vuelto",
       "validation": "pending"
     },
@@ -1546,9 +1546,9 @@
       "priority_basis": "roadmap-stage",
       "product": "xgestion",
       "stage": 1,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/ventas.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/ventas.robot",
       "title": "Cancelar el cobro, retomarlo y cobrar una sola vez",
       "validation": "pending"
     },
@@ -1566,9 +1566,9 @@
       "priority_basis": "roadmap-stage",
       "product": "xgestion",
       "stage": 1,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/ventas.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/ventas.robot",
       "title": "Rechazar el abandono y continuar vendiendo",
       "validation": "pending"
     },
@@ -1585,9 +1585,9 @@
       "priority_basis": "roadmap-stage",
       "product": "xgestion",
       "stage": 1,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/ventas.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/ventas.robot",
       "title": "Comenzar otra venta después de cobrar",
       "validation": "pending"
     },
@@ -1604,9 +1604,9 @@
       "priority_basis": "roadmap-stage",
       "product": "xgestion",
       "stage": 1,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/ventas.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/ventas.robot",
       "title": "Comenzar otra venta después de abandonar",
       "validation": "pending"
     }
@@ -2004,17 +2004,17 @@
     },
     {
       "path": "products/xgestion/README.md",
-      "sha256": "15bfed6612e524e831134d381dbdb5c5d379cf566d99ea6bd4ceae013e87dd30",
+      "sha256": "af563a3c20d5a52e2dd4967c354ed08e5ff4e35e7906f4b8b87388d1259ff4de",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/README.md"
     },
     {
       "path": "products/xgestion/docs/cobertura.md",
-      "sha256": "a24aa9fa906a1f3f52f6a9ac3163863c20a4140463f44a342a4e3710ea3dcf28",
+      "sha256": "c4ded26c6b6f69cbd0d4a288c52292dbef1fb09dfca9b6b5dcee1bf82cefd788",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/cobertura.md"
     },
     {
       "path": "products/xgestion/docs/roadmap.md",
-      "sha256": "e7f9d5131ba0ab5d1e5bef9213699e3f77a505d177b9f9dfcb1b4dbb559ac08f",
+      "sha256": "ce5a11be0f088569d1267f109cf697de76b1d1d3ca8d728db87bf0b5d39a2a17",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md"
     },
     {
@@ -2039,7 +2039,7 @@
     },
     {
       "path": "products/xgestion/scenarios/productos/XG-PRO-001.md",
-      "sha256": "81480ca9ea30f964d76588af1ebb00a96812fe5674aa29af8aa501270492747f",
+      "sha256": "df99affd5569d957e2b622ad50072be305830dce92efa7da368631097804641a",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/productos/XG-PRO-001.md"
     },
     {
@@ -2049,47 +2049,47 @@
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-001.md",
-      "sha256": "d456543464515f6cf3e3c51c49c9c4a19faba1e3e7661df0dee4bcf932a36aff",
+      "sha256": "35a1b2153d593f1416c0ddd6823a29db58f3543d6512ace4de59aa88d26cc6cd",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-001.md"
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-002.md",
-      "sha256": "1962cba43d2c3266cd9b4b563ae3ebc40482cbc51afd16d748e973240b818a61",
+      "sha256": "1f7494f68bbdc8fbde10e0c05b25921c149f3fa8eacbe6bccee884a98a43ae53",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-002.md"
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-003.md",
-      "sha256": "0ea1a1697b3109cd5b9e07c98cc34cf3dfb83dd4261b8a6b21bf0c222bf4e245",
+      "sha256": "5fbf2a7e89088726c1d53eb74ab712d64f03119a0a642c5e06d3a43ea02dfd34",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-003.md"
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-004.md",
-      "sha256": "ca82a4bba6dbd4e1d51cbaac3fe626ce0c12df320271b3e5a20c1016b4f8c726",
+      "sha256": "0622507e734b9bb288b172d78b9eb85abc7cd7d59ca8d9e597877f4405a7d9fc",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-004.md"
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-005.md",
-      "sha256": "34124599be586cee9b738038fb9604205c4eec0e8c551e5a62678e269c140a06",
+      "sha256": "feb214909e2f0b8d009f30989ec79cd47335106006a2a0dca1b13b3bacb0e5bc",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-005.md"
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-006.md",
-      "sha256": "105fdfa5f4b315e6c1f86577b08fe22f29b6dac15427a6d07759096db12f59e7",
+      "sha256": "8a12cf80eea5d8b58fc282167e7dfb05b2e3820aa9752696f9acf70887179b20",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-006.md"
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-007.md",
-      "sha256": "cb4d5c721dee9da449fcd8bbab6baa4411061f402c4dfcee5e015169a4cb28da",
+      "sha256": "9883c28e6bca411c3365c071f59e0dcb3d3351e17a57aef1e065b3789b820f92",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-007.md"
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-008.md",
-      "sha256": "cc828e59cd2c5a65c6aeafe25ac3a2694fc394bb905e54f66cb2738d9dd57eb0",
+      "sha256": "df57d5950425d6b23ec0e95b8756770ec4c24bc3239a8a2dea68d7c95e2aa3f0",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-008.md"
     },
     {
       "path": "products/xgestion/scenarios/ventas/XG-VEN-009.md",
-      "sha256": "16275fafb8cdfba2e157d8c6bf49adc2e0ad8a36636037cac25eb442a7debfd4",
+      "sha256": "e4ca5b5dc23dc6fd304feee65c109dd1ead78c911226ce604b07d45593cf7729",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/ventas/XG-VEN-009.md"
     },
     {
@@ -2104,7 +2104,7 @@
     },
     {
       "path": "products/xgestion/suites/ventas.robot",
-      "sha256": "be9fc4dc39511f12e8af0af7ad8417b059fe2f5d071349070619065c3be42910",
+      "sha256": "d1fa5ffbb304e4f3b862953cb92e5b0d25b2e1a8f9a25cf77f3a34250ba958db",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/ventas.robot"
     },
     {

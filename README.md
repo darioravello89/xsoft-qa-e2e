@@ -4,7 +4,7 @@ Pruebas automatizadas para que QA compruebe escenarios de XSoft con un menú o c
 
 **Estado: suite implementada; VALIDACIÓN REAL PENDIENTE.** El repositorio incluye escenarios, controles y documentación. Para confirmar funcionamiento sobre el producto falta importar el paquete privado de QA, calibrar los selectores sobre ese JAR y completar las pruebas reales descritas en [aceptación](docs/qa-manual.md). Un `check`, un `dry-run` o un CI verde no equivalen a haber probado XGestion.
 
-**[Descargar Excel: qué está implementado y qué falta en XGestion](docs/coverage/xgestion-cobertura.xlsx)** · [Cómo leerlo y mantenerlo actualizado](docs/cobertura.md). La foto pública separa las 14 fichas —7 implementadas y 7 planificadas— de la validación real, todavía no registrada en el mapa. Los grupos, el backlog Restobar y los ejemplos del seed no agregan casos ejecutables por sí mismos.
+**[Descargar Excel: qué está implementado y qué falta en XGestion](docs/coverage/xgestion-cobertura.xlsx)** · [Cómo leerlo y mantenerlo actualizado](docs/cobertura.md). La foto pública separa las 14 fichas —14 implementadas y 0 planificadas— de la validación real, todavía no registrada en el mapa. Los grupos, el backlog Restobar y los ejemplos del seed no agregan casos ejecutables por sí mismos.
 
 ## Empezar por primera vez
 
@@ -43,7 +43,7 @@ Ejecutalos desde la carpeta del repositorio. Podés usar siempre el menú con `.
 | `.\qa.cmd doctor --product xgestion` | Revisar requisitos y configuración sin ejecutar escenarios. |
 | `.\qa.cmd list --product xgestion` | Ver casos y estado: implementado, planificado o manual. |
 | `.\qa.cmd list --product xgestion --groups` | Ver nombres, descripciones, etapas y conteos por grupo. |
-| `.\qa.cmd list --product xgestion --group ventas` | Ver los casos de venta, incluidos los planificados. |
+| `.\qa.cmd list --product xgestion --group ventas` | Ver los nueve casos de venta y su estado. |
 | `.\qa.cmd run --product xgestion --group smoke` | Comprobar acceso y funciones básicas. |
 | `.\qa.cmd run --product xgestion --group ventas` | Ejecutar escenarios de venta. |
 | `.\qa.cmd run --product xgestion --group regression` | Ejecutar el conjunto de regresión disponible. |
@@ -59,9 +59,9 @@ Ejecutalos desde la carpeta del repositorio. Podés usar siempre el menú con `.
 | `.\qa.cmd seed --dry-run --export` | Revisar 48 productos, 19 ofertas y 5 listas sin abrir MySQL. |
 | `.\qa.cmd seed --apply` | Restaurar la base privada QA y aplicar/verificar sus upserts; reemplaza sus datos. |
 | `.\qa.cmd run --product xgestion --group ventas --seed catalogo-comercial-v1` | Preparar la batería antes de ejecutar los casos implementados. |
-| `.\qa.cmd run --product xgestion --group regression --dry-run` | Validar los siete escenarios sin abrir XGestion ni conectarse a MySQL. |
+| `.\qa.cmd run --product xgestion --group regression --dry-run` | Validar los catorce escenarios implementados sin abrir XGestion ni conectarse a MySQL. |
 
-Los grupos filtran el mismo catálogo: un caso puede pertenecer a `regression`, `ventas` y `efectivo`; no se duplica su ejecución por tener varias etiquetas. Hoy hay **siete casos implementados y siete nuevos de Venta planificados**, que se listan pero no se ejecutan. Un grupo sin casos implementados explica el pendiente y no produce un PASS.
+Los grupos filtran el mismo catálogo: un caso puede pertenecer a `regression`, `ventas` y `efectivo`; no se duplica su ejecución por tener varias etiquetas. Hoy hay **catorce casos implementados y ninguno planificado en el catálogo de XGestion**. Los siete recorridos nuevos —XG-VEN-003 a XG-VEN-009— requieren la extensión privada `sales_journeys`, la grilla y el editor calibrados; los paquetes anteriores conservan los siete casos iniciales. Ver [calibración de Venta cotidiana](products/xgestion/docs/calibracion.md). Un grupo sin casos implementados explica el pendiente y no produce un PASS.
 
 INFO es el nivel predeterminado: muestra cada caso y un resumen. DEBUG agrega los pasos y TRACE el diagnóstico técnico saneado. En cualquier nivel un fallo debe informar caso, paso, esperado, observado, categoría y evidencia disponible. Si la evidencia no determina la causa, se informa **causa no determinada**. Más detalle de log no cambia las comprobaciones ni habilita registrar secretos.
 
@@ -83,7 +83,7 @@ La [guía de datos fijos](products/xgestion/docs/seed.md) detalla códigos, prec
 Cada producto encapsula `scenarios/` —qué comprobar—, `suites/` —automatización— y `docs/` —operación específica—. Los adaptadores y oráculos Python viven dentro de su producto; `resources/` queda disponible para recursos Robot reutilizables. `framework/` y `scripts/` resuelven instalación, ejecución y controles comunes. Los productos pendientes no tienen tests de ejemplo que aparenten cobertura.
 
 - [Guía para trabajar con IA](docs/guia-ia.md) y [prompts listos para usar](docs/prompts.md).
-- [Agregar una funcionalidad y sus pruebas](docs/nuevas-features.md).
+- [Agregar una funcionalidad y sus pruebas](docs/nuevas-features.md), [alcance de Venta cotidiana](docs/specs/004-venta-cotidiana.md) y [backlog de accesibilidad CSV](products/xgestion/docs/backlog-accesibilidad.csv).
 - [Especificación inicial](docs/specs/001-plataforma-qa.md), [decisión tecnológica](docs/decisions/001-motores-por-plataforma.md) y [plan de implementación](docs/plans/001-bootstrap.md).
 - [Preparación del paquete privado](docs/paquete-privado.md), [calibración](docs/calibracion.md) y [QA de aceptación](docs/qa-manual.md).
 

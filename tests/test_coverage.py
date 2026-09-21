@@ -28,7 +28,7 @@ def test_current_catalog_has_unique_cases_and_no_real_validation():
     assert data["schema_version"] == 1
     assert data["counts"]["documented"] == 14
     assert {key: data["counts"][key] for key in ("implemented", "planned", "manual", "real_validated")} == {
-        "implemented": 7, "planned": 7, "manual": 0, "real_validated": 0,
+        "implemented": 14, "planned": 0, "manual": 0, "real_validated": 0,
     }
     assert len({case["id"] for case in data["scenarios"]}) == 14
     assert {case["validation"] for case in data["scenarios"]} == {"pending"}
@@ -41,18 +41,21 @@ def test_current_catalog_has_unique_cases_and_no_real_validation():
 def test_groups_are_overlapping_selections_not_extra_cases():
     data = build_coverage(ROOT)
     groups = {group["id"]: group for group in data["groups"]}
-    assert groups["ventas"]["counts"]["implemented"] == 2
-    assert groups["ventas"]["counts"]["planned"] == 7
+    assert groups["ventas"]["counts"]["implemented"] == 9
+    assert groups["ventas"]["counts"]["planned"] == 0
     assert groups["ventas"]["status"] == "partial"
     assert groups["smoke"]["status"] == "partial"
     assert groups["mesas"]["members"] == []
     assert groups["mesas"]["status"] == "no-scenarios"
     assert len(groups["regression"]["members"]) == 14
+    assert groups["regression"]["counts"]["implemented"] == 14
+    assert groups["regression"]["counts"]["planned"] == 0
     assert len(set().union(*(set(group["members"]) for group in data["groups"]))) == 14
     case = next(case for case in data["scenarios"] if case["id"] == "XG-VEN-003")
     assert case["stage"] == 1
     assert case["priority"] == "P0"
-    assert case["test_url"] is None
+    assert case["status"] == "implemented"
+    assert case["test_url"].endswith("products/xgestion/suites/ventas.robot")
     assert case["doc_url"].endswith("products/xgestion/scenarios/ventas/XG-VEN-003.md")
 
 
@@ -134,20 +137,32 @@ def test_duplicate_backlog_ids_and_missing_matrix_fail_instead_of_silent_loss(pu
 
 def test_invalid_catalog_is_rejected_before_export(public_repo):
     case = public_repo / "products/xgestion/scenarios/ventas/XG-VEN-003.md"
-    case.write_text(case.read_text(encoding="utf-8").replace('"planned"', '"implemented"'), encoding="utf-8")
+    _, header, body = case.read_text(encoding="utf-8").split("---", 2)
+    metadata = json.loads(header)
+    metadata["status"] = "implemented"
+    metadata.pop("test")
+    case.write_text("---\n" + json.dumps(metadata) + "\n---" + body, encoding="utf-8")
     with pytest.raises(QAError, match="Escenario Markdown"):
         build_coverage(public_repo)
 
 
 def test_new_documented_scenario_updates_counts_and_members_without_new_evidence(public_repo):
-    previous = public_repo / "products/xgestion/scenarios/ventas/XG-VEN-009.md"
+    previous = public_repo / "products/xgestion/scenarios/ventas/XG-VEN-003.md"
     new_case = previous.with_name("XG-VEN-010.md")
-    new_case.write_text(previous.read_text(encoding="utf-8").replace("XG-VEN-009", "XG-VEN-010"), encoding="utf-8")
+    _, header, body = previous.read_text(encoding="utf-8").split("---", 2)
+    metadata = json.loads(header)
+    metadata.update(id="XG-VEN-010", status="planned", test=None)
+    body = body.replace("XG-VEN-003", "XG-VEN-010")
+    new_case.write_text("---\n" + json.dumps(metadata) + "\n---" + body, encoding="utf-8")
     data = build_coverage(public_repo)
     assert data["counts"]["documented"] == 15
-    assert data["counts"]["planned"] == 8
+    assert data["counts"]["planned"] == 1
+    assert data["counts"]["implemented"] == 14
     assert data["counts"]["real_validated"] == 0
     assert "XG-VEN-010" in next(group["members"] for group in data["groups"] if group["id"] == "ventas")
+    planned = next(case for case in data["scenarios"] if case["id"] == "XG-VEN-010")
+    assert planned["status"] == "planned"
+    assert planned["test_url"] is None
     assert any(source["path"].endswith("XG-VEN-010.md") for source in data["sources"])
 
 

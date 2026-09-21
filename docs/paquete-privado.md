@@ -57,6 +57,9 @@ El setup importa estos valores a `.env.local`, ignorado por Git. No ejecutar com
 | `sale` | `cash_payment_id`, `non_fiscal_document_id` |
 | `ui` | `products_empty_text`, texto exacto observado para una búsqueda sin resultados |
 | Raíz | `nonexistent_product_code` |
+| `sales_journeys` | Extensión obligatoria para VEN-003 a VEN-009: perfil ARS, diálogo de efectivo, abandono sin supervisor, aviso ausente, cantidad de filas repetidas y defaults exactos. |
+
+El [contrato completo de Venta cotidiana](../products/xgestion/docs/paquete.md) define `sales_journeys`, los alias nuevos, `sale.lines.column_count`/`columns` y `calibration.verified_features` con `ventas-etapa1`. La grilla se calibra contra el modelo observado por JAB, no contra índices supuestos desde Java. Los paquetes anteriores conservan los siete casos iniciales; los siete nuevos bloquean antes de iniciar el JAR si falta esta extensión. `calibrate` solo actualiza localizadores: ampliar fixtures requiere un nuevo paquete y clon normal.
 
 Los IDs referencian registros reales del baseline; los labels son textos exactos visibles en la UI. Revisar los ejemplos y validadores de `products/xgestion/` antes de generar una versión del paquete.
 

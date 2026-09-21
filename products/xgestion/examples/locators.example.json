@@ -5,7 +5,8 @@
     "app_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "verified_by": "",
     "verified_at": "",
-    "jab_version": ""
+    "jab_version": "",
+    "verified_features": []
   },
   "windows": {
     "login": "CALIBRAR LOGIN",
@@ -13,7 +14,8 @@
     "error": "CALIBRAR Error",
     "payment_picker": "CALIBRAR PickerPago",
     "payment": "CALIBRAR Cobro",
-    "cancel": "CALIBRAR Confirmación"
+    "cancel": "CALIBRAR Confirmación",
+    "editor": "CALIBRAR Item de venta"
   },
   "elements": {
     "login.user": {
@@ -131,6 +133,62 @@
     "payment.confirm": {
       "window": "payment",
       "query": "CALIBRAR selector observado para payment.confirm"
+    },
+    "sale.lines": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.lines",
+      "column_count": 0,
+      "columns": {
+        "code": -1,
+        "name": -1,
+        "quantity": -1,
+        "unit_price": -1,
+        "total": -1
+      }
+    },
+    "sale.customer": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.customer"
+    },
+    "sale.price_list": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.price_list"
+    },
+    "sale.unknown_notice": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.unknown_notice"
+    },
+    "payment.total": {
+      "window": "payment",
+      "query": "CALIBRAR selector observado para payment.total"
+    },
+    "payment.change": {
+      "window": "payment",
+      "query": "CALIBRAR selector observado para payment.change"
+    },
+    "payment.cancel": {
+      "window": "payment",
+      "query": "CALIBRAR selector observado para payment.cancel"
+    },
+    "sale.unknown_dismiss": {
+      "window": "error",
+      "query": "CALIBRAR sólo para aviso por diálogo"
+    },
+    "editor.product": {
+      "window": "editor",
+      "query": "CALIBRAR selector observado para editor.product"
+    },
+    "editor.quantity": {
+      "window": "editor",
+      "query": "CALIBRAR selector observado para editor.quantity"
+    },
+    "editor.save": {
+      "window": "editor",
+      "query": "CALIBRAR selector observado para editor.save"
+    },
+    "sale.cancel_reject": {
+      "window": "cancel",
+      "query": "CALIBRAR selector observado para sale.cancel_reject"
     }
   }
 }

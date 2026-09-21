@@ -2,7 +2,7 @@
 
 `catalogo-comercial-v1` prepara una batería pública de datos sintéticos: **48 artículos, 19 ofertas, 5 listas y 6 precios de lista**, con catálogos auxiliares y 43 movimientos iniciales de stock. Permite volver a los mismos productos y condiciones sin inventar datos para cada caso.
 
-El seed es opcional. Los siete casos automatizados actuales siguen usando el producto del paquete privado —90001 en el ejemplo— y no cambian al incorporar esta batería. Los artículos nuevos tienen códigos `QA-SEED-*` e IDs reservados `980xxx`. Crear los datos no agrega casos Robot ni acredita ventas, ofertas, impuestos o stock del JAR.
+El seed es opcional. Los casos automatizados de la suite siguen usando el producto del paquete privado —90001 en el ejemplo— y no cambian al incorporar esta batería. Los artículos nuevos tienen códigos `QA-SEED-*` e IDs reservados `980xxx`. Crear los datos no agrega casos Robot ni acredita ventas, ofertas, impuestos o stock del JAR.
 
 ## Revisar sin instalar el producto
 

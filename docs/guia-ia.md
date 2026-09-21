@@ -36,6 +36,6 @@ Ante un bloqueo no pidas a la IA que quite el control. Primero debe identificar 
 
 ## Planificar y ampliar con IA
 
-Elegir una familia del roadmap y una variante concreta. Para Venta cotidiana ya existen XG-VEN-003 a XG-VEN-009: reutilizar sus IDs y criterios. Para Restobar consultar el backlog R01–R20 antes de inventar cobertura. Esos identificadores de planificación no son IDs del catálogo ni se pueden pasar a `run --scenario`.
+Elegir una familia del roadmap y una variante concreta. Para Venta cotidiana ya existen XG-VEN-003 a XG-VEN-009: reutilizar sus IDs y criterios. Los siete casos de esa ampliación están implementados y requieren `sales_journeys`. VEN-003/007 usan el doble clic autorizado sobre una celda identificada por JAB; verificar el editor y el resultado, sin coordenadas fijas ni sustituir la edición por cargar otro producto. Las mejoras pendientes de accesibilidad se registran en el [CSV del producto](../products/xgestion/docs/backlog-accesibilidad.csv), separado del catálogo E2E. Para Restobar consultar el backlog R01–R20 antes de inventar cobertura. Esos identificadores de planificación no son IDs del catálogo ni se pueden pasar a `run --scenario`.
 
 Pedir primero la ficha del recorrido, perfil y evidencia. Al implementar, actualizar grupos, ficha, adaptador, oráculos y Robot según [nuevas features](nuevas-features.md). Los tests fuente del ERP son insumo para reglas y riesgos; no sustituir acciones de usuario por llamadas internas de negocio ni declarar QA real por revisar esos tests.

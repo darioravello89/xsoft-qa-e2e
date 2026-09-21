@@ -26,7 +26,8 @@ En un paquete con selectores todavía en borrador, `doctor` bloqueará por calib
 3. Verificar ventana principal y contexto visible de empresa, sucursal y usuario.
 4. Identificar búsqueda, grilla de productos y mensajes de producto inexistente.
 5. Recorrer apertura/cancelación de venta y los diálogos de medio de pago/efectivo, comprobando que se pueden operar y leer sus resultados.
-6. Cada alias debe encontrar un solo control visible en la ventana esperada. Usar propiedades estables y semánticas; no resolver ambigüedad mediante índice de aparición ni coordenadas.
+6. Para los siete recorridos nuevos de Venta, verificar también `sales_journeys`, grilla completa, columnas, defaults, aviso de código ausente, cancelación/vuelto y editor abierto mediante doble clic sobre la celda JAB identificada. El [backlog CSV](../products/xgestion/docs/backlog-accesibilidad.csv) conserva la mejora pendiente del atajo, sin coordenadas fijas ni selectores inventados. Seguir la [calibración de Venta cotidiana](../products/xgestion/docs/calibracion.md); declarar `ventas-etapa1` en `calibration.verified_features` únicamente después de comprobar esa extensión. Los siete casos iniciales no habilitan por sí solos los siete nuevos.
+7. Cada alias debe encontrar un solo control visible en la ventana esperada. Usar propiedades estables y semánticas; no resolver ambigüedad mediante índice de aparición ni coordenadas.
 
 Si el árbol no expone un control necesario, registrar ventana, alias y evidencia saneada. La ejecución permanece bloqueada; un cambio de producto o de estrategia requiere tratar ese problema explícitamente.
 
@@ -37,6 +38,8 @@ Completar un `locators.json` privado fuera del bundle importado, con los título
 ```powershell
 .\qa.cmd calibrate --locators C:\QA\locators.json
 ```
+
+Si la extensión necesita nuevos fixtures, preparar un paquete actualizado y un nuevo clon normal: este comando no cambia los datos ni `sales_journeys`.
 
 Este comando valida mapa completo y SHA-256 del JAR, respalda la versión anterior y actualiza exclusivamente los selectores y su hash en el manifest local. Repetir setup con el ZIP original conserva la calibración local. No editar directamente archivos importados ni eliminar marcadores para forzar su aceptación.
 

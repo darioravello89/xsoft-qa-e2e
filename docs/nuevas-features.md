@@ -24,6 +24,8 @@ El Excel es generado y no se edita a mano. Sus grupos pueden repetir escenarios;
 
 Cada nuevo caso debe explicar qué observa en UI y qué contrasta en persistencia u otro sistema. INFO conserva caso/resultado/resumen; DEBUG añade pasos; TRACE diagnóstico saneado. Un fallo informa paso, esperado, observado, categoría y evidencia sin depender del nivel. Redactar secretos antes de emitir o guardar texto; usar canarios sintéticos para verificarlo.
 
+Para la extensión Venta cotidiana, mantener `sales_journeys` y las columnas de `sale.lines` alineados con las fichas. Los índices pertenecen al modelo observado por JAB; no son posiciones de controles para elegir la primera coincidencia. La configuración de aviso ausente, la consolidación y los defaults se declaran en el paquete y se comprueban en pantalla. Un paquete anterior debe seguir sirviendo para los siete casos iniciales; la falta de la extensión bloquea los nuevos antes del JAR.
+
 Registrar la fuente de la regla sin confundirla con prueba del JAR: commit del producto, hash del artefacto y ejecución son evidencias distintas. Si falta comprobar soporte de una variante, mantenerla pendiente. No redefinir el esperado para que coincida con el observado ni inventar una causa raíz.
 
 ## Activar un producto pendiente

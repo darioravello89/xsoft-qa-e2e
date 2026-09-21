@@ -8,10 +8,10 @@ Consultar el **[Excel de cobertura](../../../docs/coverage/xgestion-cobertura.xl
 
 | Capa | Disponible | Qué demuestra |
 | --- | --- | --- |
-| Catálogo | 14 fichas: 7 `implemented` y 7 `planned`; 0 `manual`. | Objetivos, datos y resultados documentados. |
-| Automatización | 7 casos Robot implementados. | Existe código ejecutable y comprobaciones definidas. |
+| Catálogo | 14 fichas: 14 `implemented` y 0 `planned`; 0 `manual`. | Objetivos, datos y resultados documentados. |
+| Automatización | 14 casos Robot implementados. | Existe código ejecutable y comprobaciones definidas. |
 | Datos comerciales | [Seed opcional](seed.md): 48 artículos, 19 ofertas, 5 listas y 26 ejemplos de cálculo pendientes de validar. | Datos reproducibles para ampliar los escenarios; no suma casos automatizados. |
-| Casos nuevos de Venta | XG-VEN-003 a XG-VEN-009, sin `.robot`. | Plan detallado; no se ejecutan ni se reportan como PASS. |
+| Extensión de Venta | VEN-003 a VEN-009 implementados. | Siete recorridos requieren `sales_journeys`, grilla y editor calibrados; no acreditan E2E real por existir. |
 | Controles del repositorio | Lint, tests del framework, catálogo y dry-run. | Coherencia técnica; registrar el resultado de cada ejecución. |
 | Producto real | Pendiente de paquete privado, calibración y ejecución. | Todavía no acredita acceso, venta ni recuperación en el JAR. |
 
@@ -28,17 +28,17 @@ Consultar el **[Excel de cobertura](../../../docs/coverage/xgestion-cobertura.xl
 | [XG-PRO-002](../scenarios/productos/XG-PRO-002.md) | Un código ausente no devuelve productos. | Disponible | Pendiente |
 | [XG-VEN-001](../scenarios/ventas/XG-VEN-001.md) | Se cobra una venta no fiscal en efectivo. | Disponible | Pendiente |
 | [XG-VEN-002](../scenarios/ventas/XG-VEN-002.md) | Abandonar no registra una venta ni modifica stock/caja. | Disponible | Pendiente |
-| [XG-VEN-003](../scenarios/ventas/XG-VEN-003.md) | Se modifica la cantidad cargada. | Planificada | Pendiente |
-| [XG-VEN-004](../scenarios/ventas/XG-VEN-004.md) | Un código inexistente no altera la venta. | Planificada | Pendiente |
-| [XG-VEN-005](../scenarios/ventas/XG-VEN-005.md) | Se cobra con vuelto. | Planificada | Pendiente |
-| [XG-VEN-006](../scenarios/ventas/XG-VEN-006.md) | Se cancela y retoma el cobro sin duplicarlo. | Planificada | Pendiente |
-| [XG-VEN-007](../scenarios/ventas/XG-VEN-007.md) | Se rechaza el abandono y se continúa. | Planificada | Pendiente |
-| [XG-VEN-008](../scenarios/ventas/XG-VEN-008.md) | La siguiente venta después de cobrar comienza limpia. | Planificada | Pendiente |
-| [XG-VEN-009](../scenarios/ventas/XG-VEN-009.md) | La siguiente venta después de abandonar comienza limpia. | Planificada | Pendiente |
+| [XG-VEN-003](../scenarios/ventas/XG-VEN-003.md) | Se modifica la cantidad cargada. | Disponible | Pendiente |
+| [XG-VEN-004](../scenarios/ventas/XG-VEN-004.md) | Un código inexistente no altera la venta. | Disponible | Pendiente |
+| [XG-VEN-005](../scenarios/ventas/XG-VEN-005.md) | Se cobra con vuelto. | Disponible | Pendiente |
+| [XG-VEN-006](../scenarios/ventas/XG-VEN-006.md) | Se cancela y retoma el cobro sin duplicarlo. | Disponible | Pendiente |
+| [XG-VEN-007](../scenarios/ventas/XG-VEN-007.md) | Se rechaza el abandono y se continúa. | Disponible | Pendiente |
+| [XG-VEN-008](../scenarios/ventas/XG-VEN-008.md) | La siguiente venta después de cobrar comienza limpia. | Disponible | Pendiente |
+| [XG-VEN-009](../scenarios/ventas/XG-VEN-009.md) | La siguiente venta después de abandonar comienza limpia. | Disponible | Pendiente |
 
-Los conteos vivos salen del catálogo: `qa.cmd list --product xgestion --groups`. Hoy `smoke` tiene cinco casos implementados y `regression` siete; `ventas` contiene dos implementados y siete planificados. Un escenario puede pertenecer a varios grupos: no sumar sus conteos como si fueran casos diferentes. Los tags iniciales se conservan para no alterar selecciones existentes.
+Los conteos vivos salen del catálogo: `qa.cmd list --product xgestion --groups`. Hoy `smoke` tiene cinco casos implementados y `regression` catorce; `ventas` contiene nueve implementados y ninguno planificado. Un escenario puede pertenecer a varios grupos: no sumar sus conteos como si fueran casos diferentes. Los tags iniciales se conservan para no alterar selecciones existentes.
 
-XG-VEN-001 agrega `efectivo` y `cobros` a sus tags previos: ambas familias muestran una automatización disponible. El backlog R01–R20 de Restobar es una matriz de planificación fuera del catálogo; no se suma a las 14 fichas ni al denominador de automatización.
+El efectivo exacto, el vuelto y el reintento pertenecen a sus grupos según los tags del catálogo; los conteos de esas familias no implican cobertura de pagos múltiples, crédito ni otras monedas. El backlog R01–R20 de Restobar es una matriz de planificación fuera del catálogo; no se suma a las 14 fichas ni al denominador de automatización.
 
 ## Matriz funcional y variantes
 
@@ -48,8 +48,8 @@ La matriz funcional permite decidir la próxima ampliación. **Parcial** signifi
 | --- | --- | --- |
 | Preparación/acceso | Inicio, credenciales inválidas/válidas, empresa/sucursal/usuario. | Parcial: XG-INI-001, XG-AUT-001/002. Aceptación real y perfiles pendientes. |
 | Consultar productos | Conocido/ausente en listado. | Parcial: XG-PRO-001/002; no cubre carga en venta. |
-| Cargar/corregir venta | Cantidad, código ausente, conservar líneas y continuar. | Carga básica incluida en VEN-001/002; variantes VEN-003/004/007 planificadas. |
-| Efectivo/cancelación | Exacto, vuelto, cancelar/retomar, abandono y operación siguiente. | VEN-001/002 disponibles; VEN-005/006/008/009 planificados. |
+| Cargar/corregir venta | Cantidad, código ausente, conservar líneas y continuar. | Carga, código ausente y edición incluidos en VEN-001/002/003/004/007; calibración y E2E real pendientes. |
+| Efectivo/cancelación | Exacto, vuelto, cancelar/retomar, abandono y operación siguiente. | VEN-001/002/005/006/008/009 disponibles; requieren calibración y ejecución real. |
 | Cantidades/stock | Decimales, bultos, importe, repetidos, variantes padre/hijo, suficiente/insuficiente, bloqueo on/off. | Variantes pendientes; la venta básica solo comprueba su delta de stock. |
 | Precios/promociones | Listas por cliente/sucursal/turno/cantidad, porcentaje/importe/cantidad/combos, vigencia y aplicabilidad. | Pendiente de fichas y perfiles. |
 | Descuentos/impuestos | Ítem/global/pago, redondeos/desglose, notas, puntos y combinaciones. | Pendiente; el perfil inicial evita estos efectos. |
@@ -61,7 +61,7 @@ La matriz funcional permite decidir la próxima ampliación. **Parcial** signifi
 | Restobar canales | Crédito/FE, delivery/cadete, autopedido/KDS, mozo/QR, retransmisión y concurrencia. | Backlog R14–R20; servicios y laboratorio pendientes. |
 | Servicios/dispositivos | Pagos externos, fiscal, impresión, balanza/lector y fallas de conexión. | Pendiente de entornos/equipos autorizados. |
 | Ampliación operativa | Varios puestos y compras/abastecimiento. | Mapa pendiente de fichas específicas y datos. |
-| Recuperación transversal | Rechazar, cancelar, corregir/reintentar, límites y fallas sin datos parciales/duplicados. | Abandono simple disponible; recuperación restante pendiente por familia. |
+| Recuperación transversal | Rechazar, cancelar, corregir/reintentar, límites y fallas sin datos parciales/duplicados. | Abandono, rechazo con continuación, edición, cancelar/retomar cobro y siguiente operación disponibles; otras familias pendientes. |
 
 Cada ampliación selecciona combinaciones de alto riesgo de promoción/descuento/pago, moneda/presupuesto/reapertura, cantidad/stock y mesa/ronda/cobro. Incluir camino exitoso, rechazo, cancelación, límites y recuperación, con config on/off y roles que correspondan. Esta matriz no afirma cobertura cartesiana exhaustiva.
 
@@ -78,7 +78,7 @@ No afirmar causa de un fallo solo por su categoría. Por ejemplo, un control no 
 
 ## Fuente examinada como insumo
 
-Referencia del análisis: repositorio XGestion2, rama `release/189-lts`, commit `f34238183d494259bed1279dd7d9aac0ce16a3ae`. Las rutas siguientes son relativas a ese repositorio; las líneas son ayudas de navegación de la inspección y pueden cambiar. La fuente ayuda a diseñar expectativas y perfiles, pero no acredita que el JAR tenga ese código ni que los recorridos se hayan ejecutado.
+Referencia del análisis: repositorio XGestion2, rama `release/189-lts`, commit `f34238183d494259bed1279dd7d9aac0ce16a3ae`. Las rutas siguientes son relativas a ese repositorio; las líneas corresponden a ese commit fijado y pueden cambiar en el checkout actual. La fuente ayuda a diseñar expectativas y perfiles, pero no acredita que el JAR tenga ese código ni que los recorridos se hayan ejecutado.
 
 | Familia | Fuente de comportamiento | Tests relevantes como insumo |
 | --- | --- | --- |
@@ -86,11 +86,11 @@ Referencia del análisis: repositorio XGestion2, rama `release/189-lts`, commit 
 | Notas/listas/ofertas | `FormVenta.java`: consolidación, selección y recálculo de lista/ofertas. | `FormVentaNotasConsolidacionWiringTest.java`, `FormVentaListaPrecioPrioridadPolicyTest.java`, `FormVentaReaperturaOfertasPolicyTest.java`. |
 | Descuentos/precio | `FormVentaDetalle.java`, cálculo de totales. | `FormVentaDescuentosGlobalesTest.java`, `FormVentaDetalleDescuentoOfertaPolicyTest.java`, `FormVentaDetallePrecioUnitarioTest.java`. |
 | Cotización/presupuestos | `FormVenta.java:3061` carga protegida de cotización; `:4978` moneda del presupuesto; `:6370` validación antes de guardar. | `FormVentaCotizacionCargaTest.java`, `FormVentaCotizacionQa3Test.java`, `FormVentaDetalleCotizacionQa3Test.java`, `FormVentaPresupuestoMonedaPolicyTest.java`. |
-| Cobro simple | `FormVenta.java:6041` diálogo según `cartelPagoVuelto`; `:6532` pago automático; `:6541` validación de cobro. | `FormVentaCierreCobroPolicyTest.java`. |
+| Cobro simple | `FormVenta.java:6041` diálogo, `:6078` persistencia sólo al confirmar; `Dialogs/formTicketCierre.java:322` recibido/vuelto; `TicketVenta.java:2029` encabezado y `:2125` caja por total aplicado, sin pago múltiple. | `FormVentaCierreCobroPolicyTest.java`; helpers y wiring, no E2E. |
 | Cobro multimoneda/múltiple | `src/ModuloVentas/Vistas/Dialogs/formTicketCierre.java`: importe recibido, vuelto, moneda y pagos. | `test/ModuloVentas/Vistas/Dialogs/FormTicketCierreMonedaStateTest.java`, `FormTicketCierreCobroMultiplePolicyTest.java`. |
 | Crédito/cuotas | `FormVenta.java:5910` cliente de cuenta corriente y `:6083` límite; `Dialogs/DialogVentaCuotas.java`. | `FormVentaCierreCuentaCorrientePolicyTest.java`, `Dialogs/CuotasDialogMonedaTest.java`, tests de persistencia y moneda de cuotas. |
 | Stock/recuperación | `FormVenta.java:5930` acumulación de stock al cerrar existente; `:6391` rollback; `:6422` restauración; `:6568` verificación de persistencia. | Tests de cierre, persistencia y rollback del producto. Exigen además un escenario real con falla controlada. |
-| Abandono/nueva venta | `FormVenta.java:648` confirmación; `:681` supervisor; `:709` auditoría; `:4399` y `:4448` inicio limpio. | Tests de auditoría y políticas de venta; completar evidencia del recorrido visible. |
+| Abandono/nueva venta | `FormVenta.java:648` confirmación; `:681` supervisor; `:709` auditoría; `:4492` defaults y `:6188` reinicio de la misma ventana. `DialogConfirmacion.java:68`/`:82`: Aceptar/Cancelar. | Tests de auditoría y políticas de venta; completar evidencia del recorrido visible. |
 | Fidelización | `FormVenta.java:6781` visibilidad/cliente; `:6867` uso de puntos y límites. | Requiere fixtures de saldo/vencimiento y fichas propias; no cubierto por venta básica. |
 | Restobar | `formTicket.java` y diálogos de mesa/cuenta/preparación. | Tests de políticas, estados y wiring relacionados; seleccionar por recorrido, no convertir cada clase en un E2E. |
 | Servicios/dispositivos | `Dialogs/formTicketCierre.java` para MP; FormVenta para FE/balanza; impresión y cocina. | `MercadoPagoCobroConfirmadoPolicyTest.java`, `MercadoPagoQrFlowPolicyTest.java`, `FormVentaBalanzaLifecyclePolicyTest.java`. |

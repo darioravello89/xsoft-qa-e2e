@@ -2,7 +2,7 @@
 
 Este mapa organiza la cobertura por lo que hace una persona en XGestion: primero vender, luego administrar lo vendido y después trabajar en Restobar. Describe las familias observadas y sus variantes; no promete probar todas las combinaciones posibles del ERP.
 
-La [cobertura actual](cobertura.md) distingue automatización disponible, escenarios planificados y evidencia real. Hoy hay siete casos implementados y siete nuevos casos de Venta cotidiana documentados como `planned`, sin automatización. La ejecución real sobre el JAR sigue pendiente. XPORTAL, Mozos Flutter y Consultador conservan su onboarding independiente.
+La [cobertura actual](cobertura.md) distingue automatización disponible, escenarios planificados y evidencia real. Hoy hay catorce casos implementados, incluidos los nueve de Venta cotidiana, y ninguna ficha `planned` en el catálogo actual de XGestion. El backlog funcional de las siguientes etapas permanece pendiente. La ejecución real sobre el JAR sigue pendiente. XPORTAL, Mozos Flutter y Consultador conservan su onboarding independiente.
 
 ## Cómo leer y mantener el mapa
 
@@ -23,7 +23,7 @@ El menú debe mostrar nombre, descripción y cantidades de casos implementados, 
 
 `qa.cmd run --product xgestion --group ventas --log-level INFO` es la salida habitual. INFO muestra cada caso y el resumen; DEBUG añade pasos y comprobaciones; TRACE añade diagnóstico técnico saneado. Los fallos siempre informan caso, paso, esperado, observado, categoría y evidencia disponible. Si no hay prueba de la causa, se declara **causa no determinada**.
 
-**Dependencias:** paquete autorizado y calibración para aceptación real. **Aceptación:** instalación reproducible; siete casos actuales identificados; filtros coherentes; logs revisados con datos sintéticos sensibles; controles técnicos aprobados y tres regresiones reales consecutivas en el laboratorio. Los controles técnicos pueden completarse antes del paquete, pero no acreditan esta aceptación real.
+**Dependencias:** paquete autorizado y calibración para aceptación real. **Aceptación:** instalación reproducible; catálogo actual identificado, incluidos los siete casos iniciales; filtros coherentes; logs revisados con datos sintéticos sensibles; controles técnicos aprobados y tres regresiones reales consecutivas en el laboratorio. Los controles técnicos pueden completarse antes del paquete, pero no acreditan esta aceptación real.
 
 ## Etapa 1 — Venta cotidiana
 
@@ -35,17 +35,19 @@ Perfil inicial: venta local no fiscal en ARS, producto a $1.000 por unidad, cant
 | --- | --- | --- |
 | [XG-VEN-001](../scenarios/ventas/XG-VEN-001.md) | Cobrar en efectivo el importe exacto. | Implementado; E2E real pendiente |
 | [XG-VEN-002](../scenarios/ventas/XG-VEN-002.md) | Abandonar una venta sin cobrarla. | Implementado; E2E real pendiente |
-| [XG-VEN-003](../scenarios/ventas/XG-VEN-003.md) | Cargar un producto y modificar su cantidad. | Planificado |
-| [XG-VEN-004](../scenarios/ventas/XG-VEN-004.md) | Buscar un código inexistente sin alterar la venta. | Planificado |
-| [XG-VEN-005](../scenarios/ventas/XG-VEN-005.md) | Cobrar en efectivo con vuelto. | Planificado |
-| [XG-VEN-006](../scenarios/ventas/XG-VEN-006.md) | Cancelar el cobro, retomarlo y cobrar una sola vez. | Planificado |
-| [XG-VEN-007](../scenarios/ventas/XG-VEN-007.md) | Rechazar el abandono y continuar vendiendo. | Planificado |
-| [XG-VEN-008](../scenarios/ventas/XG-VEN-008.md) | Comenzar otra venta después de cobrar. | Planificado |
-| [XG-VEN-009](../scenarios/ventas/XG-VEN-009.md) | Comenzar otra venta después de abandonar. | Planificado |
+| [XG-VEN-003](../scenarios/ventas/XG-VEN-003.md) | Cargar un producto y modificar su cantidad. | Implementado; E2E real pendiente |
+| [XG-VEN-004](../scenarios/ventas/XG-VEN-004.md) | Buscar un código inexistente sin alterar la venta. | Implementado; E2E real pendiente |
+| [XG-VEN-005](../scenarios/ventas/XG-VEN-005.md) | Cobrar en efectivo con vuelto. | Implementado; E2E real pendiente |
+| [XG-VEN-006](../scenarios/ventas/XG-VEN-006.md) | Cancelar el cobro, retomarlo y cobrar una sola vez. | Implementado; E2E real pendiente |
+| [XG-VEN-007](../scenarios/ventas/XG-VEN-007.md) | Rechazar el abandono y continuar vendiendo. | Implementado; E2E real pendiente |
+| [XG-VEN-008](../scenarios/ventas/XG-VEN-008.md) | Comenzar otra venta después de cobrar. | Implementado; E2E real pendiente |
+| [XG-VEN-009](../scenarios/ventas/XG-VEN-009.md) | Comenzar otra venta después de abandonar. | Implementado; E2E real pendiente |
 
-Grupos: `ventas`, `carga-productos`, `corregir-venta`, `efectivo`; los recorridos de cobro también pueden pertenecer a `cobros`. Las fichas nuevas detallan pasos y resultados; este roadmap no agrega archivos Robot para ellas.
+Grupos: `ventas`, `carga-productos`, `corregir-venta`, `efectivo`; los recorridos de cobro también pueden pertenecer a `cobros`. Las fichas detallan pasos y resultados; su campo `test` identifica la automatización disponible. Los casos planificados conservan su criterio sin generar un resultado Robot.
 
-**Dependencias:** etapa 0; calibrar los controles adicionales antes de automatizar cada ficha. **Aceptación:** nueve casos de venta implementados y ejecutados individualmente y en su grupo, repetibles desde baseline; importes y efectos correctos, sin duplicados ni datos residuales. Hasta entonces se informa por caso lo disponible y lo pendiente.
+Los casos XG-VEN-003 a XG-VEN-009 requieren el contrato privado `sales_journeys`: aviso de código ausente, grilla y defaults observados, diálogo de efectivo y controles de recuperación. VEN-008 observa el reinicio automático de la misma ventana; VEN-009 reabre desde la misma sesión. Los casos 003/007 abren el editor mediante doble clic autorizado sobre la celda localizada por JAB. La mejora de un atajo accesible sigue pendiente en el [backlog CSV](backlog-accesibilidad.csv), separado de los escenarios.
+
+**Dependencias:** etapa 0; calibrar los controles adicionales antes de ejecutar cada caso nuevo. **Aceptación:** nueve casos de venta implementados y ejecutados individualmente y en su grupo, repetibles desde baseline; importes y efectos correctos, sin duplicados ni datos residuales. Hasta entonces se informa por caso lo disponible y lo pendiente.
 
 ## Etapa 2 — Productos y condiciones comerciales
 

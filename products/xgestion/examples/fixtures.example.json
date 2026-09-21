@@ -23,5 +23,19 @@
   "nonexistent_product_code": "QA-E2E-NO-EXISTE",
   "ui": {
     "products_empty_text": "CALIBRAR indicador vacío"
+  },
+  "sales_journeys": {
+    "schema_version": 1,
+    "currency": "ARS",
+    "cash_dialog": true,
+    "abandon_requires_supervisor": false,
+    "unknown_notice": "status",
+    "unknown_notice_text": "CALIBRAR aviso de código inexistente",
+    "repeated_product_rows": 1,
+    "defaults": {
+      "customer": "CALIBRAR cliente inicial",
+      "price_list": "CALIBRAR lista inicial",
+      "document": "CALIBRAR comprobante inicial"
+    }
   }
 }
