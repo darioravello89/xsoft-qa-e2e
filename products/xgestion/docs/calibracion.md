@@ -24,7 +24,19 @@ Preparar el [contrato `sales_journeys`](paquete.md) en el paquete privado. No in
 7. Verificar además `sale.cancel_reject` en la confirmación de abandono y que la venta se conserva antes de editar/cobrar. Cancelar el cobro, retomarlo y confirmar una única vez; Enter no puede producir dos cobros.
 8. Registrar `ventas-etapa1` después de comprobar los controles base sobre el hash del JAR. Agregar también `ventas-teclado-v1` únicamente cuando `sale.edit`, `editor.cancel`, foco, selección, Ctrl+E y ausencia de activación duplicada hayan sido observados en ese mismo artefacto. Importar el mapa verificado y ejecutar los casos por ID y en grupo. El registro de calibración no acredita por sí solo sus efectos de persistencia.
 
-El inspector conserva estructuras privadas sin valores de campos sensibles; una captura del árbol no prueba que una tabla sea legible de forma completa. Verificar la lectura JAB y las acciones en el laboratorio, conservando evidencia privada saneada. XG-VEN-003/007 forman parte de los catorce ejecutables: con `ventas-teclado-v1` usan selección JAB, Cancelar y `Ctrl+E`; sin esa feature conservan temporalmente el doble clic legado. El [backlog de accesibilidad CSV](backlog-accesibilidad.csv) mantiene XG-ACC-001 pendiente de validación real y separa las brechas propias de Restobar.
+El inspector conserva estructuras privadas sin valores de campos sensibles; una captura del árbol no prueba que una tabla sea legible de forma completa. Verificar la lectura JAB y las acciones en el laboratorio, conservando evidencia privada saneada. XG-VEN-003/007 forman parte de los catorce ejecutables: con `ventas-teclado-v1` usan selección JAB, Cancelar y `Ctrl+E`; sin esa feature conservan temporalmente el doble clic legado. El [backlog de accesibilidad CSV](backlog-accesibilidad.csv) mantiene XG-ACC-001 a XG-ACC-005 pendientes de validación real y separa las mejoras propias de Restobar de los casos de Venta.
+
+## Verificar accesibilidad de Restobar
+
+Esta comprobación valida XG-ACC-002 a XG-ACC-005, pero no crea escenarios ejecutables ni permite declarar cubiertos R04/R08/R10/R13.
+
+1. Abrir una cuenta con al menos dos consumos. Inspeccionar `Producto`, `Cantidad`, `Renglones del pedido`, `Editar` y las acciones F1-F12; confirmar nombre, rol, estado y valor sin depender de `setName`.
+2. Ordenar la grilla si el JAR lo permite, seleccionar un consumo con flechas y abrirlo mediante botón y `Ctrl+E`. Sin selección, ambos deben quedar deshabilitados o ser no-op. El doble clic debe abrir la misma identidad.
+3. En el editor confirmar foco y selección inicial en `Cantidad del consumo`. Pulsar Escape y verificar que no cambia el consumo y que vuelven selección, scroll y foco a la grilla. Reabrir, cambiar 1→2 y guardar una sola vez con Enter.
+4. Recorrer con Tab y Shift+Tab producto, cantidad, grilla, Editar, búsqueda/paginación de familias, comprobante, notas y cada acción visible/habilitada de pedido, cocina, precuenta y cobro. Verificar que los controles ocultos o deshabilitados se omiten.
+5. Abrir dos veces `FormOpcionesCierreMesa`: en la primera elegir una opción; en la segunda usar Escape y luego repetir cerrando con X. Ninguna cancelación debe reutilizar ni ejecutar la opción anterior. Verificar también 1/Num1 y 2/Num2.
+6. Cancelar el cobro, continuar con la misma cuenta y retomarlo; confirmar una sola vez. Conservar evidencia privada saneada del árbol JAB, foco/selección y resultado comercial.
+7. Registrar SHA256, versión JAB, perfil y fecha. Mantener XG-ACC-002 a XG-ACC-005 como `implementado_pendiente_validacion_jar` hasta completar todos los pasos sobre ese artefacto; no copiar una aprobación de otro JAR.
 
 El adaptador usa acciones accesibles/teclado de los controles. No llama a `setProductoManual`, `TicketVenta`, métodos Java de dominio ni JDBC para generar la venta. Las consultas del oráculo son sólo `SELECT` parametrizados, acotados por empresa/sucursal/computadora y venta.
 

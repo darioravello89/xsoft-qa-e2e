@@ -45,7 +45,7 @@ Perfil inicial: venta local no fiscal en ARS, producto a $1.000 por unidad, cant
 
 Grupos: `ventas`, `carga-productos`, `corregir-venta`, `efectivo`; los recorridos de cobro también pueden pertenecer a `cobros`. Las fichas detallan pasos y resultados; su campo `test` identifica la automatización disponible. Los casos planificados conservan su criterio sin generar un resultado Robot.
 
-Los casos XG-VEN-003 a XG-VEN-009 requieren el contrato privado `sales_journeys`: aviso de código ausente, grilla y defaults observados, diálogo de efectivo y controles de recuperación. VEN-008 observa el reinicio automático de la misma ventana; VEN-009 reabre desde la misma sesión. Los casos 003/007 usan la ruta accesible de edición sólo con `ventas-teclado-v1` verificado para el SHA256 del JAR; los paquetes anteriores conservan el doble clic legado. XG-ACC-001 sigue pendiente de validación real y las brechas propias de Restobar permanecen separadas en el [backlog CSV](backlog-accesibilidad.csv).
+Los casos XG-VEN-003 a XG-VEN-009 requieren el contrato privado `sales_journeys`: aviso de código ausente, grilla y defaults observados, diálogo de efectivo y controles de recuperación. VEN-008 observa el reinicio automático de la misma ventana; VEN-009 reabre desde la misma sesión. Los casos 003/007 usan la ruta accesible de edición sólo con `ventas-teclado-v1` verificado para el SHA256 del JAR; los paquetes anteriores conservan el doble clic legado. XG-ACC-001 sigue pendiente de validación real. XG-ACC-002 a XG-ACC-005 tienen implementación técnica para Restobar, también pendiente de FAT JAR/JAB, y permanecen separados en el [backlog CSV](backlog-accesibilidad.csv).
 
 **Dependencias:** etapa 0; calibrar los controles adicionales antes de ejecutar cada caso nuevo. **Aceptación:** nueve casos de venta implementados y ejecutados individualmente y en su grupo, repetibles desde baseline; importes y efectos correctos, sin duplicados ni datos residuales. Hasta entonces se informa por caso lo disponible y lo pendiente.
 
@@ -106,7 +106,7 @@ Comprobar explícitamente separación por **empresa, sucursal, puesto y operador
 
 ### Backlog de recorridos de Restobar
 
-Los códigos **R01–R20 son referencias de planificación**, no escenarios del catálogo, tests implementados ni comandos ejecutables. Antes de crear cada ficha se deben precisar perfil, variantes y resultados con la UI de QA; por ahora solo Venta cotidiana tiene detalle paso a paso. R01–R13 priorizan salón/mostrador; R14–R20 agregan dependencias de crédito, servicios y concurrencia.
+Los códigos **R01–R20 son referencias de planificación**, no escenarios del catálogo, tests implementados ni comandos ejecutables. Antes de crear cada ficha se deben precisar perfil, variantes y resultados con la UI de QA; por ahora solo Venta cotidiana tiene detalle paso a paso. R01–R13 priorizan salón/mostrador; R14–R20 agregan dependencias de crédito, servicios y concurrencia. Las mejoras XG-ACC-002 a XG-ACC-005 facilitan operar R04/R08/R10/R13 por teclado, pero no prueban esos recorridos ni sus efectos comerciales.
 
 | Ref. | Recorrido de usuario y variantes que hay que cubrir | Prioridad / dependencia |
 | --- | --- | --- |

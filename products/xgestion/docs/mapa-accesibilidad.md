@@ -14,6 +14,12 @@ Este mapa describe el contrato previsto por la implementación del checkout ERP.
 | Editor | Cantidad / Guardar / Cancelar | Enter Guardar; Escape Cancelar | `Producto del renglón`, `Cantidad del renglón`, `Guardar cambios`, `Cancelar edición` | XG-VEN-003/007 |
 | Cobro | Importe / Cobrar / Cancelar | F1 Descuento, F2 Pago múltiple, F3 Forma de cobro, F4 Importe; F5/F6/F7 sólo si la integración visible está disponible; Enter Cobrar; Escape Cancelar | `Importe recibido`, `Cobrar venta`, `Cancelar cobro` | XG-VEN-001/005/006/007 |
 | Confirmación | Aceptar / Cancelar o rechazar | Enter Aceptar; Escape Cancelar/Rechazar | `Aceptar confirmación`, `Cancelar confirmación` | XG-VEN-002/007/009 |
+| Restobar / Cuenta | Producto / Cantidad / consumos | Enter conserva la carga existente; flechas seleccionan un consumo; Tab y Shift+Tab recorren los controles visibles y habilitados | `Producto`, `Cantidad`, `Renglones del pedido` | R04/R08; XG-ACC-002/003 |
+| Restobar / Cuenta | Editar consumo seleccionado | `Ctrl+E`; botón y doble clic ejecutan la misma acción | `Editar` | R04/R08; XG-ACC-002 |
+| Restobar / Cuenta | Buscar y paginar familias | `Ctrl+F` Buscar, `Ctrl+L` Limpiar, Alt+Izquierda/Alt+Derecha Página anterior/siguiente | `Buscar familia` y botones de paginación | R04/R08; XG-ACC-003 |
+| Restobar / Cuenta | Acciones de pedido y cierre | F1 Productos, F2 Cliente, F3 Mozo, F4 Cerrar e imprimir, F5 Cerrar, F6 Factura electrónica, F7 Comprobante, F8 Cuenta corriente, F9 Dividir, F10 Lista, F11 Cocina, F12 Forma de pago; Escape Salir | Nombres de cada acción visibles en su botón | R08/R10/R13; XG-ACC-003 |
+| Restobar / Editor de consumo | Cantidad / Guardar / Cancelar | Enter Guardar; Escape Cancelar; F1 Descuento; F2 Tipo porcentaje/importe; F3 Eliminar | `Cantidad del consumo`, `Guardar`, `Cancelar`, `Eliminar consumo` | R04; XG-ACC-004 |
+| Restobar / Opción de cierre | Cerrar e imprimir / Precuenta / Cancelar | 1 o Num1 Cerrar e imprimir; 2 o Num2 Precuenta; Escape Cancelar | `1-Cerrar e imprimir ticket`, `2-Imprimir preticket`, `Cancelar` | R10/R13; XG-ACC-005 |
 
 En Venta normal se mantienen F1 Productos, F2 Forma de pago, F3 Lista, F4 Imprimir cuando está habilitado, F5 Presupuesto, F6 Cobrar/Cerrar, F7 Cuenta corriente, F8 Cliente, F9 Factura electrónica, F10 Peso, F11 Consulta, F12 Comprobante y Escape Abandonar. Con `venta.atajosNumericos`, Num1–Num9/Num0 reemplazan F1–F10; F3, F11, F12, Escape y Ctrl+E permanecen. Cuando Código consume el teclado numérico, la leyenda muestra `Numérico: cantidad · * confirmar` en lugar de anunciar acciones numéricas inaccesibles desde ese foco.
 
@@ -24,4 +30,4 @@ Las leyendas visibles y los tooltips derivan de las mismas acciones/bindings. Lo
 - Implementación y pruebas técnicas: realizadas en `release/189-lts`, commit ERP `488b91d2a36ba469c975c0132a029f7a0380e5d2`.
 - SHA256 de FAT JAR y observación JAB: pendientes por falta del paquete/laboratorio privado.
 - `ventas-teclado-v1`: no habilitada hasta recalibrar `sale.edit` y `editor.cancel` para el JAR exacto.
-- Restobar: sólo recibe las mejoras de diálogos compartidos. Sus brechas propias permanecen en el [backlog](backlog-accesibilidad.csv) y no forman parte de los casos ejecutables de Venta.
+- Restobar: XG-ACC-002 a XG-ACC-005 tienen implementación y pruebas técnicas en el working tree de `release/189-lts`, pero siguen `implementado_pendiente_validacion_jar` hasta observar foco, selección, activación única y cancelaciones en el FAT JAR mediante JAB. Son referencias del backlog R04/R08/R10/R13 y no forman parte de los casos ejecutables de Venta.
