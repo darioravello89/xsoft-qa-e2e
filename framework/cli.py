@@ -44,6 +44,9 @@ def parser() -> argparse.ArgumentParser:
     report = commands.add_parser("report")
     report.add_argument("--latest", action="store_true", help="Abrir el último informe local")
     commands.add_parser("check", help="Validar catálogo y correspondencia documentación/pruebas")
+    coverage = commands.add_parser("coverage", help="Generar o verificar el mapa Excel de cobertura")
+    coverage.add_argument("--product", choices=("xgestion",), default="xgestion")
+    coverage.add_argument("--check", action="store_true", help="Comprobar que el mapa esté vigente sin regenerarlo")
     calibration = commands.add_parser("calibrate", help="Importar un mapa de controles verificado para el JAR actual")
     calibration.add_argument("--locators", type=Path, required=True)
     seed = commands.add_parser("seed", help="Revisar o preparar el catálogo fijo de datos QA")
@@ -179,6 +182,13 @@ def main(argv=None, *, root: Path = ROOT) -> int:
             counts = {status: sum(case["status"] == status for case in cases)
                       for status in ("implemented", "planned", "manual")}
             print(f"Catálogo válido: {len(cases)} documentados | {counts_text(counts)}. Esto no ejecuta el producto.")
+            return 0
+        if args.command == "coverage":
+            from framework.coverage_export import check_coverage, export_coverage
+
+            path = check_coverage(root) if args.check else export_coverage(root)
+            print(f"Mapa Excel {'vigente' if args.check else 'generado'}: {path}")
+            print("Esta acción no ejecuta E2E.")
             return 0
         if args.command == "calibrate":
             calibrate(root, args.locators.resolve())

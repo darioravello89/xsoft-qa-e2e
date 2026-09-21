@@ -2,6 +2,8 @@
 
 La cobertura se expresa por recorridos de usuario y por evidencia obtenida. Un grupo puede mostrar capacidades futuras aunque todavía no tenga automatización. Consultar el [roadmap por etapas](roadmap.md) para el alcance y las dependencias.
 
+Consultar el **[Excel de cobertura](../../../docs/coverage/xgestion-cobertura.xlsx)** para filtrar grupos, escenarios, pendientes y ejemplos del seed. Es una foto pública generada desde las fuentes, sin reportes privados ni validación real inferida. La [guía de uso y regeneración](../../../docs/cobertura.md) explica los estados y cómo mantenerla al día.
+
 ## Estado actual
 
 | Capa | Disponible | Qué demuestra |
@@ -124,3 +126,5 @@ Tres distinciones deben permanecer en toda ficha: cuenta/ocupación de mesa/prep
 ## Cómo actualizar esta página
 
 Al agregar una ficha, actualizar su familia/etapa y grupos. Al implementar, enlazar el `.robot` y mantener ID/tags coherentes. Al ejecutar realmente, registrar evidencia privada por build y el alcance probado; no publicar reportes, SQL con datos, capturas o secretos. Si cambia JAR, configuración o fixture, no trasladar automáticamente el resultado anterior a la nueva combinación.
+
+Después de cambiar estas fuentes, ejecutar `qa.cmd coverage` y `qa.cmd coverage --check`. Revisar e incluir los tres archivos de `docs/coverage/` en la misma revisión: `xgestion-cobertura.json`, `xgestion-cobertura.xlsx` y `xgestion-cobertura.manifest.json`. El control no necesita Node; el manifiesto registra hashes y fecha de generación UTC. No editar directamente los archivos generados para cambiar estados o conteos.

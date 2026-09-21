@@ -1,0 +1,11 @@
+{
+  "data_sha256": "4ad6b113996c757d13ff441fc0aced252e1743c34abaafe1c5ac959d577f7bb5",
+  "generated_at_utc": "2026-09-21T15:53:24+00:00",
+  "generators": {
+    "framework/coverage.py": "013fe161e2b9b93a461162a28bb054cce0a451c0c2bd71b2402ab7904f0d0857",
+    "framework/coverage_export.py": "5774d2ed896fac779958eed96d369eeded820c85727ef6fb7f24ea1df4652529",
+    "scripts/build-coverage.mjs": "be86435b9700d69f50cde5b4078cc2c170313d3383cc3c293e75a75dce84c12e"
+  },
+  "schema_version": 1,
+  "workbook_sha256": "6dfb84e48f821af1673ee41d6ba560d252d2ff5fa35210197872a467c287dae7"
+}

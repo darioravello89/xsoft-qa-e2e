@@ -46,6 +46,8 @@ jobs:
         run: powershell.exe -NoProfile -File scripts/test-bootstrap.ps1
       - name: Verificar documentación y catálogo
         run: python -m framework.cli check
+      - name: Verificar mapa Excel de cobertura vigente
+        run: python -m framework.cli coverage --check
       - name: Validar suite sin abrir productos
         run: python -m framework.cli run --product xgestion --group regression --dry-run
       # Este workflow no recibe secretos ni publica artefactos de QA.

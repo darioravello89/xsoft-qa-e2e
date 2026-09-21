@@ -4,6 +4,8 @@ Pruebas automatizadas para que QA compruebe escenarios de XSoft con un menú o c
 
 **Estado: suite implementada; VALIDACIÓN REAL PENDIENTE.** El repositorio incluye escenarios, controles y documentación. Para confirmar funcionamiento sobre el producto falta importar el paquete privado de QA, calibrar los selectores sobre ese JAR y completar las pruebas reales descritas en [aceptación](docs/qa-manual.md). Un `check`, un `dry-run` o un CI verde no equivalen a haber probado XGestion.
 
+**[Descargar Excel: qué está implementado y qué falta en XGestion](docs/coverage/xgestion-cobertura.xlsx)** · [Cómo leerlo y mantenerlo actualizado](docs/cobertura.md). La foto pública separa las 14 fichas —7 implementadas y 7 planificadas— de la validación real, todavía no registrada en el mapa. Los grupos, el backlog Restobar y los ejemplos del seed no agregan casos ejecutables por sí mismos.
+
 ## Empezar por primera vez
 
 1. Usá una **PC Windows exclusiva de QA o una VM Windows**, con escritorio visible y desbloqueado. En una VM, trabajá desde la consola del hipervisor; no por RDP. No uses tu instalación habitual de XGestion.
@@ -52,6 +54,8 @@ Ejecutalos desde la carpeta del repositorio. Podés usar siempre el menú con `.
 | `.\qa.cmd inspect --product xgestion` | Ayudar al responsable a identificar controles de pantalla. |
 | `.\qa.cmd calibrate --locators C:\QA\locators.json` | Importar selectores verificados para el JAR actual, con respaldo local. |
 | `.\qa.cmd check` | Validar estructura, documentación y catálogo. |
+| `.\qa.cmd coverage` | Mantenedor/IA: regenerar JSON, Excel y manifiesto del mapa público. |
+| `.\qa.cmd coverage --check` | Comprobar los tres archivos publicados, sin necesitar Node. |
 | `.\qa.cmd seed --dry-run --export` | Revisar 48 productos, 19 ofertas y 5 listas sin abrir MySQL. |
 | `.\qa.cmd seed --apply` | Restaurar la base privada QA y aplicar/verificar sus upserts; reemplaza sus datos. |
 | `.\qa.cmd run --product xgestion --group ventas --seed catalogo-comercial-v1` | Preparar la batería antes de ejecutar los casos implementados. |
@@ -92,7 +96,10 @@ Con el entorno Python preparado, ejecutar:
 .\.venv\Scripts\python.exe -m robocop check products
 .\.venv\Scripts\python.exe -m pytest
 .\qa.cmd check
+.\qa.cmd coverage --check
 .\qa.cmd run --product xgestion --group regression --dry-run
 ```
 
 El CI ejecuta estas comprobaciones en Windows y Ubuntu sin credenciales, JAR ni base privada. Los E2E de escritorio se ejecutan localmente y en serie. No subir a GitHub paquetes, bases, credenciales, licencias, reportes ni capturas de QA.
+
+Al cambiar catálogo, grupos, roadmap o ejemplos seed, regenerar con `.\qa.cmd coverage`, revisar JSON/Excel/manifiesto y publicar los tres juntos después de pasar `--check`. Este control funciona sin Node y también se ejecuta en CI. La generación usa el runtime Node con `@oai/artifact-tool` del mantenedor o su IA; **QA no necesita instalar Node para consultar el Excel ni ejecutar E2E**. Ver [mantenimiento del mapa](docs/cobertura.md).
