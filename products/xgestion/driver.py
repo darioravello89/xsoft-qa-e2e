@@ -151,6 +151,102 @@ class SemanticDriver:
             value = element.name
         return str(value or "").strip()
 
+    def table_rows(self, alias) -> list[list[str]]:
+        """Leer todas las celdas sólo si coinciden con las dimensiones nativas JAB."""
+        try:
+            # Refresh y read_table pueden registrar el árbol y sus datos aun en TRACE.
+            with private_input():
+                _, cells, row_count, column_count = self._table_cells(alias)
+                rows = [[str(cell.text or cell.name or "").strip() for cell in row] for row in cells]
+        except QAError:
+            raise
+        except Exception:
+            raise QAError(f"No se pudo leer la tabla {alias}; revisar la calibración JAB.") from None
+        diagnostic("Tabla completa leída", control=alias, row_count=row_count, column_count=column_count)
+        return rows
+
+    def _table_cells(self, alias):
+        """Compartir la lectura estructural; los llamadores deben usar private_input."""
+        element = self.find(alias)
+        element.node.refresh()
+        if element.role != "table":
+            raise QAError(f"El control {alias} no es una tabla accesible.")
+        native = element.node.table.table
+        row_count, column_count = native.rowCount, native.columnCount
+        if (type(row_count) is not int or type(column_count) is not int
+                or row_count < 0 or column_count < 0 or (row_count and not column_count)):
+            raise QAError(f"La tabla {alias} no informa dimensiones válidas.")
+        cells = []
+        if row_count:
+            cells = self.bridge.read_table(element, visible_only=False)
+            current = element.node.table.table
+            if ((current.rowCount, current.columnCount) != (row_count, column_count)
+                    or not isinstance(cells, list) or len(cells) != row_count
+                    or any(not isinstance(row, list) or len(row) != column_count for row in cells)):
+                raise QAError(f"Lectura incompleta de la tabla {alias}; revisar la calibración.")
+        return element, cells, row_count, column_count
+
+    def edit_sale_row(self, alias, code_column, expected_code):
+        """Abrir la edición con doble clic en la geometría JAB actual de una fila única."""
+        if (type(code_column) is not int or code_column < 0
+                or not isinstance(expected_code, str) or not expected_code.strip()):
+            raise QAError("La edición requiere una columna calibrada y la identidad del producto.")
+        try:
+            with private_input():
+                table, cells, row_count, column_count = self._table_cells(alias)
+                if not table.enabled or code_column >= column_count:
+                    raise QAError(f"La tabla {alias} no permite editar la columna calibrada.")
+                matches = [row[code_column] for row in cells
+                           if str(row[code_column].text or row[code_column].name or "").strip() == expected_code]
+                if len(matches) != 1:
+                    raise QAError(f"La tabla {alias} no identifica una única fila del producto esperado.")
+                selected = matches[0]
+                selected.node.refresh()
+                # JavaElement copia texto/estados/geometría al construirse. refresh_element
+                # de RPA 33 los copia ANTES del refresh; reconstruir después evita datos viejos.
+                current = type(selected)(selected.node, scaling_factor=self.bridge.display_scale_factor)
+                if str(current.text or current.name or "").strip() != expected_code:
+                    raise QAError(f"La identidad de la celda de {alias} cambió antes de editar.")
+                geometry = (current.x, current.y, current.width, current.height)
+                if (not current.enabled or not current.visible or not current.showing
+                        or any(type(value) is not int for value in geometry)
+                        or current.x < 0 or current.y < 0 or current.width <= 0 or current.height <= 0):
+                    raise QAError(f"La celda de {alias} no tiene geometría visible y habilitada para editar.")
+                self.bridge.click_element(current, action=False, click_type="double click")
+        except QAError:
+            raise
+        except Exception:
+            raise QAError(f"No se pudo abrir la edición de la fila de {alias}; revisar la calibración JAB.") from None
+        diagnostic("Edición de fila solicitada", control=alias, row_count=row_count, column_count=column_count)
+
+    def keys(self, alias, *keys):
+        """Enviar Tab o Esc al control propio sólo después de confirmar su foco."""
+        # RPA interpreta varios argumentos como un acorde, no como una secuencia.
+        if len(keys) != 1 or not isinstance(keys[0], str) or keys[0].lower() not in {"tab", "esc"}:
+            raise QAError("Sólo se permite una tecla Tab o Esc por acción semántica.")
+        try:
+            with private_input():
+                element = self.find(alias)
+                if not element.enabled:
+                    raise QAError(f"Control deshabilitado: {alias}.")
+                diagnostic("Esperar foco del control", control=alias)
+                deadline = time.monotonic() + 20
+                element.node.request_focus()
+                while True:
+                    element.node.refresh()
+                    states = {state.strip().lower() for state in element.node.context_info.states.split(",")}
+                    if "focused" in states:
+                        break
+                    if time.monotonic() >= deadline:
+                        raise QAError(f"No se confirmó el foco del control {alias}.")
+                    time.sleep(0.25)
+                self.bridge.press_keys(keys[0].lower())
+        except QAError:
+            raise
+        except Exception:
+            raise QAError(f"No se pudo enviar la tecla al control {alias}.") from None
+        diagnostic("Tecla permitida enviada", control=alias)
+
     def expect(self, alias, expected, timeout=20):
         deadline = time.monotonic() + timeout
         while True:
