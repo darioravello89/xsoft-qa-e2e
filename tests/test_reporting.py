@@ -98,3 +98,49 @@ def test_secret_equal_to_result_status_keeps_robot_statistics_valid(tmp_path):
     result = ExecutionResult(str(tmp_path / "output.xml"))
     assert result.statistics.total.passed == 1
     assert result.suite.tests[0].body[0].messages[0].message == "[REDACTADO]"
+
+
+def test_resanitizing_events_and_summary_preserves_machine_contract(tmp_path):
+    payload = {"event": "case_end", "status": "passed", "id": "XG-VEN-001", "message": "case secret-status"}
+    (tmp_path / "events.jsonl").write_text(json.dumps(payload) + "\n", encoding="utf-8")
+    (tmp_path / "summary.json").write_text(json.dumps(payload), encoding="utf-8")
+    build_robot_reports(tmp_path, ["case", "passed", "status", "XG-VEN-001"])
+    for name in ("events.jsonl", "summary.json"):
+        result = json.loads((tmp_path / name).read_text(encoding="utf-8"))
+        assert result["event"] == "case_end"
+        assert result["status"] == "passed"
+        assert result["id"] == "XG-VEN-001"
+        assert "case" not in result["message"]
+
+
+def test_official_run_report_marks_global_block_even_if_robot_passed(tmp_path):
+    from framework.reporting import write_run_report
+
+    assert robot_run(tmp_path, "Caso sintético aprobado").return_code == 0
+    payload = {"status": "blocked", "mode": "e2e", "elapsed_seconds": 1,
+               "case_results": [{"id": "XG-VEN-001", "title": "Caso", "status": "passed"}],
+               "groups": [], "reason": "Falta evidencia de finalización <unsafe>"}
+    write_run_report(tmp_path, payload)
+    document = (tmp_path / "report.html").read_text(encoding="utf-8")
+    assert "BLOQUEADO" in document
+    assert "no acredita" in document
+    assert "&lt;unsafe&gt;" in document
+    assert (tmp_path / "robot-report.html").is_file()
+
+
+def test_sanitizing_summary_does_not_truncate_large_selected_catalog(tmp_path):
+    payload = {"case_results": [{"id": f"XG-VEN-{index:03}", "status": "passed"} for index in range(125)]}
+    (tmp_path / "summary.json").write_text(json.dumps(payload), encoding="utf-8")
+    build_robot_reports(tmp_path, ["passed"])
+    result = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
+    assert result == payload
+
+
+@pytest.mark.parametrize("status", ["seed-applied", "preview-only"])
+def test_seed_status_remains_structural_when_a_secret_matches_it(tmp_path, status):
+    payload = {"seed": {"status": status, "message": f"Valor privado {status}"}}
+    (tmp_path / "summary.json").write_text(json.dumps(payload), encoding="utf-8")
+    build_robot_reports(tmp_path, [status])
+    result = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
+    assert result["seed"]["status"] == status
+    assert result["seed"]["message"] == "Valor privado [REDACTADO]"

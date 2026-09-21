@@ -2,19 +2,27 @@
 
 Cada cambio funcional debe dejar claros sus escenarios, datos y evidencia. QA y la IA mantienen la documentación junto con los tests en la misma revisión.
 
-1. Identificar producto, módulo, comportamiento esperado y criterios de aceptación de la feature. Revisar casos existentes para evitar duplicaciones.
+1. Identificar producto, familia, etapa, comportamiento de usuario y criterios de aceptación. En XGestion leer roadmap y cobertura; revisar casos existentes y backlog para evitar duplicaciones. Elegir una variante con configuración y datos explícitos, sin intentar cubrir un producto cartesiano de opciones.
 2. Copiar `templates/scenario.md` a `products/<producto>/scenarios/<modulo>/<id>.md`. Asignar un ID único y estable. El encabezado entre `---` contiene **JSON**, no YAML libre.
-3. Describir precondiciones, pasos, resultado esperado, efectos y datos concretos. Separar cobertura positiva, negativa y límites cuando tengan objetivos distintos.
-4. Implementar el test en `products/<producto>/suites/` y reutilizar el adaptador del producto y recursos Robot de `resources/`. Usar el mismo ID como tag; alinear los tags de agrupación con el Markdown.
-5. Si hacen falta datos, ampliar el contrato del paquete y su baseline saneado. Si cambia la UI, recalibrar selectores contra el SHA-256 del JAR. No subir fixtures privados ni reemplazar expectativas con valores obtenidos del propio resultado.
+3. Describir objetivo, perfil, datos, pasos con resultados visibles, recuperación, evidencia y límites. Dejar SQL y selectores en el anexo técnico. Si solo se está planificando, usar `status: planned`, omitir `test` y no crear `.robot`; terminar la ficha no acredita ejecución.
+4. Al implementar, crear el test en `products/<producto>/suites/`, usar `status: implemented` y enlazarlo en `test`. Reutilizar el adaptador y recursos Robot; usar el mismo ID como tag y alinear todos los tags del Markdown. Añadir acciones y comprobaciones que sigan los pasos de la ficha, con logs DEBUG; dejar diagnóstico saneado para TRACE.
+5. Si hacen falta datos comerciales de XGestion, revisar primero el [catálogo fijo](../products/xgestion/docs/seed.md). Para ampliarlo, mantener códigos/IDs existentes, agregar datos y expectativas con fuente, actualizar esa guía y probar aplicación repetida y colisiones. Si requiere contexto nuevo, ampliar el contrato del paquete y su baseline saneado. Si cambia la UI, recalibrar selectores contra el SHA-256 del JAR. No subir fixtures privados ni reemplazar expectativas con valores obtenidos del propio resultado.
 6. Ejecutar Ruff, Robocop, pytest, `qa.cmd check` y `qa.cmd run --product xgestion --group regression --dry-run`, según el producto. Después correr el caso real y el grupo afectado en el entorno QA.
-7. Revisar el diff y actualizar README/guías cuando cambie la operación. Informar qué pasó técnicamente y qué se probó realmente. Mantener el ID aunque cambie el nombre descriptivo.
+7. Revisar el diff, actualizar cobertura/roadmap y README/guías cuando cambie la operación. Verificar conteos por estado y `list --groups`, `list --group`, selección por ID y menú. Informar qué pasó técnicamente y qué se probó realmente. Mantener el ID aunque cambie el nombre descriptivo.
 
 ## Encabezado del catálogo
 
 El campo `test` es la ruta relativa al archivo ejecutable dentro del repositorio. `status: implemented` indica que hay automatización implementada, no que ya aprobó una ejecución sobre el producto. El estado de validación real debe registrarse en el reporte y documentación de aceptación.
 
-Usar tags sencillos para filtros: `smoke`, `regression` y el módulo, por ejemplo `ventas`. Evitar crear sinónimos como `venta`, `sales` y `ventas` para el mismo grupo.
+Registrar grupos en `products/<producto>/groups.json`: ID igual al tag, nombre legible, descripción y etapa. Reutilizar `smoke`, `regression`, `ventas`, `efectivo`, etc. Evitar sinónimos como `venta`, `sales` y `ventas`. El módulo debe existir como grupo y el caso debe tener una etiqueta registrada; etiquetas técnicas como `xgestion` y `escritura` no necesitan convertirse en opciones del menú.
+
+El estado `manual` permite documentar un procedimiento que no se ejecuta con Robot. Igual que `planned`, no genera PASS ni cuenta como automatización. Las filas de backlog del roadmap no son fichas del catálogo. Los grupos sin fichas implementadas se muestran pendientes, con ejecución bloqueada y motivo.
+
+## Evidencia y diagnóstico al ampliar
+
+Cada nuevo caso debe explicar qué observa en UI y qué contrasta en persistencia u otro sistema. INFO conserva caso/resultado/resumen; DEBUG añade pasos; TRACE diagnóstico saneado. Un fallo informa paso, esperado, observado, categoría y evidencia sin depender del nivel. Redactar secretos antes de emitir o guardar texto; usar canarios sintéticos para verificarlo.
+
+Registrar la fuente de la regla sin confundirla con prueba del JAR: commit del producto, hash del artefacto y ejecución son evidencias distintas. Si falta comprobar soporte de una variante, mantenerla pendiente. No redefinir el esperado para que coincida con el observado ni inventar una causa raíz.
 
 ## Activar un producto pendiente
 

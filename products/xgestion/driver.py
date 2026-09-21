@@ -10,6 +10,7 @@ import time
 from pathlib import Path
 
 from framework.errors import QAError
+from framework.events import assertion_failed, diagnostic
 
 
 @contextlib.contextmanager
@@ -106,7 +107,9 @@ class SemanticDriver:
 
     def find(self, alias, timeout=20):
         entry = self.locators["elements"][alias]
-        deadline = time.monotonic() + timeout
+        started = time.monotonic()
+        deadline = started + timeout
+        diagnostic("Buscar control de la aplicación", control=alias, timeout_seconds=timeout)
         while True:
             if self._select_window(entry["window"]):
                 found = self.bridge.get_elements(entry["query"], java_elements=True, strict=True)
@@ -114,6 +117,8 @@ class SemanticDriver:
                 if len(showing) > 1:
                     raise QAError(f"Locator ambiguo: {alias}. Calibrar un único control visible.")
                 if len(showing) == 1:
+                    diagnostic("Control disponible", control=alias,
+                               duration_seconds=round(time.monotonic() - started, 3))
                     return showing[0]
             if time.monotonic() >= deadline:
                 raise QAError(f"No apareció el control semántico: {alias}.")
@@ -124,6 +129,7 @@ class SemanticDriver:
         if not element.enabled:
             raise QAError(f"Control deshabilitado: {alias}.")
         # Acción accesible del control; nunca método de dominio ni coordenadas fijas.
+        diagnostic("Activar control", control=alias)
         self.bridge.click_element(element, action=True)
 
     def type(self, alias, text, *, enter=False, secret=False):
@@ -131,6 +137,8 @@ class SemanticDriver:
         if not element.enabled:
             raise QAError(f"Campo deshabilitado: {alias}.")
         try:
+            # Ni siquiera TRACE registra lo escrito, aunque no sea un campo secreto.
+            diagnostic("Completar campo", control=alias)
             with private_input() if secret else contextlib.nullcontext():
                 self.bridge.type_text(element, str(text), clear=True, enter=enter)
         except Exception:
@@ -146,15 +154,24 @@ class SemanticDriver:
     def expect(self, alias, expected, timeout=20):
         deadline = time.monotonic() + timeout
         while True:
-            if self.text(alias) == expected:
+            observed = self.text(alias)
+            if observed == expected:
+                diagnostic("Comprobación de pantalla correcta", control=alias)
                 return
             if time.monotonic() >= deadline:
-                raise AssertionError(f"Texto inesperado en {alias}; revisar fixture y evidencia UI.")
+                message = f"Texto inesperado en {alias}; revisar fixture y evidencia UI."
+                # No depender de conocer de antemano el valor sensible para ocultarlo.
+                sensitive = alias.startswith("login.") or "password" in alias.lower()
+                assertion_failed(message,
+                                 expected="[CAMPO DE ACCESO OMITIDO]" if sensitive else expected,
+                                 observed="[CAMPO DE ACCESO OMITIDO]" if sensitive else observed)
+                raise AssertionError(message)
             time.sleep(0.25)
 
     def wait_gone(self, alias, timeout=20):
         entry = self.locators["elements"][alias]
         deadline = time.monotonic() + timeout
+        diagnostic("Esperar cierre del control", control=alias, timeout_seconds=timeout)
         while True:
             if not self._select_window(entry["window"]):
                 return

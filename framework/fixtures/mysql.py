@@ -16,10 +16,11 @@ import subprocess
 import tempfile
 import time
 import zipfile
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from pathlib import Path, PurePosixPath
 
 from framework.errors import QAError
+from framework.paths import protect
 
 
 def _contained(path: Path, parent: Path) -> Path:
@@ -301,23 +302,97 @@ class MySQLSandbox:
             self.stop()
             raise
 
+    def _previous_restore_user(self):
+        marker = _contained(self.runtime / "mysql-restore-account.json", self.runtime)
+        if not marker.exists():
+            return None
+        try:
+            record = json.loads(marker.read_text(encoding="utf-8"))
+            user = record["user"]
+            if (not isinstance(user, str) or not re.fullmatch(r"fixture_[0-9a-f]{12}", user)
+                    or record != {"schema": 1, "datadir": str(self.datadir), "user": user, "host": "127.0.0.1"}):
+                raise ValueError
+            return user
+        except (OSError, ValueError, KeyError, TypeError):
+            raise QAError("El registro del importador MySQL no corresponde al datadir privado.") from None
+
+    def _forget_unused_restore_user(self, user):
+        """Only the recorded account is eligible, and never while referenced."""
+        self._assert_owned_server()
+        definer = self._sql_literal(f"{user}@127.0.0.1")
+        references = self._sql("SELECT " + " + ".join(
+            f"(SELECT COUNT(*) FROM information_schema.{table} WHERE DEFINER={definer})"
+            for table in ("ROUTINES", "TRIGGERS", "VIEWS", "EVENTS")) + ";")
+        try:
+            unused = int(references.strip()) == 0
+        except ValueError:
+            raise QAError("No se pudieron comprobar las referencias del importador MySQL anterior.") from None
+        if unused:
+            self._sql(f"DROP USER IF EXISTS '{user}'@'127.0.0.1';")
+
     def restore(self):
-        """Only drop xsoft_qa, then import with a temporary account limited to it."""
+        """Drop only xsoft_qa; retain its limited definer with account login locked."""
         self._assert_owned_server()
         dump = self.profile.asset("dump")
         if _digest(dump) != self.profile.manifest["files"]["dump"]["sha256"].lower():
             raise QAError("El dump cambio despues de importar el paquete QA.")
+        previous_user = self._previous_restore_user()
         user = "fixture_" + secrets.token_hex(6)
         password = secrets.token_urlsafe(32)
         account = f"'{user}'@'127.0.0.1'"
         self._sql("DROP DATABASE IF EXISTS `xsoft_qa`; CREATE DATABASE `xsoft_qa` CHARACTER SET utf8mb4;")
-        self._sql(f"CREATE USER {account} IDENTIFIED BY {self._sql_literal(password)}; "
-                  f"GRANT ALL PRIVILEGES ON `xsoft_qa`.* TO {account};")
+        if previous_user:
+            self._forget_unused_restore_user(previous_user)
+        self._sql(f"CREATE USER {account} IDENTIFIED BY {self._sql_literal(password)};")
         try:
+            # Database-level GRANT treats '_' as a wildcard even inside backticks.
+            self._sql(f"GRANT ALL PRIVILEGES ON `xsoft\\_qa`.* TO {account};")
+            marker = _contained(self.runtime / "mysql-restore-account.json", self.runtime)
+            marker.write_text(json.dumps({"schema": 1, "datadir": str(self.datadir), "user": user,
+                                          "host": "127.0.0.1"}), encoding="utf-8")
+            protect(marker)
             self._client(dump=dump, user=user, password=password, database=self.database)
         finally:
             self._assert_owned_server()
-            self._sql(f"DROP USER IF EXISTS {account};")
+            # Triggers/functions retain this DEFINER. ACCOUNT LOCK blocks login,
+            # while existing stored objects keep their schema-scoped privileges.
+            self._sql(f"ALTER USER {account} ACCOUNT LOCK;")
+
+    @contextmanager
+    def connection(self):
+        """Yield a transactional DB-API connection to this owned sandbox only.
+
+        Callers commit only after verifying their complete change. Any remaining
+        transaction is rolled back when leaving the context, including on error.
+        """
+        import pymysql
+
+        if (self.host, self.port, self.database) != ("127.0.0.1", 13317, "xsoft_qa"):
+            raise QAError("El seed solo admite 127.0.0.1:13317/xsoft_qa del runner.")
+        self._assert_owned_server()
+        connection = None
+        try:
+            connection = pymysql.connect(
+                host="127.0.0.1", port=13317, database="xsoft_qa", user="root", password=self.password,
+                charset="utf8mb4", autocommit=False, local_infile=False,
+                connect_timeout=5, read_timeout=30, write_timeout=30, cursorclass=pymysql.cursors.DictCursor)
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT @@datadir AS datadir, @@port AS port, @@version AS version, "
+                               "DATABASE() AS database_name")
+                identity = cursor.fetchone()
+            if (not identity or Path(identity.get("datadir", "")).resolve() != self.datadir.resolve()
+                    or identity.get("port") != 13317 or identity.get("database_name") != "xsoft_qa"
+                    or str(identity.get("version", "")).split("-")[0] != self.version):
+                raise QAError("No coincide la identidad de la conexión con el MySQL privado del runner.")
+            self._assert_owned_server()
+            yield connection
+        except pymysql.Error:
+            raise QAError("No se pudo completar la operación transaccional en el MySQL privado de QA.") from None
+        finally:
+            if connection is not None:
+                with suppress(pymysql.Error):
+                    connection.rollback()
+                connection.close()
 
     def stop(self):
         process = self._process

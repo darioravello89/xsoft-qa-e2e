@@ -9,7 +9,7 @@ Test Tags        xgestion    regression    ventas    escritura
 *** Test Cases ***
 XG-VEN-001 Venta efectivo dos unidades
     [Documentation]    Cobra 2000 ARS no fiscales y comprueba venta, detalle, pago, stock y caja.
-    [Tags]    XG-VEN-001
+    [Tags]    XG-VEN-001    efectivo    cobros
     Ingresar Como QA
     Preparar Venta Basica
     Cobrar Venta En Efectivo

@@ -6,3 +6,7 @@
 - Pipeline privado de tutoriales XSoft: `XGVideoBase.java` y `TutorialRealizarVenta.java` sirvieron para identificar orden de pantallas/controles. No se reutiliza su bypass de soporte, invocación directa de negocio, supresión de diálogos ni limpieza de ventas.
 
 La prueba funcional del JAR distribuido y sus selectores queda pendiente hasta ejecutar el paquete QA privado en el laboratorio. Lint, unittest y dry-run no son QA GUI.
+
+El [roadmap](roadmap.md) y la [matriz de cobertura](cobertura.md) usan además FormVenta, formTicket y sus diálogos, entidades y tests para detectar recorridos de venta/cobro y Restobar. La matriz conserva rutas concretas y límites de esa evidencia. El inventario observado de 420 clases de tests del ERP no equivale a 420 E2E; hay políticas, inspección de fuente, métodos sin ventana, JDBC simulado y H2 embebido. No se ejecutó ese inventario como parte del diseño del roadmap.
+
+La referencia de commit identifica la fuente examinada, no un SHA-256 de JAR. No afirmar que el paquete binario equivale al checkout sin evidencia de build; registrar ambos por separado.

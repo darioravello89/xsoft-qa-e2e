@@ -2,6 +2,8 @@
 
 Estado inicial: **pendiente** de paquete privado legítimo, calibración y ejecución sobre XGestion. Completar este protocolo antes de acreditar la plataforma para QA rutinaria.
 
+La ampliación de roadmap/grupos/logs se revisa primero **sin abrir XGestion**: `qa.cmd check`, `list --groups`, `list --group ventas`, menú y dry-run deben mostrar siete casos implementados y siete planificados. Los planificados no se ejecutan; las referencias R01–R20 de Restobar no cuentan como fichas. Usar los tests del framework con canarios sintéticos para revisar sanitización y fallos en INFO/DEBUG/TRACE. Eso acepta el funcionamiento técnico de la ampliación, no el producto.
+
 ```text
 QA MANUAL — XSOFT QA E2E
 
@@ -31,8 +33,13 @@ QA MANUAL — XSOFT QA E2E
    Si doctor bloquea sólo por calibración inicial, usar inspect según esa guía;
    la inspección mantiene los demás controles. Importar el mapa y repetir doctor.
 
-6. Ejecutar .\qa.cmd list --product xgestion y abrir .\qa.cmd sin argumentos.
-   Esperado: menú comprensible y catálogo coincidente con los Markdown.
+6. Ejecutar .\qa.cmd list --product xgestion --groups y
+   .\qa.cmd list --product xgestion --group ventas.
+   Abrir .\qa.cmd sin argumentos, Ver grupos y Ejecutar grupo.
+   Esperado: nombres/descripciones/conteos comprensibles; siete casos
+   implementados y siete planned en el catálogo general. En ventas hay
+   dos implementados y siete planned. Los pendientes no pueden ejecutarse.
+   Elegir nivel 1 Resumen, 2 Paso a paso o 3 Diagnóstico en el menú.
 
 7. Ejecutar .\qa.cmd run --product xgestion --group smoke.
    Esperado: casos de acceso/consulta coinciden con su descripción y datos;
@@ -48,8 +55,16 @@ QA MANUAL — XSOFT QA E2E
    para arreglar datos entre casos y sin afectar bases o procesos ajenos.
 
 10. Abrir .\qa.cmd report --latest. Revisar versión, casos y errores.
+    report.html es el resumen oficial del runner: estado global, grupos y
+    fallos. robot-report.html y log.html son el detalle parcial de Robot y
+    sus pasos, generados desde XML saneado; no reemplazan el estado global.
     Verificar que contraseñas/cadenas de conexión no aparecen en reportes,
     consola ni diagnósticos. Usar canarios sintéticos para esta comprobación.
+    INFO muestra caso/resultado/resumen; DEBUG agrega pasos y TRACE diagnóstico
+    saneado. Un fallo informa paso, esperado, observado, categoría y evidencia
+    en todos los niveles. Si no se probó la causa, indica causa no determinada.
+    Primero conservar el reporte antes de repetir con otro nivel, porque el
+    runner restaura el baseline en cada ejecución.
 
 11. Mantener la VM sin red después de la ejecución: el JAR puede instalar
     un agente persistente. Antes de reconectar, conservar evidencia por un
@@ -64,3 +79,5 @@ QA MANUAL — XSOFT QA E2E
 No marcar este protocolo aprobado si falta un paso real. Documentar el bloqueo
 y el requisito faltante; no subir paquetes, bases, secretos o reportes a GitHub.
 ```
+
+La futura aceptación de Venta cotidiana incorpora XG-VEN-003 a XG-VEN-009 solo después de implementarlos/calibrarlos. Probar cada uno de forma independiente y en grupo, incluidos los dos recorridos consecutivos dentro del mismo proceso. No cambiar sus estados ni afirmar que se ejecutaron como parte de la revisión documental. Seguir [roadmap](../products/xgestion/docs/roadmap.md) y [cobertura](../products/xgestion/docs/cobertura.md).

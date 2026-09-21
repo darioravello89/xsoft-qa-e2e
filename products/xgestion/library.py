@@ -9,6 +9,7 @@ from pathlib import Path
 from robot.api.deco import keyword
 
 from framework.errors import QAError
+from framework.events import assertion_failed, business_step, diagnostic
 from products.xgestion.contracts import load_assets
 from products.xgestion.driver import JarProcess, SemanticDriver, create_bridge, private_input
 from products.xgestion.oracles import XGestionOracle, assert_cancelled
@@ -17,6 +18,8 @@ from products.xgestion.oracles import XGestionOracle, assert_cancelled
 def parse_ars(text):
     cleaned = re.sub(r"\s|ARS|\$", "", text, flags=re.IGNORECASE)
     if not re.fullmatch(r"-?\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?|-?\d+(?:,\d{1,2})?", cleaned):
+        assertion_failed("Formato del importe mostrado incorrecto.",
+                         expected="Importe ARS con hasta dos decimales, por ejemplo 2.000,00", observed=text)
         raise AssertionError("Importe UI no tiene el formato ARS calibrado (2.000,00).")
     try:
         return Decimal(cleaned.replace(".", "").replace(",", "."))
@@ -84,10 +87,12 @@ class XGestionLibrary:
 
     @keyword("Rechazar Credenciales Invalidas")
     def invalid_login(self):
+        business_step("Intentar acceder con credenciales inválidas")
         with private_input():
             self.driver.type("login.user", "__QA_USUARIO_INEXISTENTE__", secret=True)
             self.driver.type("login.password", "__QA_CLAVE_INVALIDA__", secret=True)
             self.driver.click("login.submit")
+        business_step("Comprobar el rechazo del acceso y la limpieza de los campos")
         self.driver.expect("login.error", "Acceso Invalido")
         self.driver.click("login.error_ok")
         self.driver.expect("login.user", "")
@@ -111,6 +116,7 @@ class XGestionLibrary:
 
     @keyword("Verificar Contexto QA")
     def verify_context(self):
+        business_step("Comprobar empresa, sucursal y usuario de QA")
         context = self.fixtures["context"]
         self.driver.expect("main.company", context["empresa_label"], timeout=120)
         self.driver.expect("main.branch", context["sucursal_label"])
@@ -119,19 +125,24 @@ class XGestionLibrary:
     @keyword("Buscar Producto Conocido")
     def known_product(self):
         self._open_products()
+        business_step("Buscar el producto conocido")
         self.driver.type("products.search", self.fixtures["product"]["code"])
         self.driver.click("products.search_button")
+        business_step("Comprobar que aparece el producto esperado")
         self.driver.expect("products.known_result", self.fixtures["product"]["name"])
 
     @keyword("Buscar Producto Inexistente")
     def unknown_product(self):
         self._open_products()
+        business_step("Buscar un código inexistente")
         self.driver.type("products.search", self.fixtures["nonexistent_product_code"])
         self.driver.click("products.search_button")
+        business_step("Comprobar que no aparecen productos")
         self.driver.expect("products.empty_result", self.fixtures["ui"]["products_empty_text"])
 
     def _open_products(self):
         self.verify_context()
+        business_step("Abrir la consulta de productos")
         self.driver.click("menu.products")
         self.driver.click("menu.products_list")
 
@@ -151,27 +162,41 @@ class XGestionLibrary:
     @keyword("Preparar Venta Basica")
     def prepare_sale(self):
         self.verify_context()
+        business_step("Comprobar el estado inicial de stock y caja")
         self.before = self._oracle().snapshot()
+        business_step("Abrir una nueva venta")
         self.driver.click("menu.sales")
         self.driver.click("menu.new_sale")
+        business_step("Seleccionar el comprobante no fiscal")
         self.driver.click("sale.document")
         self.driver.click("sale.non_fiscal_option")
+        business_step("Agregar dos unidades del producto de prueba")
         self.driver.type("sale.quantity", "2")
         self.driver.type("sale.code", self.fixtures["product"]["code"], enter=True)
+        business_step("Comprobar el total antes de cobrar: $2.000,00 ARS")
         deadline = time.monotonic() + 20
-        while parse_ars(self.driver.text("sale.total")) != Decimal("2000.00"):
+        while True:
+            observed = parse_ars(self.driver.text("sale.total"))
+            if observed == Decimal("2000.00"):
+                diagnostic("Total visible comprobado", expected="2000.00 ARS", observed=f"{observed:.2f} ARS")
+                break
             if time.monotonic() >= deadline:
-                raise AssertionError("La venta UI debe sumar 2 × 1000 = 2000 ARS antes de cobrar.")
+                message = "La venta UI debe sumar 2 × 1000 = 2000 ARS antes de cobrar."
+                assertion_failed(message, expected="2000.00 ARS", observed=f"{observed:.2f} ARS")
+                raise AssertionError(message)
             time.sleep(0.25)
 
     @keyword("Cobrar Venta En Efectivo")
     def collect_sale(self):
         if self.before is None:
             raise QAError("Preparar Venta Basica debe ejecutarse antes del cobro.")
+        business_step("Abrir el cobro y seleccionar efectivo")
         self.driver.click("sale.close")
         self.driver.click("payment.cash_option")
         self.driver.click("payment.cash_accept")
+        business_step("Ingresar el importe recibido: $2.000,00 ARS")
         self.driver.type("payment.amount", "2000")
+        business_step("Confirmar el cobro y esperar su cierre")
         self.driver.click("payment.confirm")
         self.driver.wait_gone("payment.confirm", timeout=40)
 
@@ -179,6 +204,7 @@ class XGestionLibrary:
     def verify_sale(self):
         if self.before is None:
             raise QAError("Falta snapshot anterior a la venta.")
+        business_step("Comprobar una sola venta, su pago y los cambios de stock y caja")
         deadline = time.monotonic() + 20
         while True:
             try:
@@ -190,8 +216,10 @@ class XGestionLibrary:
 
     @keyword("Cancelar Venta Basica")
     def cancel_sale(self):
+        business_step("Solicitar y confirmar el abandono de la venta")
         self.driver.click("sale.cancel")
         self.driver.click("sale.cancel_confirm")
+        business_step("Comprobar que se cerró la venta abandonada")
         self.driver.wait_gone("sale.code")
         self.driver.find("sale.closed_indicator")
 
@@ -199,6 +227,7 @@ class XGestionLibrary:
     def verify_cancel(self):
         if self.before is None:
             raise QAError("Falta snapshot anterior a la cancelación.")
+        business_step("Comprobar que el abandono no creó ventas ni cambió stock o caja")
         assert_cancelled(self.before, self._oracle().snapshot())
 
     @keyword("Capturar Evidencia QA")

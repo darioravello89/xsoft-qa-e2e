@@ -26,7 +26,7 @@ Pruebas automatizadas para que QA compruebe escenarios de XSoft con un menú o c
    ```
 
    Si `doctor` informa un bloqueo, seguí [solución de problemas](docs/solucion-de-problemas.md). No saltees el control. Si el único pendiente es la calibración inicial, una persona responsable usa `inspect` según la [guía de calibración del JAR](docs/calibracion.md); ese comando conserva los demás controles del entorno.
-6. Ejecutá **smoke** desde el menú para comprobar lo básico. Después ejecutá **ventas**. No toques mouse ni teclado durante la prueba y dejá el escritorio desbloqueado.
+6. Elegí **Ver grupos** para conocer nombres, descripciones y cantidades. En **Ejecutar grupo**, seleccioná el número del grupo disponible y después el detalle de salida: Resumen (INFO), Paso a paso (DEBUG) o Diagnóstico (TRACE). Empezá por **smoke** y después **ventas**. Los grupos pendientes se muestran sin opción de ejecución. No toques mouse ni teclado durante la prueba y dejá el escritorio desbloqueado.
 7. Abrí el resultado con `.\qa.cmd report --latest`. Revisá cada caso: **PASS** significa que sus comprobaciones terminaron bien; **FAIL** requiere revisar el detalle. Un requisito faltante bloquea la ejecución y no acredita un caso aprobado.
 
 Las credenciales quedan en `.env.local` y el entorno de XGestion en `.local/xgestion/`, ambos fuera de Git. La instancia MySQL es propia del runner, en `127.0.0.1:13317`, con base `xsoft_qa`. Las pruebas usan datos descartables de QA; no apuntan a una base compartida de la empresa.
@@ -39,20 +39,35 @@ Ejecutalos desde la carpeta del repositorio. Podés usar siempre el menú con `.
 | --- | --- |
 | `.\qa.cmd setup --product xgestion --bundle C:\QA\paquete.zip` | Instalar e importar el paquete privado. |
 | `.\qa.cmd doctor --product xgestion` | Revisar requisitos y configuración sin ejecutar escenarios. |
-| `.\qa.cmd list --product xgestion` | Ver casos disponibles y sus grupos. |
+| `.\qa.cmd list --product xgestion` | Ver casos y estado: implementado, planificado o manual. |
+| `.\qa.cmd list --product xgestion --groups` | Ver nombres, descripciones, etapas y conteos por grupo. |
+| `.\qa.cmd list --product xgestion --group ventas` | Ver los casos de venta, incluidos los planificados. |
 | `.\qa.cmd run --product xgestion --group smoke` | Comprobar acceso y funciones básicas. |
 | `.\qa.cmd run --product xgestion --group ventas` | Ejecutar escenarios de venta. |
 | `.\qa.cmd run --product xgestion --group regression` | Ejecutar el conjunto de regresión disponible. |
 | `.\qa.cmd run --product xgestion --scenario XG-VEN-001` | Ejecutar un caso por su identificador. |
+| `.\qa.cmd run --product xgestion --group ventas --log-level DEBUG` | Ver pasos y comprobaciones durante la ejecución. |
+| `.\qa.cmd run --product xgestion --group ventas --log-level TRACE` | Obtener diagnóstico técnico saneado para investigar. |
 | `.\qa.cmd report --latest` | Abrir el último reporte local. |
 | `.\qa.cmd inspect --product xgestion` | Ayudar al responsable a identificar controles de pantalla. |
 | `.\qa.cmd calibrate --locators C:\QA\locators.json` | Importar selectores verificados para el JAR actual, con respaldo local. |
 | `.\qa.cmd check` | Validar estructura, documentación y catálogo. |
+| `.\qa.cmd seed --dry-run --export` | Revisar 48 productos, 19 ofertas y 5 listas sin abrir MySQL. |
+| `.\qa.cmd seed --apply` | Restaurar la base privada QA y aplicar/verificar sus upserts; reemplaza sus datos. |
+| `.\qa.cmd run --product xgestion --group ventas --seed catalogo-comercial-v1` | Preparar la batería antes de ejecutar los casos implementados. |
 | `.\qa.cmd run --product xgestion --group regression --dry-run` | Validar los siete escenarios sin abrir XGestion ni conectarse a MySQL. |
 
-Los grupos filtran el mismo catálogo: un caso puede pertenecer a `regression` y a `ventas`. El alcance de cada caso está en su Markdown; no supone cobertura de todos los procesos del ERP.
+Los grupos filtran el mismo catálogo: un caso puede pertenecer a `regression`, `ventas` y `efectivo`; no se duplica su ejecución por tener varias etiquetas. Hoy hay **siete casos implementados y siete nuevos de Venta planificados**, que se listan pero no se ejecutan. Un grupo sin casos implementados explica el pendiente y no produce un PASS.
+
+INFO es el nivel predeterminado: muestra cada caso y un resumen. DEBUG agrega los pasos y TRACE el diagnóstico técnico saneado. En cualquier nivel un fallo debe informar caso, paso, esperado, observado, categoría y evidencia disponible. Si la evidencia no determina la causa, se informa **causa no determinada**. Más detalle de log no cambia las comprobaciones ni habilita registrar secretos.
+
+`qa.cmd report --latest` abre `report.html`, el resumen oficial del runner con estado global, grupos y fallos. `robot-report.html` contiene el detalle parcial de Robot y `log.html` sus pasos; se generan desde XML saneado. Para decidir el resultado de la ejecución completa usar el resumen del runner, que también registra fallos de preparación o cierre fuera de los casos Robot.
+
+El [roadmap de XGestion](products/xgestion/docs/roadmap.md) organiza siete etapas: preparación, venta cotidiana, productos y condiciones comerciales, cobros y documentos, después de vender, Restobar e integraciones. La [cobertura y evidencia](products/xgestion/docs/cobertura.md) muestra qué existe y qué falta. El mapa de familias no equivale a cobertura de todos los procesos ni de todas sus combinaciones.
 
 ## Productos y organización
+
+La [guía de datos fijos](products/xgestion/docs/seed.md) detalla códigos, precios, stock, variantes y resultados comerciales esperados del seed opcional. Preparar estos datos no agrega casos automatizados ni acredita su comportamiento sobre el JAR.
 
 | Producto | Estado | Motor |
 | --- | --- | --- |

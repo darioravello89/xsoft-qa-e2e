@@ -17,5 +17,13 @@ Primero ejecutar `.\qa.cmd doctor --product xgestion` y conservar el mensaje sin
 | Un control no existe o aparecen varios | Registrar ventana, alias y mensaje; recalibrar sobre el JAR y contexto correctos. |
 | Venta con total/stock/caja inesperados | Revisar fixture, caja y configuración del baseline. No aceptar el valor obtenido como nuevo esperado sin contrastar la regla de negocio. |
 | Producto figura `planned` | Aún no tiene E2E ejecutable; completar su onboarding antes de intentar correrlo. |
+| Un grupo muestra cero implementados | Consultar `qa.cmd list --product xgestion --group NOMBRE` y el roadmap. Puede tener fichas planificadas o solo una familia prevista; no intentar fabricar un PASS. |
+| Un caso figura `planned` o `manual` | Su procedimiento no tiene automatización ejecutable. Revisar ficha/dependencias; `run` no lo ejecuta aunque aparezca en `list`. |
+| Grupo desconocido o filtro vacío | Consultar `qa.cmd list --product xgestion --groups` y usar su ID exacto, no el número temporal del menú. |
+| `list --groups --group ventas` falla | Son alternativas: usar uno para resumen de grupos u otro para los casos de un grupo. |
+| INFO parece demasiado breve | Usar `--log-level DEBUG` para pasos o TRACE para diagnóstico saneado. Conservar primero la evidencia anterior; repetir restaura el entorno. |
+| Un fallo no permite identificar causa | Registrar paso, esperado, observado, categoría y evidencia; informar «causa no determinada» y qué dato falta. Más detalle de log no convierte una hipótesis en causa comprobada. |
 
 Una falla del entorno no es un defecto confirmado del ERP. Un `FAIL` con entorno y datos verificados debe investigarse contra el comportamiento esperado del escenario. Si el caso solo pasó un dry-run, no hay evidencia de ejecución de UI o base.
+
+No eliminar una comprobación ni cambiar el esperado por el observado. Revisar primero el perfil: por ejemplo, `cartelPagoVuelto=false` cambia el flujo de cobro simple, y el bloqueo de stock depende de configuración. Los casos de Venta cotidiana requieren el perfil definido en sus fichas. Las variantes pertenecen al roadmap y no deben mezclarse en una misma ejecución sin documentarlas.

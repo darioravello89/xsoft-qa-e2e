@@ -9,6 +9,44 @@ from framework.paths import safe_path
 
 PRODUCTS = {"xgestion": "implemented", "xportal": "planned", "mozos": "planned", "consultador": "planned"}
 CASE_ID = re.compile(r"^[A-Z]{2,8}-[A-Z]{2,8}-\d{3}$")
+TAG = re.compile(r"[a-z][a-z0-9_-]*")
+
+
+def load_groups(root: Path, product: str) -> list[dict]:
+    if product not in PRODUCTS:
+        raise QAError("Producto no reconocido en el catálogo de grupos.")
+    path = root / "products" / product / "groups.json"
+    if PRODUCTS[product] == "planned" and not path.exists():
+        return []
+    try:
+        groups = json.loads(path.read_text(encoding="utf-8-sig"))["groups"]
+        if not isinstance(groups, list) or not groups:
+            raise ValueError
+        seen = set()
+        for group in groups:
+            if not TAG.fullmatch(group["id"]) or group["id"] in seen:
+                raise ValueError
+            if any(not isinstance(group[key], str) or not group[key].strip() for key in ("title", "description")):
+                raise ValueError
+            if type(group["stage"]) is not int or not 0 <= group["stage"] <= 6:
+                raise ValueError
+            seen.add(group["id"])
+        return groups
+    except (KeyError, ValueError, TypeError, OSError):
+        raise QAError(f"Catálogo de grupos inválido o ausente: products/{product}/groups.json") from None
+
+
+def group_overview(root: Path, product: str, cases: list[dict] | None = None) -> list[dict]:
+    groups = load_groups(root, product)
+    if cases is None:
+        cases = load_catalog(root)
+    result = []
+    for group in groups:
+        members = [case for case in cases if case["product"] == product and group["id"] in case["tags"]]
+        counts = {status: sum(case["status"] == status for case in members)
+                  for status in ("implemented", "planned", "manual")}
+        result.append({**group, "counts": counts})
+    return result
 
 
 def load_catalog(root: Path) -> list[dict]:
@@ -26,9 +64,11 @@ def load_catalog(root: Path) -> list[dict]:
                 raise ValueError
             if info["product"] not in PRODUCTS or info["status"] not in ("implemented", "planned", "manual"):
                 raise ValueError
-            if not info["title"] or not info["module"] or not isinstance(info["tags"], list) or not info["tags"]:
+            if any(not isinstance(info[key], str) or not info[key].strip() for key in ("title", "module")):
                 raise ValueError
-            if any(not isinstance(tag, str) or not re.fullmatch(r"[a-z][a-z0-9_-]*", tag) for tag in info["tags"]):
+            if not isinstance(info["tags"], list) or not info["tags"]:
+                raise ValueError
+            if any(not isinstance(tag, str) or not TAG.fullmatch(tag) for tag in info["tags"]):
                 raise ValueError
             if info["status"] == "implemented":
                 test = safe_path(root, info["test"])
@@ -46,6 +86,13 @@ def validate_catalog(root: Path) -> list[dict]:
     from robot.api import TestSuiteBuilder
 
     cases = load_catalog(root)
+    groups_by_product = {product: {group["id"] for group in load_groups(root, product)}
+                         for product, status in PRODUCTS.items() if status == "implemented"}
+    for case in cases:
+        if case["product"] in groups_by_product:
+            groups = groups_by_product[case["product"]]
+            if case["module"] not in groups or not groups.intersection(case["tags"]):
+                raise QAError(f"El escenario {case['id']} no corresponde a un módulo y grupo registrados.")
     documented = {case["id"]: case for case in cases if case["status"] == "implemented"}
     found = set()
 

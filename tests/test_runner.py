@@ -12,6 +12,9 @@ from framework.runner import RunLock, exit_status
 def case(root: Path, *, case_id="XG-INI-001", test_id=None):
     scenario = root / "products/xgestion/scenarios/inicio.md"
     scenario.parent.mkdir(parents=True)
+    groups = [{"id": key, "title": key, "description": "Grupo del fixture", "stage": 0}
+              for key in ("smoke", "inicio")]
+    (root / "products/xgestion/groups.json").write_text(json.dumps({"groups": groups}), encoding="utf-8")
     suite = root / "products/xgestion/suites/inicio.robot"
     suite.parent.mkdir(parents=True)
     metadata = {"id": case_id, "title": "Inicio", "product": "xgestion", "module": "inicio",

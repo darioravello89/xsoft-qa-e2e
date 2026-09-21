@@ -12,6 +12,7 @@ __pycache__/
 *.jar
 *.zip
 *.sql
+!tests/fixtures/xgestion_seed_schema.sql
 *.pem
 *.key
 config.properties

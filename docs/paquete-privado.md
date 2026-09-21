@@ -31,7 +31,9 @@ La instancia destino siempre es propia del runner: `127.0.0.1:13317`, base `xsof
 
 `conexionUsuario` debe contener `root` cifrado por el ERP, y `conexionPassword` debe contener la misma contraseña de `QA_DB_PASSWORD`, también cifrada con el mecanismo del ERP. El runner conserva esos valores y no reimplementa ni publica sus claves de cifrado; fuerza únicamente host, puerto, base y sincronización desactivada al generar su configuración local.
 
-El SQL se importa con una cuenta temporal que solo tiene permisos sobre `xsoft_qa`: no debe contener instrucciones globales, `GTID_PURGED`, grants ni definers de cuentas ajenas. Un respaldo que los contenga será rechazado; debe prepararlo nuevamente el responsable QA sin alterar el esquema funcional necesario.
+El SQL se importa con una cuenta propia limitada exactamente a `xsoft_qa`: no debe contener instrucciones globales, `GTID_PURGED`, grants ni `DEFINER` de cuentas externas al importador, incluido `DEFINER=root@localhost`. Preparar las definiciones de funciones, procedimientos, vistas y triggers omitiendo ese `DEFINER` explícito o usando `CURRENT_USER`, sin quitar los objetos ni cambiar su lógica. El runner no reescribe un dump arbitrario ni eleva los permisos para importarlo; un respaldo incompatible debe prepararlo nuevamente el responsable QA.
+
+La cuenta importadora se conserva como `DEFINER` de los objetos restaurados y queda con `ACCOUNT LOCK` al terminar, incluso si falla la importación. Esto impide nuevos logins y permite que los triggers y funciones sigan ejecutándose con permisos del schema privado. Su contraseña efímera no se guarda en el registro del runtime. En una restauración posterior solo se elimina una cuenta anterior registrada como propia cuando ya no existe ningún objeto que la referencie; nunca se eliminan cuentas por compartir un prefijo. Una importación parcial bloquea la preparación y no acredita un seed ni un caso E2E aprobado.
 
 ## Credenciales locales
 
@@ -57,6 +59,8 @@ El setup importa estos valores a `.env.local`, ignorado por Git. No ejecutar com
 | Raíz | `nonexistent_product_code` |
 
 Los IDs referencian registros reales del baseline; los labels son textos exactos visibles en la UI. Revisar los ejemplos y validadores de `products/xgestion/` antes de generar una versión del paquete.
+
+El [catálogo comercial opcional](../products/xgestion/docs/seed.md) agrega productos `QA-SEED-*`, ofertas y listas con IDs reservados `980xxx` después de restaurar. No reemplaza `fixtures.json` ni el producto simple 90001 del ejemplo. El baseline debe conservar contexto, unidades, monedas, IVA y esquema compatibles; el seed los valida y no migra el ERP ni modifica catálogos globales. Prepararlo sin ofertas generales o listas por defecto que alteren los montos de los ejemplos. Un `run` normal no aplica esta batería; se solicita con `--seed catalogo-comercial-v1`. `qa.cmd seed --apply` también es explícito y restaura primero la base QA, descartando sus datos operativos anteriores.
 
 `locators.json` lleva `schema_version: 1`, `windows`, `elements` y `calibration`. Cada elemento asocia `window` con una ventana declarada y `query` con una búsqueda de Java Access Bridge. La calibración verificada debe registrar `status: verified`, `app_sha256`, `verified_by`, `verified_at` y `jab_version`. El archivo de ejemplo en estado borrador bloquea el E2E hasta la [calibración real](calibracion.md). Para actualizar solo esos selectores localmente, usar `qa.cmd calibrate --locators C:\QA\locators.json`, que valida el mapa y conserva un respaldo.
 
