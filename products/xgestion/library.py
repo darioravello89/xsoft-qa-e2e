@@ -80,12 +80,7 @@ class XGestionLibrary:
         self.fixtures, locators = load_assets(self.profile)
         self.before = self.after_paid = self.persisted_sale_id = None
         self.received = Decimal("2000")
-        self.journeys = extension == "ventas-etapa1"
-        self.keyboard_sales = self.journeys and has_verified_feature(locators, KEYBOARD_FEATURE)
-        if extension is not None:
-            if not self.journeys:
-                raise QAError("Extensión de escenarios desconocida.")
-            validate_journeys(self.fixtures, locators)
+        self._configure_extension(extension, locators)
         self.authenticated = False
         self.process = JarProcess(self.profile)
         try:
@@ -98,6 +93,14 @@ class XGestionLibrary:
         except Exception:
             self.stop()
             raise
+
+    def _configure_extension(self, extension, locators):
+        self.journeys = extension == "ventas-etapa1"
+        self.keyboard_sales = self.journeys and has_verified_feature(locators, KEYBOARD_FEATURE)
+        if extension is not None:
+            if not self.journeys:
+                raise QAError("Extensión de escenarios desconocida.")
+            validate_journeys(self.fixtures, locators)
 
     @keyword("Cerrar XGestion QA")
     def stop(self):
@@ -386,7 +389,7 @@ class XGestionLibrary:
         self.driver.click("payment.cash_option")
         self.driver.click("payment.cash_accept")
 
-    def _enter_payment(self, received):
+    def _enter_payment(self, received, *, total=Decimal("2000")):
         self.received = Decimal(received)
         business_step(f"Ingresar el importe recibido: {received} ARS")
         self.driver.type("payment.amount", str(received))
@@ -394,9 +397,9 @@ class XGestionLibrary:
             self.driver.keys("payment.amount", "tab")
 
             def check():
-                self._equal(parse_payment(self.driver.text("payment.total")), Decimal("2000"), "Total de cobro ARS")
+                self._equal(parse_payment(self.driver.text("payment.total")), total, "Total de cobro ARS")
                 self._equal(parse_payment(self.driver.text("payment.amount")), self.received, "Recibido ARS")
-                self._equal(parse_payment(self.driver.text("payment.change")), self.received - 2000, "Vuelto ARS")
+                self._equal(parse_payment(self.driver.text("payment.change")), self.received - total, "Vuelto ARS")
             self._wait_check(check)
 
     def _confirm_payment(self):
@@ -437,7 +440,7 @@ class XGestionLibrary:
         deadline = time.monotonic() + UI_TIMEOUT
         while True:
             try:
-                self.persisted_sale_id = self._oracle().verify_sale(self.before, received=self.received)
+                self.persisted_sale_id = self._verify_sale_snapshot()
                 if self.journeys:
                     self.after_paid = self._oracle().snapshot()
                 return self.persisted_sale_id
@@ -445,6 +448,9 @@ class XGestionLibrary:
                 if time.monotonic() >= deadline:
                     raise
                 time.sleep(0.25)
+
+    def _verify_sale_snapshot(self):
+        return self._oracle().verify_sale(self.before, received=self.received)
 
     @keyword("Cancelar Venta Basica")
     def cancel_sale(self):

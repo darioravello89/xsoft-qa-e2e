@@ -2,6 +2,11 @@
 
 El manifest común incorpora `fixtures.json` y `locators.json` por ruta y SHA256. Partir de `../examples/fixtures.example.json` y `../examples/locators.example.json`, rellenarlos dentro del paquete privado y recalcular el manifest. No guardar los valores reales en Git.
 
+Para el grupo `promociones`, completar también el [perfil comercial y calibración](promociones.md).
+Ese contrato amplía `fixtures.promotions`, exige `ventas-teclado-v1` y `promociones-v1`
+verificadas en el JAR y añade columnas JAB para bruto y descuento. El runner prepara
+automáticamente el seed requerido por sus fichas después de restaurar el baseline.
+
 `fixtures.json`, versión 1:
 
 - `context`: IDs numéricos positivos `empresa`, `sucursal`, `computadora`, `usuario_id`, y textos visibles exactos `empresa_label`, `sucursal_label`, `usuario_label`.

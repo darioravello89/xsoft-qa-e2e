@@ -45,6 +45,19 @@ def test_published_workbook_contains_cases_backlog_and_counts_without_false_pass
         labels = {"implemented": "Automatizado", "planned": "Pendiente", "manual": "Manual"}
         assert actual == {case["id"]: (labels[case["status"]], "Pendiente")
                           for case in model["scenarios"] if case["product"] == "xgestion"}
+        seed_cells = {cell.get("r"): cell_value(cell) for cell in sheets[4].findall(".//s:c", NS)}
+        assert seed_cells["F6"] == "Validación real"
+        assert seed_cells["G6"] == "Escenario E2E"
+        for number, example in enumerate(model["seed_examples"], start=7):
+            assert seed_cells[f"A{number}"] == example["id"]
+            assert seed_cells[f"F{number}"] == "Pendiente"
+            if example.get("e2e_scenario"):
+                assert seed_cells[f"G{number}"] == (
+                    f"{example['e2e_scenario']} · {labels[example['e2e_status']]}\n{example['e2e_doc_url']}"
+                )
+            else:
+                assert seed_cells[f"G{number}"] == "Sin ficha"
+        assert "26 ejemplos seed: 7 vinculados a fichas y 19 sin ficha" in summary["A32"]
         tables = [ET.fromstring(archive.read(name)) for name in archive.namelist()
                   if name.startswith("xl/tables/table") and name.endswith(".xml")]
         assert len(tables) == 4

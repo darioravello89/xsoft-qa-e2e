@@ -10,6 +10,7 @@ Comenzar por el [quick start general](../../README.md). Después:
 qa.cmd list --product xgestion
 qa.cmd list --product xgestion --groups
 qa.cmd list --product xgestion --group ventas
+qa.cmd list --product xgestion --group promociones
 qa.cmd doctor
 qa.cmd run --product xgestion --group smoke
 ```
@@ -32,12 +33,23 @@ Consultar `qa.cmd --help` para los filtros disponibles del runner. No ejecutar R
 | XG-VEN-007 | ventas / corregir-venta | Rechazar el abandono conserva la venta y permite editarla y cobrarla una sola vez. |
 | XG-VEN-008 | ventas / regression | Después de cobrar, la misma ventana queda limpia para la siguiente operación. |
 | XG-VEN-009 | ventas / regression | Después de abandonar, otra venta en la misma sesión comienza limpia. |
+| XG-PRM-001 | promociones / regression | Descuento del 10 %: cantidad 1 → 3, total 900 → 2700 ARS. |
+| XG-PRM-002 | promociones / regression | Descuento de 150 ARS por unidad: cantidad 1 → 3, total 850 → 2550 ARS. |
+| XG-PRM-003 | promociones / regression | 2x1: cantidad 1 → 3, total 1000 → 2000 ARS. |
+| XG-PRM-004 | promociones / regression | Segunda unidad al 50 %: cantidad 1 → 3, total 1000 → 2500 ARS. |
+| XG-PRM-005 | promociones / regression | Oferta vencida: cantidad 2 → 1, sin descuento; total 2000 → 1000 ARS. |
+| XG-PRM-006 | promociones / regression | Oferta futura: cantidad 2 → 1, sin descuento; total 2000 → 1000 ARS. |
+| XG-PRM-007 | promociones / regression | Oferta inactiva: cantidad 2 → 1, sin descuento; total 2000 → 1000 ARS. |
 
 Cada escenario inicia un JAR propio y lo cierra al terminar. Las ventas del run quedan disponibles para inspección hasta la siguiente restauración. No se borran filas ni se anulan documentos para fabricar un resultado verde.
 
-El catálogo tiene **14 casos implementados y 0 planificados**. XG-VEN-003/007 usan botón, cancelación y `Ctrl+E` sólo cuando el paquete declara `ventas-teclado-v1`, verificado para su SHA256; mientras tanto conservan el doble clic legado. El [backlog de accesibilidad CSV](docs/backlog-accesibilidad.csv) deja XG-ACC-001 a XG-ACC-005 como implementados pendientes de validación JAR/JAB. Las mejoras 002–005 pertenecen a Restobar y no cuentan como escenarios ni como cobertura de Venta.
+El catálogo tiene **21 casos implementados y 0 planificados: cinco de smoke, nueve de ventas y siete de promociones**. XG-VEN-003/007 usan botón, cancelación y `Ctrl+E` sólo cuando el paquete declara `ventas-teclado-v1`, verificado para su SHA256; mientras tanto conservan el doble clic legado. El [backlog de accesibilidad CSV](docs/backlog-accesibilidad.csv) deja XG-ACC-001 a XG-ACC-005 como implementados pendientes de validación JAR/JAB. Las mejoras 002–005 pertenecen a Restobar y no cuentan como escenarios ni como cobertura de Venta.
 
-Los siete casos nuevos requieren `sales_journeys` y el mapa de columnas/controles de [Venta cotidiana](docs/paquete.md), validados antes de iniciar el JAR. Un paquete con el contrato anterior conserva los siete casos iniciales, pero no habilita esos recorridos. VEN-008/009 mantienen el mismo proceso entre operaciones; VEN-008 observa el reinicio automático de la misma ventana. Ninguno tiene todavía validación real registrada.
+Los siete recorridos VEN-003 a VEN-009 requieren `sales_journeys` y el mapa de columnas/controles de [Venta cotidiana](docs/paquete.md), validados antes de iniciar el JAR. Un paquete con el contrato anterior conserva los siete casos iniciales, pero no habilita esos recorridos. VEN-008/009 mantienen el mismo proceso entre operaciones; VEN-008 observa el reinicio automático de la misma ventana. Ninguno tiene todavía validación real registrada.
+
+Los siete casos de promociones requieren el [perfil y calibración de promociones](docs/promociones.md), con `promociones-v1`, `ventas-etapa1` y `ventas-teclado-v1` verificados para el SHA256 del JAR. El runner prepara automáticamente `catalogo-comercial-v1` cuando un grupo, ID o selección del menú lo requiere; también acepta `--seed catalogo-comercial-v1`. El perfil es ARS, comprobante interno 99, efectivo exacto, Ninguna Lista (ID 0), cliente/turno sin listas, otros descuentos en cero y fidelización deshabilitada. No cambiar la configuración desde el test para permitir su ejecución.
+
+Cada promoción compara producto, cantidad, precio base, subtotal bruto, descuento y neto antes y después de editar con `Ctrl+E`; cancela el cobro sin persistencia y luego registra una sola venta con stock/caja coherentes. Los tres casos de oferta no aplicable comprueban primero una promoción válida de control y la abandonan sin efectos. Ejecutar `qa.cmd run --product xgestion --group promociones --log-level DEBUG` en el laboratorio preparado. La existencia de estos siete casos no valida las demás variantes del seed ni acredita ejecución real.
 
 El efectivo simple se contrasta con `Pagado`/`Vuelto` en `ventas` y el ingreso por el total aplicado en caja; no exige filas en `ventas_pagos`, que corresponde a otros flujos de cobro.
 

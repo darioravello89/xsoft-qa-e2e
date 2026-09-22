@@ -191,8 +191,17 @@ def build_coverage(root: Path) -> dict:
                       else "manual" if counts["manual"] else "no-scenarios")
             groups.append({**group, "product": product, "members": sorted(case["id"] for case in selected),
                            "counts": counts, "status": status, "validation": "pending"})
-    seed_examples = [{**json.loads(json.dumps(case)), "status": "pending", "validation": "pending",
-                      "product": "xgestion", "doc_url": _url(PRICING)} for case in PRICING_CASES]
+    scenarios_by_id = {case["id"]: case for case in scenarios if case["product"] == "xgestion"}
+    seed_examples = []
+    for example in PRICING_CASES:
+        scenario_id = example.get("e2e_scenario")
+        scenario = scenarios_by_id.get(scenario_id)
+        if scenario_id is not None and scenario is None:
+            raise QAError(f"Ejemplo seed {example['id']} refiere a un escenario inexistente de XGestión.")
+        seed_examples.append({**json.loads(json.dumps(example)), "status": "pending", "validation": "pending",
+                              "product": "xgestion", "doc_url": _url(PRICING), "e2e_scenario": scenario_id,
+                              "e2e_status": scenario["status"] if scenario else None,
+                              "e2e_doc_url": scenario["doc_url"] if scenario else None})
     sources = [{"path": relative,
                 "sha256": hashlib.sha256(_public_path(root, relative).read_bytes().replace(b"\r\n", b"\n")).hexdigest(),
                 "url": _url(relative)} for relative in sorted(source_paths)]

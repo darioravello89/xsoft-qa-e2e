@@ -9,6 +9,7 @@ import pytest
 
 from framework.coverage import build_coverage
 from framework.errors import QAError
+from products.xgestion.seeds.pricing import PRICING_CASES
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -26,11 +27,11 @@ def public_repo(tmp_path):
 def test_current_catalog_has_unique_cases_and_no_real_validation():
     data = build_coverage(ROOT)
     assert data["schema_version"] == 1
-    assert data["counts"]["documented"] == 14
+    assert data["counts"]["documented"] == 21
     assert {key: data["counts"][key] for key in ("implemented", "planned", "manual", "real_validated")} == {
-        "implemented": 14, "planned": 0, "manual": 0, "real_validated": 0,
+        "implemented": 21, "planned": 0, "manual": 0, "real_validated": 0,
     }
-    assert len({case["id"] for case in data["scenarios"]}) == 14
+    assert len({case["id"] for case in data["scenarios"]}) == 21
     assert {case["validation"] for case in data["scenarios"]} == {"pending"}
     assert len(data["products"]) == 4
     assert {product["id"]: product["status"] for product in data["products"]} == {
@@ -47,10 +48,12 @@ def test_groups_are_overlapping_selections_not_extra_cases():
     assert groups["smoke"]["status"] == "partial"
     assert groups["mesas"]["members"] == []
     assert groups["mesas"]["status"] == "no-scenarios"
-    assert len(groups["regression"]["members"]) == 14
-    assert groups["regression"]["counts"]["implemented"] == 14
+    assert groups["smoke"]["counts"]["implemented"] == 5
+    assert groups["promociones"]["counts"]["implemented"] == 7
+    assert len(groups["regression"]["members"]) == 21
+    assert groups["regression"]["counts"]["implemented"] == 21
     assert groups["regression"]["counts"]["planned"] == 0
-    assert len(set().union(*(set(group["members"]) for group in data["groups"]))) == 14
+    assert len(set().union(*(set(group["members"]) for group in data["groups"]))) == 21
     case = next(case for case in data["scenarios"] if case["id"] == "XG-VEN-003")
     assert case["stage"] == 1
     assert case["priority"] == "P0"
@@ -116,7 +119,7 @@ def test_public_source_edits_change_hash_and_backlog_without_changing_case_count
     roadmap.write_text(content, encoding="utf-8")
     after = build_coverage(public_repo)
     assert after["counts"]["backlog_restobar"] == before["counts"]["backlog_restobar"] + 1
-    assert after["counts"]["documented"] == 14
+    assert after["counts"]["documented"] == 21
     assert next(row for row in after["backlog"]["restobar"] if row["id"] == "R21")["priority"] == "P2"
     assert before["sources"] != after["sources"]
 
@@ -155,9 +158,9 @@ def test_new_documented_scenario_updates_counts_and_members_without_new_evidence
     body = body.replace("XG-VEN-003", "XG-VEN-010")
     new_case.write_text("---\n" + json.dumps(metadata) + "\n---" + body, encoding="utf-8")
     data = build_coverage(public_repo)
-    assert data["counts"]["documented"] == 15
+    assert data["counts"]["documented"] == 22
     assert data["counts"]["planned"] == 1
-    assert data["counts"]["implemented"] == 14
+    assert data["counts"]["implemented"] == 21
     assert data["counts"]["real_validated"] == 0
     assert "XG-VEN-010" in next(group["members"] for group in data["groups"] if group["id"] == "ventas")
     planned = next(case for case in data["scenarios"] if case["id"] == "XG-VEN-010")
@@ -198,3 +201,27 @@ def test_changed_variant_column_meaning_requires_parser_review(public_repo):
     roadmap.write_text(content.replace("| Riesgo / resultado a observar |", "| Otros datos |", 1), encoding="utf-8")
     with pytest.raises(QAError, match="variantes.*etapa 2"):
         build_coverage(public_repo)
+
+
+def test_seed_examples_link_to_existing_scenarios_without_claiming_validation():
+    data = build_coverage(ROOT)
+    expected = dict(zip(("PCT-Q3", "IMP-Q3", "2X1-Q3", "2DA50-Q3", "EXPIRADA", "FUTURA", "INACTIVA"),
+                        (f"XG-PRM-{number:03}" for number in range(1, 8)), strict=True))
+    linked = {item["id"]: item for item in data["seed_examples"] if item.get("e2e_scenario")}
+    assert {identifier: item["e2e_scenario"] for identifier, item in linked.items()} == expected
+    for item in linked.values():
+        assert item["e2e_status"] == "implemented"
+        assert item["e2e_doc_url"].endswith(f"/scenarios/promociones/{item['e2e_scenario']}.md")
+        assert item["validation"] == "pending"
+    assert all(item["status"] == "manual_pending" for item in PRICING_CASES)
+    assert all(item["e2e_status"] is None and item["e2e_doc_url"] is None
+               for item in data["seed_examples"] if not item.get("e2e_scenario"))
+    assert data["counts"]["documented"] == 21
+    assert data["counts"]["seed_examples"] == 26
+    assert data["counts"]["real_validated"] == 0
+
+
+def test_missing_seed_scenario_is_rejected_instead_of_exporting_a_broken_link(monkeypatch):
+    monkeypatch.setitem(PRICING_CASES[0], "e2e_scenario", "XG-PRM-999")
+    with pytest.raises(QAError, match="Ejemplo seed.*escenario"):
+        build_coverage(ROOT)

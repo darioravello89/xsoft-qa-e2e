@@ -24,6 +24,15 @@
   "ui": {
     "products_empty_text": "CALIBRAR indicador vacío"
   },
+  "promotions": {
+    "schema_version": 1,
+    "currency": "ARS",
+    "price_list_id": 0,
+    "price_list_text": "Ninguna Lista",
+    "other_discounts": false,
+    "loyalty": false,
+    "customer_and_shift_lists": false
+  },
   "sales_journeys": {
     "schema_version": 1,
     "currency": "ARS",

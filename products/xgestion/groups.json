@@ -11,7 +11,7 @@
     {"id": "efectivo", "title": "Cobrar en efectivo", "description": "Confirmar el importe recibido, el vuelto y la continuación de la venta.", "stage": 1},
     {"id": "stock", "title": "Stock después de vender", "description": "Comprobar los movimientos de existencias al vender o cancelar.", "stage": 1},
     {"id": "precios", "title": "Precios y listas", "description": "Aplicar el precio y la lista que corresponden al contexto de la operación.", "stage": 2},
-    {"id": "promociones", "title": "Promociones", "description": "Aplicar ofertas y combos y recalcularlos al modificar la venta.", "stage": 2},
+    {"id": "promociones", "title": "Promociones", "description": "Comprobar ofertas, su vigencia y el recálculo al modificar cantidades.", "stage": 2},
     {"id": "descuentos", "title": "Descuentos", "description": "Comprobar descuentos por renglón y sobre el total de la venta.", "stage": 2},
     {"id": "cobros", "title": "Formas de cobro", "description": "Seleccionar medios de pago y verificar importes y cancelaciones del cobro.", "stage": 3},
     {"id": "monedas", "title": "Monedas y cotizaciones", "description": "Operar en ARS y USD conservando moneda, cotización e importes.", "stage": 3},

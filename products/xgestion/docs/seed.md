@@ -2,7 +2,7 @@
 
 `catalogo-comercial-v1` prepara una batería pública de datos sintéticos: **48 artículos, 19 ofertas, 5 listas y 6 precios de lista**, con catálogos auxiliares y 43 movimientos iniciales de stock. Permite volver a los mismos productos y condiciones sin inventar datos para cada caso.
 
-El seed es opcional. Los casos automatizados de la suite siguen usando el producto del paquete privado —90001 en el ejemplo— y no cambian al incorporar esta batería. Los artículos nuevos tienen códigos `QA-SEED-*` e IDs reservados `980xxx`. Crear los datos no agrega casos Robot ni acredita ventas, ofertas, impuestos o stock del JAR.
+El seed es opcional para los casos iniciales y los nueve de Venta cotidiana, que conservan el producto del paquete privado —90001 en el ejemplo—. Los siete casos de [promociones](promociones.md) usan artículos de esta batería y declaran el seed como requisito: el runner lo prepara automáticamente al seleccionarlos. Los artículos nuevos tienen códigos `QA-SEED-*` e IDs reservados `980xxx`. Crear los datos no agrega casos Robot ni acredita ventas, ofertas, impuestos o stock del JAR.
 
 ## Revisar sin instalar el producto
 
@@ -27,7 +27,7 @@ Después de importar un paquete autorizado, en Windows QA aislado y offline:
 
 **`seed --apply` restaura el baseline y reemplaza los datos actuales de la base privada `127.0.0.1:13317/xsoft_qa`.** Después verifica el esquema, las dependencias y las colisiones, aplica los datos y comprueba las filas; al terminar cierra su MySQL. No abre XGestion y no ejecuta E2E. Conserva un `seed-summary.json` privado con el resultado. No usar esta operación para conservar ventas de una ejecución anterior.
 
-`run --seed catalogo-comercial-v1` restaura y aplica la batería dentro de la misma preparación que precede a Robot. Conserva los controles normales de paquete, JAR, escritorio, aislamiento, selectores y exclusión de ejecuciones simultáneas. Un `run` sin `--seed` restaura solamente el baseline. `inspect` también restaura: ejecutarlo después de `seed --apply` no conserva el catálogo preparado. Una futura validación GUI de estos nuevos datos debe sembrar dentro del ciclo de su recorrido; no iniciar por fuera una instalación cotidiana del ERP.
+`run --seed catalogo-comercial-v1` restaura y aplica la batería dentro de la misma preparación que precede a Robot. Conserva los controles normales de paquete, JAR, escritorio, aislamiento, selectores y exclusión de ejecuciones simultáneas. Sin `--seed`, el runner también prepara la batería cuando algún caso seleccionado la declara como requisito: ocurre con un ID PRM, el grupo `promociones`, su selección en el menú o `regression`. Si ningún caso la requiere y no se solicita explícitamente, restaura solamente el baseline. `inspect` también restaura: ejecutarlo después de `seed --apply` no conserva el catálogo preparado. La validación GUI debe sembrar dentro del ciclo del recorrido; no iniciar por fuera una instalación cotidiana del ERP.
 
 La fecha de aplicación debe coincidir con `CURDATE()` de la instancia QA. Una fecha histórica puede usarse en la vista previa, pero se bloquea al aplicar. El ERP suma stock del año corriente y decide vigencia de ofertas con su reloj: no alterar silenciosamente esas fechas para obtener un resultado esperado.
 
@@ -98,7 +98,7 @@ Las ofertas usan IDs 980101–980119 en su propia tabla. La vigencia activa es r
 
 El seed no asigna listas a clientes, turnos, usuarios ni sucursales por defecto. Los escenarios deben declarar la lista seleccionada, moneda, cotización, configuración de precios por cantidad y reglas de combinación antes de comparar montos. Tampoco desactiva ofertas ajenas que ya contenga el baseline: el responsable debe preparar el perfil sin condiciones generales que contaminen los ejemplos.
 
-`PRICING_CASES` en [pricing.py](../seeds/pricing.py) conserva 26 ejemplos con resultado calculado desde reglas de fuente, todos `manual_pending`. Ejemplos: PCT×3 → 2700; IMP×3 → 2550; 2X1×3 → 2000; segunda al 50%×3 → 2500; combo A+B → 1500; combo 2A+B con descuento al sobrante → 2400. Son candidatos de aceptación con perfil explícito, no resultados obtenidos del JAR ni nuevas fichas ejecutables.
+`PRICING_CASES` en [pricing.py](../seeds/pricing.py) conserva 26 ejemplos con resultado calculado desde reglas de fuente, todos `manual_pending` respecto de su validación real. Siete declaran además `e2e_scenario`, que los vincula con XG-PRM-001 a XG-PRM-007: porcentaje, importe fijo, 2x1, segunda al 50 %, vencida, futura e inactiva. Esas fichas tienen automatización implementada; el vínculo no acredita PASS ni convierte los otros 19 ejemplos en escenarios ejecutables. Ejemplos: PCT×3 → 2700; IMP×3 → 2550; 2X1×3 → 2000; segunda al 50%×3 → 2500; combo A+B → 1500; combo 2A+B con descuento al sobrante → 2400. Todos requieren perfil explícito y observación del JAR; los importes públicos no son resultados de una ejecución.
 
 Para fraccionados: 0,500 KG con mínimo 0 → 400; con mínimo 1 → 500; 1 KG con mínimo 1 → 800. Hay diferencias entre el cálculo aislado y el filtro de aplicabilidad cuando mínimo 0 se combina con cantidades mayores: no extrapolar estas tres muestras a toda cantidad sin comprobar el recorrido real.
 

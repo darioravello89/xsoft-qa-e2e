@@ -126,12 +126,14 @@ table('Por detallar', 'Lo que falta convertir en casos',
   backlog, [175, 65, 370, 470, 430, 200, 340], 'BacklogTable');
 
 table('Ejemplos seed', 'Productos, ofertas y listas: ejemplos',
-  'Datos y resultados esperados para preparar nuevas pruebas. Ninguno de estos ejemplos acredita un E2E. Importes en la moneda indicada; revisar el perfil y las condiciones de la ficha futura.',
-  ['Ejemplo', 'Productos × cantidades', 'Lista', 'Total esperado', 'Moneda', 'Estado', 'Condiciones', 'Datos', 'Trazabilidad ERP'],
+  'Datos y resultados esperados. Los ejemplos vinculados tienen su estado de automatización en Escenario E2E. La validación real sigue pendiente; revisar el perfil y las condiciones de cada ficha.',
+  ['Ejemplo', 'Productos × cantidades', 'Lista', 'Total esperado', 'Moneda', 'Validación real', 'Escenario E2E', 'Condiciones', 'Datos', 'Trazabilidad ERP'],
   data.seed_examples.map(item => [item.id, Object.entries(item.quantities).map(([code, quantity]) => `${code} × ${quantity}`).join('\n'),
-    item.selected_list ?? 'Según perfil', Number(item.expected_total), item.currency, 'Pendiente de ficha y automatización', item.note ?? 'Ver condiciones del catálogo comercial.',
+    item.selected_list ?? 'Según perfil', Number(item.expected_total), item.currency, 'Pendiente',
+    item.e2e_scenario ? link(item.e2e_doc_url, `${item.e2e_scenario} · ${status[item.e2e_status]}`) : 'Sin ficha',
+    item.note ?? 'Ver condiciones del catálogo comercial.',
     link(item.doc_url, 'Ver ejemplo'), `${item.source}\nCommit: ${item.erp_commit}`]),
-  [200, 290, 120, 125, 75, 250, 420, 340, 440], 'SeedExamplesTable');
+  [200, 290, 120, 125, 75, 150, 340, 420, 340, 440], 'SeedExamplesTable');
 sheets['Ejemplos seed'].getRange(`D7:D${data.seed_examples.length + 6}`).setNumberFormat('#,##0.00');
 
 const summary = sheets.Resumen;
@@ -173,9 +175,10 @@ summary.getRange('A21:C28').values = [['Etapa de XGestión', 'Automatizados', 'P
 header(summary, 'A21:C21');
 summary.getRange('A22:C28').format.rowHeightPx = 40;
 summary.getRange('B7:B28').format.horizontalAlignment = 'center';
+const linkedExamples = data.seed_examples.filter(item => item.e2e_scenario).length;
 const notes = [
   `${data.counts.groups} grupos de ejecución. Sus conteos se solapan; el total de fichas se cuenta una vez por ID.`,
-  `${data.counts.backlog_restobar} recorridos de Restobar y ${data.counts.seed_examples} ejemplos del seed pendientes de ficha/automatización; no se suman al total.`,
+  `${data.counts.backlog_restobar} recorridos Restobar sin ficha. ${data.counts.seed_examples} ejemplos seed: ${linkedExamples} vinculados a fichas y ${data.counts.seed_examples - linkedExamples} sin ficha. No se suman al total.`,
   'Automatización: azul = implementada · ámbar = pendiente. “Validación real” requiere JAR, entorno y reporte de ejecución.',
   'Actualización: editar fichas, grupos o roadmap en el repositorio; ejecutar qa.cmd coverage y guardar los archivos generados juntos.',
   'No editar este Excel a mano: la regeneración reemplaza su contenido. Guía: docs/cobertura.md.',

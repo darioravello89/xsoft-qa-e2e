@@ -90,7 +90,8 @@ def summarize_groups(groups, cases, results):
     return summaries
 
 
-def execute_robot(root, directory, cases, *, dry_run, secrets, log_level, groups, timeout=1800, emit=None):
+def execute_robot(root, directory, cases, *, dry_run, secrets, log_level, groups, timeout=1800, emit=None,
+                  seed_context=None):
     """Run synthetic or real suites through the same owned process and event path."""
     from framework.processes import run_owned_process
 
@@ -111,6 +112,10 @@ def execute_robot(root, directory, cases, *, dry_run, secrets, log_level, groups
     # Secrets never enter command arguments or files used to initialize the listener.
     env.update({"XSOFT_QA_ROOT": str(root), "XSOFT_QA_RUN_DIR": str(directory), "PYTHONUTF8": "1",
                 "XSOFT_QA_REDACTIONS": json.dumps(secrets), "XSOFT_QA_DRY_RUN": "1" if dry_run else "0"})
+    # Nunca heredar una aprobación de seed de otra ejecución o de un dry-run.
+    applied = seed_context if not dry_run and seed_context and seed_context.get("status") == "seed-applied" else {}
+    env.update({"XSOFT_QA_SEED": applied.get("name", ""),
+                "XSOFT_QA_SEED_DATE": applied.get("reference_date", "")})
     interrupted = None
     result = None
     with EventStream(directory / "events.jsonl", level=log_level, secrets=secrets, emit=emit) as stream:
@@ -192,6 +197,8 @@ def run(root: Path, product: str, group: str | None = None, scenario: str | None
     started = time.monotonic()
     log_level = normalize_level(log_level)
     cases = select_cases(validate_catalog(root), product, group, scenario)
+    required_seed = None if inspect else next((case["seed"] for case in cases if case.get("seed")), None)
+    seed = seed or required_seed
     groups = _groups_for_run(root, product, cases)
     mode = "dry-run" if dry_run else "inspection" if inspect else "e2e"
     directory = new_run(root, mode)
@@ -217,6 +224,10 @@ def run(root: Path, product: str, group: str | None = None, scenario: str | None
                  f"Caso: {cases[0]['title']} ({scenario})" if scenario else "Selección de escenarios")
     progress("run_start", f"{selection}. Casos: {len(cases)}. " +
              ("Validación en seco: no se ejecuta XGestion." if dry_run else "Preparando ejecución de QA."))
+    if required_seed:
+        progress("preflight", f"La selección requiere {required_seed}; "
+                 "se preparará sobre el baseline QA restaurado." if not dry_run else
+                 f"La selección requiere {required_seed}; en seco sólo se revisa su catálogo.")
     try:
         with RunLock(root / ".local"), ExitStack() as resources:
             profile = None
@@ -257,7 +268,7 @@ def run(root: Path, product: str, group: str | None = None, scenario: str | None
                 code, status = 0, "inspection-only"
             else:
                 extra.update(execute_robot(root, directory, cases, dry_run=dry_run, secrets=secrets,
-                                           log_level=log_level, groups=groups))
+                                           log_level=log_level, groups=groups, seed_context=extra.get("seed")))
                 code = extra.pop("code")
                 interrupted = interrupted or code == 130
                 status = ("validated-only" if dry_run and code == 0 else "passed" if code == 0

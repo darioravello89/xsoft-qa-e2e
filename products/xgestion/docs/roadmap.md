@@ -2,7 +2,7 @@
 
 Este mapa organiza la cobertura por lo que hace una persona en XGestion: primero vender, luego administrar lo vendido y después trabajar en Restobar. Describe las familias observadas y sus variantes; no promete probar todas las combinaciones posibles del ERP.
 
-La [cobertura actual](cobertura.md) distingue automatización disponible, escenarios planificados y evidencia real. Hoy hay catorce casos implementados, incluidos los nueve de Venta cotidiana, y ninguna ficha `planned` en el catálogo actual de XGestion. El backlog funcional de las siguientes etapas permanece pendiente. La ejecución real sobre el JAR sigue pendiente. XPORTAL, Mozos Flutter y Consultador conservan su onboarding independiente.
+La [cobertura actual](cobertura.md) distingue automatización disponible, escenarios planificados y evidencia real. Hoy hay 21 casos implementados: cinco de smoke, nueve de Venta cotidiana y siete de promociones simples de etapa 2; ninguna ficha `planned` en el catálogo actual de XGestion. Las demás variantes funcionales permanecen pendientes. La ejecución real sobre el JAR sigue pendiente. XPORTAL, Mozos Flutter y Consultador conservan su onboarding independiente.
 
 ## Cómo leer y mantener el mapa
 
@@ -53,12 +53,24 @@ Los casos XG-VEN-003 a XG-VEN-009 requieren el contrato privado `sales_journeys`
 
 **Prioridad P1; stock y coherencia de importes P0.** El vendedor selecciona el artículo correcto y aplica las condiciones del cliente y la operación.
 
+El primer lote automatizado de esta etapa contiene siete promociones simples. Perfil: ARS, efectivo exacto, comprobante interno 99, Ninguna Lista (ID 0), cliente/turno sin listas, otros descuentos en cero y fidelización deshabilitada. Requiere `promociones-v1`, `ventas-etapa1` y `ventas-teclado-v1` calibrados para el SHA256 del JAR. El runner restaura el baseline y prepara automáticamente `catalogo-comercial-v1` cuando la selección incluye estos casos. Ver [contrato y operación](promociones.md) y [especificación del lote](../../../docs/specs/005-promociones.md).
+
+- [XG-PRM-001](../scenarios/promociones/XG-PRM-001.md): PCT-Q3, cantidad 1 → 3, neto $900 → $2.700 ARS. Implementado; E2E real pendiente.
+- [XG-PRM-002](../scenarios/promociones/XG-PRM-002.md): IMP-Q3, cantidad 1 → 3, neto $850 → $2.550 ARS. Implementado; E2E real pendiente.
+- [XG-PRM-003](../scenarios/promociones/XG-PRM-003.md): 2X1-Q3, cantidad 1 → 3, neto $1.000 → $2.000 ARS. Implementado; E2E real pendiente.
+- [XG-PRM-004](../scenarios/promociones/XG-PRM-004.md): 2DA50-Q3, cantidad 1 → 3, neto $1.000 → $2.500 ARS. Implementado; E2E real pendiente.
+- [XG-PRM-005](../scenarios/promociones/XG-PRM-005.md): EXPIRADA, cantidad 2 → 1, neto $2.000 → $1.000 ARS. Implementado; E2E real pendiente.
+- [XG-PRM-006](../scenarios/promociones/XG-PRM-006.md): FUTURA, cantidad 2 → 1, neto $2.000 → $1.000 ARS. Implementado; E2E real pendiente.
+- [XG-PRM-007](../scenarios/promociones/XG-PRM-007.md): INACTIVA, cantidad 2 → 1, neto $2.000 → $1.000 ARS. Implementado; E2E real pendiente.
+
+Cada recorrido compara bruto, oferta y neto al cargar y al editar la misma línea por `Ctrl+E`; cancela el cobro sin persistir y lo retoma una sola vez. Los tres negativos exigen primero un control positivo (QA-SEED-PCT × 1 = $900), abandonado sin efectos, para detectar un motor de promociones deshabilitado. La confirmación contrasta venta, descuento automático, stock y caja. El grupo `promociones` selecciona estos siete casos; `ventas` conserva los nueve de etapa 1. Ninguno está aceptado aún sobre el JAR.
+
 | Familia / grupos | Variantes a desglosar | Riesgo / resultado a observar |
 | --- | --- | --- |
 | Carga: `carga-productos`, `corregir-venta` | Código y búsqueda; repetido; variantes padre/hijo; cancelar selección; cantidades previas, decimales, bultos e ingreso por importe. | Artículo, cantidad y unidad correctos; no vender el padre ni conservar entradas anteriores. |
 | Existencias: `stock` | Disponible, insuficiente, repetido en varias líneas, sucursal; bloqueo habilitado/deshabilitado y reglas del cierre anual. | Aplicar la regla del perfil, sin presumir que siempre se bloquea stock negativo. |
 | Precios: `precios` | Lista seleccionada, cliente, sucursal, turno y cantidad; cambio de lista; edición manual, vacío/cero y precisión. | Prioridad correcta, importe visible consistente y ausencia de cambios parciales al cancelar. |
-| Ofertas: `promociones`, `descuentos` | Porcentaje, importe, cantidad y combos; vigencia/aplicabilidad; descuento de ítem/global, cambio de cliente y líneas con notas diferentes. | Recalcular una vez; no perder notas, duplicar beneficios ni superar la base permitida. |
+| Ofertas: `promociones`, `descuentos` | Primer lote PRM-001..007: porcentaje, importe fijo, 2x1, segunda unidad al 50 %, vencida/futura/inactiva; pendientes combos, demás cantidades/alcances, descuento de ítem/global, cambio de cliente y líneas con notas diferentes. | Recalcular una vez; cancelar/retomar sin duplicar beneficios ni cobros. Implementación parcial; validación real y demás combinaciones pendientes. |
 | Impuestos e importes: `precios`, `comprobantes` | Inclusión/desglose según producto y documento; combinación con descuentos; precisión y redondeos en línea/total. | Explicar la composición del importe y conservarla al cobrar/reabrir; fiscalización real en etapa 6. |
 | Fidelización: `descuentos` | Cliente identificado/consumidor final, saldo/vencimiento, uso parcial/total, límites y cambio de cliente. | Beneficio limitado al saldo/total; sin arrastre entre clientes o ventas. |
 
@@ -106,7 +118,7 @@ Comprobar explícitamente separación por **empresa, sucursal, puesto y operador
 
 ### Backlog de recorridos de Restobar
 
-Los códigos **R01–R20 son referencias de planificación**, no escenarios del catálogo, tests implementados ni comandos ejecutables. Antes de crear cada ficha se deben precisar perfil, variantes y resultados con la UI de QA; por ahora solo Venta cotidiana tiene detalle paso a paso. R01–R13 priorizan salón/mostrador; R14–R20 agregan dependencias de crédito, servicios y concurrencia. Las mejoras XG-ACC-002 a XG-ACC-005 facilitan operar R04/R08/R10/R13 por teclado, pero no prueban esos recorridos ni sus efectos comerciales.
+Los códigos **R01–R20 son referencias de planificación**, no escenarios del catálogo, tests implementados ni comandos ejecutables. Antes de crear cada ficha se deben precisar perfil, variantes y resultados con la UI de QA; Venta cotidiana y el primer lote de promociones ya tienen sus recorridos documentados, pero Restobar aún no. R01–R13 priorizan salón/mostrador; R14–R20 agregan dependencias de crédito, servicios y concurrencia. Las mejoras XG-ACC-002 a XG-ACC-005 facilitan operar R04/R08/R10/R13 por teclado, pero no prueban esos recorridos ni sus efectos comerciales.
 
 | Ref. | Recorrido de usuario y variantes que hay que cubrir | Prioridad / dependencia |
 | --- | --- | --- |

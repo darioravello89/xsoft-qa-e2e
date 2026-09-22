@@ -44,10 +44,14 @@ def _case(case_id, quantities, expected, source, **extra):
 # Values are hand-derived examples of source rules, not a second implementation
 # of ERP calculations. They require the selected profile and a real UI check.
 PRICING_CASES = [
-    _case("PCT-Q3", {"QA-SEED-PCT": "3"}, "2700.00", _FIN_TEST + "OfertaPorcentajeTest.java"),
-    _case("IMP-Q3", {"QA-SEED-IMP": "3"}, "2550.00", _FIN_TEST + "OfertaPrecioTest.java"),
-    _case("2X1-Q3", {"QA-SEED-2X1": "3"}, "2000.00", _FIN_TEST + "OfertaLlevaXPagaXTest.java"),
-    _case("2DA50-Q3", {"QA-SEED-2DA50": "3"}, "2500.00", _FIN_TEST + "OfertaCantidadPorcentajeTest.java"),
+    _case("PCT-Q3", {"QA-SEED-PCT": "3"}, "2700.00", _FIN_TEST + "OfertaPorcentajeTest.java",
+          e2e_scenario="XG-PRM-001"),
+    _case("IMP-Q3", {"QA-SEED-IMP": "3"}, "2550.00", _FIN_TEST + "OfertaPrecioTest.java",
+          e2e_scenario="XG-PRM-002"),
+    _case("2X1-Q3", {"QA-SEED-2X1": "3"}, "2000.00", _FIN_TEST + "OfertaLlevaXPagaXTest.java",
+          e2e_scenario="XG-PRM-003"),
+    _case("2DA50-Q3", {"QA-SEED-2DA50": "3"}, "2500.00", _FIN_TEST + "OfertaCantidadPorcentajeTest.java",
+          e2e_scenario="XG-PRM-004"),
     _case("MIN-PCT-Q2", {"QA-SEED-MIN-PCT": "2"}, "1800.00", _FIN_TEST + "OfertaCantidadMayorPorcentajeTest.java"),
     _case("MIN-IMP-Q2", {"QA-SEED-MIN-IMP": "2"}, "1700.00", _FIN_TEST + "OfertaCantidadMayorImporteTest.java"),
     _case("MIN-PRECIO-Q2", {"QA-SEED-MIN-PRECIO": "2"}, "1600.00", _FIN_TEST + "OfertaCantidadMayorPrecioUnitarioTest.java"),
@@ -61,7 +65,8 @@ PRICING_CASES = [
     _case("AGRUPADA-3X2", {"QA-SEED-GRUPO-A": "1", "QA-SEED-GRUPO-B": "1", "QA-SEED-GRUPO-C": "1"},
           "2000.00", _FIN_TEST + "OfertaAplicacionCalculadorAgrupacionTest.java"),
     *[_case(name, {f"QA-SEED-{name}": "1"}, "1000.00",
-            "src/ModuloFinanzas/Entidades/OfertaLineaService.java") for name in ("EXPIRADA", "FUTURA", "INACTIVA")],
+            "src/ModuloFinanzas/Entidades/OfertaLineaService.java", e2e_scenario=f"XG-PRM-{number:03}")
+      for number, name in enumerate(("EXPIRADA", "FUTURA", "INACTIVA"), start=5)],
     *[_case(name, {f"QA-SEED-{name}": "1"}, "900.00",
             "src/ModuloFinanzas/Entidades/OfertaAplicacionCalculador.java") for name in ("FAMILIA", "SUBFAMILIA", "MARCA", "SECTOR")],
     _case("LISTA-ARS", {"QA-SEED-LISTAS": "1"}, "750.00",

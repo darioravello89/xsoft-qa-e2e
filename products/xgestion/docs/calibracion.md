@@ -2,6 +2,11 @@
 
 Este paso lo hace una persona responsable del paquete QA una vez por JAR/perfil UI. El resto del equipo importa el paquete ya verificado. No marcar `verified` por revisar código ni por ejecutar unit tests.
 
+El lote de siete promociones requiere además la [calibración promociones-v1](promociones.md),
+con columnas separadas de bruto, oferta y neto y edición por teclado. La calibración
+de Venta cotidiana por sí sola no habilita ese lote. El catálogo completo tiene
+21 casos: cinco de smoke, nueve de Venta cotidiana y siete de promociones.
+
 1. Preparar la VM Windows con escritorio interactivo desbloqueado, JDK 17 de 64 bits, JAB/DLL de 64 bits y el paquete QA válido. Después de setup, desconectar la red y crear un snapshot limpio antes de ejecutar el JAR; en PC física, una imagen recuperable equivalente. Ejecutar el doctor del repositorio. Si el único bloqueo pendiente es la calibración inicial, continuar con `inspect`, que mantiene los demás controles. La instancia MySQL debe ser exclusiva: el ERP configura variables globales del servidor al arrancar.
 2. Usar `qa.cmd inspect` para obtener el árbol inicial. La inspección arranca su propio JAR; permite navegar e ingresar manualmente en la UI. Pulsar Enter en la consola captura la estructura de sus ventanas actuales; `q` termina y cierra sólo ese proceso. Nunca escribir credenciales en consola. No hay capturas de imagen ni valores de campos: éstos omiten nombres/descripciones; también se redactan secretos conocidos del perfil.
 3. Confirmar que JAB ve la ventana y los controles de acceso. Si no ve el árbol, detener la aceptación: ésta es una falla de viabilidad, no un test aprobado. Verificar JAB habilitado para el runtime seleccionado y compatibilidad JDK/DLL; no sustituir por coordenadas fijas.
@@ -9,7 +14,7 @@ Este paso lo hace una persona responsable del paquete QA una vez por JAR/perfil 
 5. Verificar cada selector exacto (`strict=True`) y que encuentre exactamente un elemento visible. Formularios Swing pueden repetir nombres en pestañas ocultas; incluir jerarquía/rol/nombre/índice estructural observado en el selector, nunca elegir el primer resultado de una lista.
 6. Completar fixtures con textos UI reales, identidad y producto del dump. No exportar contraseñas ni árboles sin sanear. Nunca añadir capturas o valores reales al ejemplo público.
 7. Documentar responsable, fecha, versión JAB y SHA256 del JAR; cambiar la calibración privada a `verified`. Importar el mapa con `qa.cmd calibrate --locators RUTA_AL_MAPA_VERIFICADO.json`: el runner actualiza solamente mapa y su hash, conservando JAR/base/credenciales. Este registro afirma calibración humana, no reemplaza el siguiente smoke automatizado. Para distribuir el paquete final al resto del equipo, incorporarlo al ZIP privado y recalcular su manifest.
-8. Completar la extensión de Venta cotidiana descrita abajo antes de habilitar sus siete casos nuevos. Ejecutar los catorce casos implementados con restauración previa y egress bloqueado; los siete iniciales pueden aceptarse por separado con un paquete anterior. Validar el resumen del runner, detalle Robot y evidencias posteriores al login. Repetir la corrida desde baseline para confirmar independencia.
+8. Completar la extensión de Venta cotidiana descrita abajo antes de habilitar sus siete casos nuevos. Ejecutar los grupos `smoke` y `ventas` (catorce casos en conjunto) con restauración previa y egress bloqueado; los siete iniciales pueden aceptarse por separado con un paquete anterior. Para las siete promociones adicionales, completar su contrato específico antes de ejecutar `regression` (21 casos). Validar el resumen del runner, detalle Robot y evidencias posteriores al login. Repetir la corrida desde baseline para confirmar independencia.
 
 ## Verificar la extensión `ventas-etapa1`
 
@@ -24,7 +29,7 @@ Preparar el [contrato `sales_journeys`](paquete.md) en el paquete privado. No in
 7. Verificar además `sale.cancel_reject` en la confirmación de abandono y que la venta se conserva antes de editar/cobrar. Cancelar el cobro, retomarlo y confirmar una única vez; Enter no puede producir dos cobros.
 8. Registrar `ventas-etapa1` después de comprobar los controles base sobre el hash del JAR. Agregar también `ventas-teclado-v1` únicamente cuando `sale.edit`, `editor.cancel`, foco, selección, Ctrl+E y ausencia de activación duplicada hayan sido observados en ese mismo artefacto. Importar el mapa verificado y ejecutar los casos por ID y en grupo. El registro de calibración no acredita por sí solo sus efectos de persistencia.
 
-El inspector conserva estructuras privadas sin valores de campos sensibles; una captura del árbol no prueba que una tabla sea legible de forma completa. Verificar la lectura JAB y las acciones en el laboratorio, conservando evidencia privada saneada. XG-VEN-003/007 forman parte de los catorce ejecutables: con `ventas-teclado-v1` usan selección JAB, Cancelar y `Ctrl+E`; sin esa feature conservan temporalmente el doble clic legado. El [backlog de accesibilidad CSV](backlog-accesibilidad.csv) mantiene XG-ACC-001 a XG-ACC-005 pendientes de validación real y separa las mejoras propias de Restobar de los casos de Venta.
+El inspector conserva estructuras privadas sin valores de campos sensibles; una captura del árbol no prueba que una tabla sea legible de forma completa. Verificar la lectura JAB y las acciones en el laboratorio, conservando evidencia privada saneada. XG-VEN-003/007 pertenecen al grupo `ventas`: con `ventas-teclado-v1` usan selección JAB, Cancelar y `Ctrl+E`; sin esa feature conservan temporalmente el doble clic legado. El [backlog de accesibilidad CSV](backlog-accesibilidad.csv) mantiene XG-ACC-001 a XG-ACC-005 pendientes de validación real y separa las mejoras propias de Restobar de los casos de Venta.
 
 ## Verificar accesibilidad de Restobar
 

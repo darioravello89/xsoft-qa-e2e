@@ -12,6 +12,12 @@ Cada cambio funcional debe dejar claros sus escenarios, datos y evidencia. QA y 
 
 ## Encabezado del catálogo
 
+Si un caso depende de los productos fijos, declarar `"seed": "catalogo-comercial-v1"`
+en su encabezado. El runner resuelve esa dependencia al seleccionar grupo o ID,
+también desde el menú, y prepara el seed una vez después de restaurar el baseline.
+Sin casos que lo requieran se conserva el comportamiento opcional de `--seed`.
+En dry-run sólo se describe; nunca acreditar datos aplicados ni resultados E2E.
+
 El campo `test` es la ruta relativa al archivo ejecutable dentro del repositorio. `status: implemented` indica que hay automatización implementada, no que ya aprobó una ejecución sobre el producto. El estado de validación real debe registrarse en el reporte y documentación de aceptación.
 
 Registrar grupos en `products/<producto>/groups.json`: ID igual al tag, nombre legible, descripción y etapa. Reutilizar `smoke`, `regression`, `ventas`, `efectivo`, etc. Evitar sinónimos como `venta`, `sales` y `ventas`. El módulo debe existir como grupo y el caso debe tener una etiqueta registrada; etiquetas técnicas como `xgestion` y `escritura` no necesitan convertirse en opciones del menú.

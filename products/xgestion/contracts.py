@@ -147,4 +147,7 @@ def load_assets(profile):
         raise QAError("calibration.verified_features debe ser una lista de extensiones verificadas.")
     if "ventas-etapa1" in features:
         validate_journeys(fixtures, locators)
+    if "promociones-v1" in features:
+        from products.xgestion.promotions import validate_promotions
+        validate_promotions(fixtures, locators)
     return fixtures, locators

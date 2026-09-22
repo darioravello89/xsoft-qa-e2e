@@ -64,6 +64,8 @@ def load_catalog(root: Path) -> list[dict]:
                 raise ValueError
             if info["product"] not in PRODUCTS or info["status"] not in ("implemented", "planned", "manual"):
                 raise ValueError
+            if "seed" in info and (info["product"] != "xgestion" or info["seed"] != "catalogo-comercial-v1"):
+                raise ValueError
             if any(not isinstance(info[key], str) or not info[key].strip() for key in ("title", "module")):
                 raise ValueError
             if not isinstance(info["tags"], list) or not info["tags"]:
