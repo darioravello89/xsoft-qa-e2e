@@ -15,17 +15,45 @@ ALIAS = "sale.lines"
 CANARY = "PRIVATE_CELL_CANARY"
 
 
+class NativeTableNode(SimpleNamespace):
+    """Modelo sintético de los hijos nativos, independiente de geometría visible."""
+
+    @property
+    def children(self):
+        children = []
+        for row in self.read_cells():
+            for cell in row:
+                if not hasattr(cell, "node"):
+                    cell.node = SimpleNamespace(context_info=SimpleNamespace(), refresh=Mock())
+                if not hasattr(cell.node, "context_info"):
+                    cell.node.context_info = SimpleNamespace()
+                cell.node.context_info.indexInParent = len(children)
+                cell.node.cell = cell
+                children.append(cell.node)
+        return children
+
+
+class NativeTableElement(SimpleNamespace):
+    def __new__(cls, node=None, **_kwargs):
+        # Los tests de teclado/edición usan celdas específicas que copian la
+        # geometría como JavaElement; no simulan read_table ni su heurística.
+        if node is not None and hasattr(node, "cell"):
+            return node.cell
+        return super().__new__(cls)
+
+
 def make_driver(row_count=2, column_count=2):
-    node = SimpleNamespace(
+    node = NativeTableNode(
         table=SimpleNamespace(table=SimpleNamespace(rowCount=row_count, columnCount=column_count)),
-        context_info=SimpleNamespace(states="enabled,showing,focused"),
-        refresh=Mock(), request_focus=Mock(),
+        context_info=SimpleNamespace(states="enabled,showing,focused",
+                                     childrenCount=row_count * column_count),
+        refresh=Mock(), request_focus=Mock(), read_cells=Mock(),
     )
-    element = SimpleNamespace(node=node, role="table", showing=True, enabled=True)
+    element = NativeTableElement(node=node, role="table", showing=True, enabled=True)
     bridge = Mock()
     bridge.list_java_windows.return_value = [SimpleNamespace(pid=42, title="QA")]
     bridge.get_elements.return_value = [element]
-    bridge.read_table.return_value = [
+    node.read_cells.return_value = [
         [SimpleNamespace(text="  A  ", name="ignored"), SimpleNamespace(text="", name="B")],
         [SimpleNamespace(text=None, name="C"), SimpleNamespace(text="D", name="ignored", showing=False)],
     ]
@@ -39,13 +67,14 @@ def test_table_reads_all_cells_and_falls_back_to_accessible_name():
     assert driver.table_rows(ALIAS) == [["A", "B"], ["C", "D"]]
     element.node.refresh.assert_called_once()
     bridge.get_elements.assert_called_once_with("role:table", java_elements=True, strict=True)
-    bridge.read_table.assert_called_once_with(element, visible_only=False)
+    element.node.read_cells.assert_called_once_with()
+    bridge.read_table.assert_not_called()
 
 
 def test_empty_table_uses_refreshed_native_size_without_rpa_empty_table_error():
     driver, bridge, element = make_driver()
     element.node.refresh.side_effect = lambda: setattr(element.node.table.table, "rowCount", 0)
-    bridge.read_table.side_effect = RuntimeError("RPA cannot infer columns from an empty table")
+    element.node.read_cells.side_effect = RuntimeError("An empty table has no child cells")
     assert driver.table_rows(ALIAS) == []
     bridge.read_table.assert_not_called()
 
@@ -54,21 +83,21 @@ def test_empty_table_uses_refreshed_native_size_without_rpa_empty_table_error():
                                   [["A", "B", "C"], ["D", "E", "F"]],
                                   [["A", "B"], ["C", "D"], ["E", "F"]]])
 def test_partial_or_inconsistent_grid_is_never_accepted(rows):
-    driver, bridge, _ = make_driver()
-    bridge.read_table.return_value = [[SimpleNamespace(text=value, name="") for value in row] for row in rows]
+    driver, _, element = make_driver()
+    element.node.read_cells.return_value = [[SimpleNamespace(text=value, name="") for value in row] for row in rows]
     with pytest.raises(QAError, match="incompleta"):
         driver.table_rows(ALIAS)
 
 
 def test_native_size_changing_during_read_is_rejected():
     driver, bridge, element = make_driver()
-    cells = bridge.read_table.return_value
+    cells = element.node.read_cells.return_value
 
     def changing_table(*_args, **_kwargs):
         element.node.table.table.rowCount = 3
         return cells
 
-    bridge.read_table.side_effect = changing_table
+    element.node.read_cells.side_effect = changing_table
     with pytest.raises(QAError, match="incompleta"):
         driver.table_rows(ALIAS)
 
@@ -132,7 +161,7 @@ def test_table_native_output_and_exceptions_never_publish_cell_contents(capsys, 
 
     bridge.get_elements.side_effect = find
     element.node.refresh.side_effect = noise
-    bridge.read_table.side_effect = read
+    element.node.read_cells.side_effect = read
     prior_disable = logging.root.manager.disable
     builtin = Mock()
     builtin.set_log_level.return_value = "TRACE"
@@ -199,7 +228,7 @@ def test_select_sale_row_uses_table_focus_ctrl_home_arrows_and_confirms_selectio
     driver, bridge, table = make_driver(3, 1)
     before = [[keyboard_cell("A")], [keyboard_cell(CANARY)], [keyboard_cell("C")]]
     after = [[keyboard_cell("A")], [keyboard_cell(CANARY, "enabled,showing,selected")], [keyboard_cell("C")]]
-    bridge.read_table.side_effect = [before, after]
+    table.node.read_cells.side_effect = [before, after]
 
     assert driver.select_sale_row(ALIAS, 0, CANARY) == 1
 
@@ -208,8 +237,8 @@ def test_select_sale_row_uses_table_focus_ctrl_home_arrows_and_confirms_selectio
 
 
 def test_select_sale_row_rejects_ambiguous_identity_before_keyboard_input():
-    driver, bridge, _ = make_driver(2, 1)
-    bridge.read_table.return_value = [[keyboard_cell(CANARY)], [keyboard_cell(CANARY)]]
+    driver, bridge, table = make_driver(2, 1)
+    table.node.read_cells.return_value = [[keyboard_cell(CANARY)], [keyboard_cell(CANARY)]]
     with pytest.raises(QAError, match="única fila"):
         driver.select_sale_row(ALIAS, 0, CANARY)
     bridge.press_keys.assert_not_called()
@@ -266,7 +295,7 @@ def editable_driver():
                            showing=True, x=50, y=80, width=100, height=20, refresh=Mock())
     target = EditableCell(node)
     bridge.display_scale_factor = 1.5
-    bridge.read_table.return_value[1][0] = target
+    table.node.read_cells.return_value[1][0] = target
     return driver, bridge, table, target
 
 
@@ -290,9 +319,9 @@ def test_edit_sale_row_blocks_without_a_unique_complete_owned_row(state):
     if state == "wrong_code":
         target.text = "ANOTHER"
     elif state == "duplicate_code":
-        bridge.read_table.return_value[0][0] = target
+        table.node.read_cells.return_value[0][0] = target
     elif state == "missing_cell":
-        bridge.read_table.return_value[1] = []
+        table.node.read_cells.return_value[1] = []
     elif state == "empty":
         table.node.table.table.rowCount = 0
     elif state == "foreign":

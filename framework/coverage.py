@@ -180,8 +180,10 @@ def build_coverage(root: Path) -> dict:
             scenarios.append({"id": case["id"], "title": case["title"], "product": product,
                               "module": case["module"], "status": case["status"],
                               "groups": [group for group in registry if group in case["tags"]],
-                              "stage": stage, "priority": priorities.get(stage) if product == "xgestion" else None,
-                              "priority_basis": "roadmap-stage" if stage in priorities else None,
+                              "stage": stage, "priority": case.get("priority", priorities.get(stage)
+                                                                     if product == "xgestion" else None),
+                              "priority_basis": "scenario" if "priority" in case else
+                              "roadmap-stage" if stage in priorities else None,
                               "doc_path": document, "doc_url": _url(document), "test_path": test,
                               "test_url": _url(test) if test else None, "validation": "pending"})
         for group in registry.values():

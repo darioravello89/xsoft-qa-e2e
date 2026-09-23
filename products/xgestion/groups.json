@@ -1,39 +1,448 @@
 {
   "groups": [
-    {"id": "smoke", "title": "Comprobación rápida", "description": "Revisar acceso y búsqueda de productos antes de probar otros circuitos.", "stage": 0},
-    {"id": "regression", "title": "Regresión disponible", "description": "Reunir los escenarios implementados; no implica cubrir todo el ERP.", "stage": 0},
-    {"id": "inicio", "title": "Inicio de XGestión", "description": "Comprobar que la aplicación abre y permite iniciar sesión.", "stage": 0},
-    {"id": "autenticacion", "title": "Acceso y contexto", "description": "Ingresar con el usuario correcto y verificar empresa y sucursal.", "stage": 0},
-    {"id": "productos", "title": "Búsqueda de productos", "description": "Buscar un artículo conocido y comprobar el resultado de un código inexistente.", "stage": 0},
-    {"id": "ventas", "title": "Venta cotidiana", "description": "Cargar productos, cobrar, cancelar y continuar vendiendo.", "stage": 1},
-    {"id": "carga-productos", "title": "Cargar productos en la venta", "description": "Agregar artículos por código o búsqueda y establecer sus cantidades.", "stage": 1},
-    {"id": "corregir-venta", "title": "Corregir una venta", "description": "Cambiar cantidades, quitar renglones y revisar el total antes de confirmar.", "stage": 1},
-    {"id": "efectivo", "title": "Cobrar en efectivo", "description": "Confirmar el importe recibido, el vuelto y la continuación de la venta.", "stage": 1},
-    {"id": "stock", "title": "Stock después de vender", "description": "Comprobar los movimientos de existencias al vender o cancelar.", "stage": 1},
-    {"id": "precios", "title": "Precios y listas", "description": "Aplicar el precio y la lista que corresponden al contexto de la operación.", "stage": 2},
-    {"id": "promociones", "title": "Promociones", "description": "Comprobar ofertas, su vigencia y el recálculo al modificar cantidades.", "stage": 2},
-    {"id": "descuentos", "title": "Descuentos", "description": "Comprobar descuentos por renglón y sobre el total de la venta.", "stage": 2},
-    {"id": "cobros", "title": "Formas de cobro", "description": "Seleccionar medios de pago y verificar importes y cancelaciones del cobro.", "stage": 3},
-    {"id": "monedas", "title": "Monedas y cotizaciones", "description": "Operar en ARS y USD conservando moneda, cotización e importes.", "stage": 3},
-    {"id": "presupuestos", "title": "Presupuestos", "description": "Guardar y reabrir presupuestos sin registrar cobros ni movimientos de caja.", "stage": 3},
-    {"id": "cuenta-corriente", "title": "Cuenta corriente y cuotas", "description": "Controlar límites, deuda, financiación y cancelación de cuotas por moneda.", "stage": 3},
-    {"id": "comprobantes", "title": "Comprobantes de la operación", "description": "Revisar datos y totales del documento, sin asumir emisión fiscal o impresión física.", "stage": 3},
-    {"id": "devoluciones", "title": "Devoluciones y anulaciones", "description": "Revertir una operación y comprobar sus efectos en stock, pagos y deuda.", "stage": 4},
-    {"id": "caja", "title": "Caja y turnos", "description": "Revisar apertura, movimientos, arqueo y cierre de la caja correspondiente.", "stage": 4},
-    {"id": "permisos", "title": "Permisos y autorizaciones", "description": "Permitir o rechazar acciones según el operador y la autorización requerida.", "stage": 4},
-    {"id": "mostrador", "title": "Mostrador Restobar", "description": "Cargar y cerrar pedidos en el circuito de mostrador Restobar.", "stage": 5},
-    {"id": "mesas", "title": "Mesas y pedidos", "description": "Abrir mesas y mantener sus pedidos y ocupación.", "stage": 5},
-    {"id": "preparacion", "title": "Preparación de pedidos", "description": "Enviar pedidos a preparación y comprobar sus estados.", "stage": 5},
-    {"id": "precuenta", "title": "Precuenta", "description": "Revisar la cuenta antes de cobrar sin cerrar anticipadamente el pedido.", "stage": 5},
-    {"id": "delivery", "title": "Pedidos para entrega", "description": "Gestionar pedidos de delivery y su cierre.", "stage": 5},
-    {"id": "kds", "title": "Pantalla de cocina", "description": "Ver pedidos en cocina y comprobar los cambios de estado.", "stage": 5},
-    {"id": "mozos-qr", "title": "Pedidos de mozos y QR", "description": "Comprobar pedidos recibidos desde mozos o QR en un entorno integrado autorizado.", "stage": 5},
-    {"id": "pagos-externos", "title": "Pagos externos", "description": "Verificar proveedores de pago en un laboratorio específico, sin operaciones reales.", "stage": 6},
-    {"id": "fiscal", "title": "Emisión fiscal", "description": "Validar emisión y rechazos en un entorno fiscal de pruebas dedicado.", "stage": 6},
-    {"id": "impresion", "title": "Impresión física", "description": "Comprobar impresoras, reimpresiones y recuperación ante fallos del dispositivo.", "stage": 6},
-    {"id": "dispositivos", "title": "Balanzas y dispositivos", "description": "Verificar la interacción con equipos de prueba específicos.", "stage": 6},
-    {"id": "varios-puestos", "title": "Varios puestos y sincronización", "description": "Comprobar concurrencia e intercambio de datos entre puestos aislados de producción.", "stage": 6},
-    {"id": "compras", "title": "Compras y recepción", "description": "Registrar compras y remitos y comprobar costos, precios y existencias.", "stage": 6},
-    {"id": "recuperacion", "title": "Recuperación ante errores", "description": "Grupo transversal: conservar la operación y evitar duplicados tras un error en cada etapa.", "stage": 0}
+    {
+      "id": "smoke",
+      "title": "Comprobación rápida",
+      "description": "Revisar acceso y búsqueda de productos antes de probar otros circuitos.",
+      "stage": 0
+    },
+    {
+      "id": "regression",
+      "title": "Regresión disponible",
+      "description": "Reunir los escenarios implementados; no implica cubrir todo el ERP.",
+      "stage": 0
+    },
+    {
+      "id": "inicio",
+      "title": "Inicio de XGestión",
+      "description": "Comprobar que la aplicación abre y permite iniciar sesión.",
+      "stage": 0
+    },
+    {
+      "id": "autenticacion",
+      "title": "Acceso y contexto",
+      "description": "Ingresar con el usuario correcto y verificar empresa y sucursal.",
+      "stage": 0
+    },
+    {
+      "id": "productos",
+      "title": "Búsqueda de productos",
+      "description": "Buscar un artículo conocido y comprobar el resultado de un código inexistente.",
+      "stage": 0
+    },
+    {
+      "id": "ventas",
+      "title": "Venta cotidiana",
+      "description": "Cargar productos, cobrar, cancelar y continuar vendiendo.",
+      "stage": 1
+    },
+    {
+      "id": "carga-productos",
+      "title": "Cargar productos en la venta",
+      "description": "Agregar artículos por código o búsqueda y establecer sus cantidades.",
+      "stage": 1
+    },
+    {
+      "id": "corregir-venta",
+      "title": "Corregir una venta",
+      "description": "Cambiar cantidades, quitar renglones y revisar el total antes de confirmar.",
+      "stage": 1
+    },
+    {
+      "id": "efectivo",
+      "title": "Cobrar en efectivo",
+      "description": "Confirmar el importe recibido, el vuelto y la continuación de la venta.",
+      "stage": 1
+    },
+    {
+      "id": "stock",
+      "title": "Existencias e inventario",
+      "description": "Comprobar existencias al vender, recibir mercadería, consumir recetas o cancelar.",
+      "stage": 1
+    },
+    {
+      "id": "precios",
+      "title": "Precios y listas",
+      "description": "Aplicar el precio y la lista que corresponden al contexto de la operación.",
+      "stage": 2
+    },
+    {
+      "id": "promociones",
+      "title": "Promociones",
+      "description": "Comprobar ofertas, su vigencia y el recálculo al modificar cantidades.",
+      "stage": 2
+    },
+    {
+      "id": "promociones-alcances",
+      "title": "Ofertas por producto y categoría",
+      "description": "Fórmulas por producto, familia, subfamilia, marca y sector, con inclusión y exclusión.",
+      "stage": 2
+    },
+    {
+      "id": "promociones-agrupadas",
+      "title": "Ofertas combinando productos",
+      "description": "Sumar productos de familia, subfamilia o marca y recalcular sus beneficios.",
+      "stage": 2
+    },
+    {
+      "id": "promociones-combos",
+      "title": "Combos de productos",
+      "description": "Completar combos, repetirlos y comprobar sobrantes, competencia y redondeos.",
+      "stage": 2
+    },
+    {
+      "id": "promociones-condiciones",
+      "title": "Condiciones de las ofertas",
+      "description": "Fracciones, prioridad, fechas, listas, medios de pago, contexto y descuentos.",
+      "stage": 2
+    },
+    {
+      "id": "ofertas-producto",
+      "title": "Ofertas por producto",
+      "description": "Umbrales, fracciones y superposición por producto; complementar con las promociones iniciales.",
+      "stage": 2
+    },
+    {
+      "id": "ofertas-familia",
+      "title": "Ofertas por familia",
+      "description": "Fórmulas individuales y agrupadas para productos de una familia.",
+      "stage": 2
+    },
+    {
+      "id": "ofertas-subfamilia",
+      "title": "Ofertas por subfamilia",
+      "description": "Fórmulas individuales y agrupadas para productos de una subfamilia.",
+      "stage": 2
+    },
+    {
+      "id": "ofertas-marca",
+      "title": "Ofertas por marca",
+      "description": "Fórmulas individuales y agrupadas para productos de una marca.",
+      "stage": 2
+    },
+    {
+      "id": "ofertas-sector",
+      "title": "Ofertas por sector",
+      "description": "Fórmulas aplicadas a cada producto del sector, sin agrupar productos distintos.",
+      "stage": 2
+    },
+    {
+      "id": "descuentos",
+      "title": "Descuentos",
+      "description": "Comprobar descuentos por renglón y sobre el total de la venta.",
+      "stage": 2
+    },
+    {
+      "id": "cobros",
+      "title": "Formas de cobro",
+      "description": "Seleccionar medios de pago y verificar importes y cancelaciones del cobro.",
+      "stage": 3
+    },
+    {
+      "id": "monedas",
+      "title": "Monedas y cotizaciones",
+      "description": "Operar en ARS y USD conservando moneda, cotización e importes.",
+      "stage": 3
+    },
+    {
+      "id": "presupuestos",
+      "title": "Presupuestos",
+      "description": "Guardar y reabrir presupuestos sin registrar cobros ni movimientos de caja.",
+      "stage": 3
+    },
+    {
+      "id": "cuenta-corriente",
+      "title": "Cuenta corriente y cuotas",
+      "description": "Controlar límites, deuda, financiación y cancelación de cuotas por moneda.",
+      "stage": 3
+    },
+    {
+      "id": "comprobantes",
+      "title": "Comprobantes de la operación",
+      "description": "Revisar datos y totales del documento, sin asumir emisión fiscal o impresión física.",
+      "stage": 3
+    },
+    {
+      "id": "devoluciones",
+      "title": "Devoluciones y anulaciones",
+      "description": "Revertir una operación y comprobar sus efectos en stock, pagos y deuda.",
+      "stage": 4
+    },
+    {
+      "id": "caja",
+      "title": "Caja y turnos",
+      "description": "Revisar apertura, movimientos, arqueo y cierre de la caja correspondiente.",
+      "stage": 4
+    },
+    {
+      "id": "permisos",
+      "title": "Permisos y autorizaciones",
+      "description": "Permitir o rechazar acciones según el operador y la autorización requerida.",
+      "stage": 4
+    },
+    {
+      "id": "mostrador",
+      "title": "Mostrador Restobar",
+      "description": "Cargar y cerrar pedidos en el circuito de mostrador Restobar.",
+      "stage": 5
+    },
+    {
+      "id": "mesas",
+      "title": "Mesas y pedidos",
+      "description": "Abrir mesas y mantener sus pedidos y ocupación.",
+      "stage": 5
+    },
+    {
+      "id": "preparacion",
+      "title": "Preparación de pedidos",
+      "description": "Enviar pedidos a preparación y comprobar sus estados.",
+      "stage": 5
+    },
+    {
+      "id": "precuenta",
+      "title": "Precuenta",
+      "description": "Revisar la cuenta antes de cobrar sin cerrar anticipadamente el pedido.",
+      "stage": 5
+    },
+    {
+      "id": "delivery",
+      "title": "Pedidos para entrega",
+      "description": "Gestionar pedidos de delivery y su cierre.",
+      "stage": 5
+    },
+    {
+      "id": "kds",
+      "title": "Pantalla de cocina",
+      "description": "Ver pedidos en cocina y comprobar los cambios de estado.",
+      "stage": 5
+    },
+    {
+      "id": "mozos-qr",
+      "title": "Pedidos de mozos y QR",
+      "description": "Comprobar pedidos recibidos desde mozos o QR en un entorno integrado autorizado.",
+      "stage": 5
+    },
+    {
+      "id": "pagos-externos",
+      "title": "Pagos externos",
+      "description": "Verificar proveedores de pago en un laboratorio específico, sin operaciones reales.",
+      "stage": 6
+    },
+    {
+      "id": "fiscal",
+      "title": "Emisión fiscal",
+      "description": "Validar emisión y rechazos en un entorno fiscal de pruebas dedicado.",
+      "stage": 6
+    },
+    {
+      "id": "impresion",
+      "title": "Impresión física",
+      "description": "Comprobar impresoras, reimpresiones y recuperación ante fallos del dispositivo.",
+      "stage": 6
+    },
+    {
+      "id": "dispositivos",
+      "title": "Balanzas y dispositivos",
+      "description": "Verificar la interacción con equipos de prueba específicos.",
+      "stage": 6
+    },
+    {
+      "id": "varios-puestos",
+      "title": "Varios puestos y sincronización",
+      "description": "Comprobar concurrencia e intercambio de datos entre puestos aislados de producción.",
+      "stage": 6
+    },
+    {
+      "id": "compras",
+      "title": "Compras y recepción",
+      "description": "Registrar compras y remitos y comprobar costos, precios y existencias.",
+      "stage": 6
+    },
+    {
+      "id": "recuperacion",
+      "title": "Recuperación ante errores",
+      "description": "Grupo transversal: conservar la operación y evitar duplicados tras un error en cada etapa.",
+      "stage": 0
+    },
+    {
+      "id": "listas-precios",
+      "title": "Listas de precios: recorridos",
+      "description": "Consultar origen, prioridad y aplicación de listas en Venta y Restobar.",
+      "stage": 2
+    },
+    {
+      "id": "listas-sucursal",
+      "title": "Lista base y por sucursal",
+      "description": "Revisar lista fija, Ninguna Lista, sucursal y aislamiento entre contextos.",
+      "stage": 2
+    },
+    {
+      "id": "listas-cliente",
+      "title": "Lista del cliente",
+      "description": "Revisar clientes con o sin lista y los cambios de cliente durante la operación.",
+      "stage": 2
+    },
+    {
+      "id": "listas-horario",
+      "title": "Listas por turno horario",
+      "description": "Revisar límites diurnos y nocturnos, turnos activos y prioridad de su lista.",
+      "stage": 2
+    },
+    {
+      "id": "listas-prioridad",
+      "title": "Prioridad y recálculo de listas",
+      "description": "Cruzar cliente, turno, sucursal, selección manual, cantidad y moneda.",
+      "stage": 2
+    },
+    {
+      "id": "restobar",
+      "title": "Restobar: recorridos",
+      "description": "Consultar cuentas, mesas, pedidos, opciones, recetas y cierre.",
+      "stage": 5
+    },
+    {
+      "id": "restobar-opciones",
+      "title": "Opciones y agregados",
+      "description": "Personalizar platos, cantidades, precio, conservación y recuperación.",
+      "stage": 5
+    },
+    {
+      "id": "restobar-recetas",
+      "title": "Recetas e ingredientes",
+      "description": "Comprobar ingredientes, cantidades y stock sin duplicar consumos.",
+      "stage": 5
+    },
+    {
+      "id": "remitos",
+      "title": "Cargar remitos de compra",
+      "description": "Documentar recepción, borradores, confirmación, costos y anulación.",
+      "stage": 6
+    },
+    {
+      "id": "remitos-carga",
+      "title": "Remitos: cargar productos",
+      "description": "Buscar artículos y cargar unidades, bultos y cantidades válidas.",
+      "stage": 6
+    },
+    {
+      "id": "remitos-correccion",
+      "title": "Remitos: corregir y conservar",
+      "description": "Editar, guardar borrador, descartar y recuperar la operación.",
+      "stage": 6
+    },
+    {
+      "id": "remitos-stock",
+      "title": "Remitos: recepción y existencias",
+      "description": "Comprobar destino, recepción confirmada y reversión de existencias.",
+      "stage": 6
+    },
+    {
+      "id": "remitos-costos",
+      "title": "Remitos: costos y listas",
+      "description": "Comprobar costo bruto/neto, bonificaciones, listas, impuestos y moneda.",
+      "stage": 6
+    },
+    {
+      "id": "ctacte-clientes",
+      "title": "Cuenta corriente de clientes",
+      "description": "Revisar deuda, anticipos, cobros, límites y saldos del cliente por moneda.",
+      "stage": 3
+    },
+    {
+      "id": "ctacte-proveedores",
+      "title": "Cuenta corriente de proveedores",
+      "description": "Revisar compras, pagos, saldos y correcciones del proveedor por moneda.",
+      "stage": 3
+    },
+    {
+      "id": "cuotas",
+      "title": "Cuotas y financiación",
+      "description": "Comprobar plan, anticipo, vencimientos, mora y cobros sin duplicación.",
+      "stage": 3
+    },
+    {
+      "id": "libro-diario",
+      "title": "Libro Diario",
+      "description": "Revisar ingresos y egresos por concepto, origen, medio, moneda y contexto.",
+      "stage": 4
+    },
+    {
+      "id": "cierre-caja",
+      "title": "Arqueo y cierre de caja",
+      "description": "Conciliar medios, turno y diferencias; cancelar, cerrar y reimprimir sin duplicar.",
+      "stage": 4
+    },
+    {
+      "id": "conciliacion",
+      "title": "Conciliar circuitos y saldos",
+      "description": "Relacionar venta, deuda, cobro, recepción, caja e inventario por su operación de origen.",
+      "stage": 4
+    },
+    {
+      "id": "integridad-operaciones",
+      "title": "Integridad de las operaciones",
+      "description": "Comprobar recuperación, autorización, históricos y efectos únicos entre circuitos.",
+      "stage": 4
+    },
+    {
+      "id": "inventario",
+      "title": "Inventario: ajustes y traslados",
+      "description": "Revisar ajustes, traslados, cierre anual y conciliación de existencias.",
+      "stage": 6
+    },
+    {
+      "id": "respaldos",
+      "title": "Respaldos y recuperación",
+      "description": "Verificar exportación, importación y recuperación en un laboratorio descartable.",
+      "stage": 6
+    },
+    {
+      "id": "cobros-combinados",
+      "title": "Cobros combinados",
+      "description": "Dividir un cobro entre medios y monedas, corregirlo y cerrar una sola vez.",
+      "stage": 3
+    },
+    {
+      "id": "concurrencia",
+      "title": "Operaciones simultáneas",
+      "description": "Comprobar conflictos entre puestos y efectos únicos sobre documentos y stock.",
+      "stage": 6
+    },
+    {
+      "id": "sincronizacion",
+      "title": "Sincronización",
+      "description": "Reenviar operaciones y resolver conflictos sin duplicar ni perder información.",
+      "stage": 6
+    },
+    {
+      "id": "actualizacion",
+      "title": "Actualizar XGestión",
+      "description": "Comprobar cambio de versión, reinicio y conservación de históricos en una copia QA.",
+      "stage": 6
+    },
+    {
+      "id": "beneficios",
+      "title": "Beneficios e impuestos",
+      "description": "Combinar descuentos, centavos, impuestos y puntos con importes verificables.",
+      "stage": 2
+    },
+    {
+      "id": "impuestos",
+      "title": "Impuestos y desglose",
+      "description": "Comparar bases, impuestos y total visible con el documento guardado.",
+      "stage": 2
+    },
+    {
+      "id": "fidelizacion",
+      "title": "Puntos y fidelización",
+      "description": "Canjear, cancelar y consultar puntos por cliente, vigencia y condición de venta.",
+      "stage": 2
+    },
+    {
+      "id": "ofertas-usd",
+      "title": "Ofertas en USD — P0",
+      "description": "Precio final USD 50 por producto, familia, subfamilia, marca y sector; 13 variantes de cantidad, agrupación y cobro.",
+      "stage": 2
+    }
   ]
 }

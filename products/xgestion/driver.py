@@ -128,19 +128,30 @@ class SemanticDriver:
         element = self.find(alias)
         if not element.enabled:
             raise QAError(f"Control deshabilitado: {alias}.")
-        # Acción accesible del control; nunca método de dominio ni coordenadas fijas.
         diagnostic("Activar control", control=alias)
-        self.bridge.click_element(element, action=True)
+        try:
+            # RPA 33 JavaElement.click usa coordenadas incluso con action=True.
+            # ContextNode.click ejecuta AccessibleAction y falla si no existe.
+            with private_input():
+                element.node.click()
+        except Exception:
+            raise QAError(f"No se pudo activar la acción accesible de {alias}; revisar la calibración.") from None
 
     def type(self, alias, text, *, enter=False, secret=False):
-        element = self.find(alias)
-        if not element.enabled:
-            raise QAError(f"Campo deshabilitado: {alias}.")
         try:
-            # Ni siquiera TRACE registra lo escrito, aunque no sea un campo secreto.
             diagnostic("Completar campo", control=alias)
-            with private_input() if secret else contextlib.nullcontext():
-                self.bridge.type_text(element, str(text), clear=True, enter=enter)
+            # RPA JAB type_text hace doble clic antes de escribir. Pedir/verificar
+            # foco nativo y usar sólo teclado evita esa dependencia de geometría.
+            # Todo texto permanece privado, incluso si secret=False.
+            with private_input():
+                from RPA.Desktop import Desktop
+                keyboard = Desktop()
+                self._focus_element(alias)
+                self.bridge.press_keys("ctrl", "a")
+                self.bridge.press_keys("delete")
+                keyboard.type_text(str(text), enter=enter)
+        except QAError:
+            raise
         except Exception:
             raise QAError(f"No se pudo completar el campo {alias}.") from None
 
@@ -154,7 +165,7 @@ class SemanticDriver:
     def table_rows(self, alias) -> list[list[str]]:
         """Leer todas las celdas sólo si coinciden con las dimensiones nativas JAB."""
         try:
-            # Refresh y read_table pueden registrar el árbol y sus datos aun en TRACE.
+            # La lectura JAB puede registrar el árbol y sus datos aun en TRACE.
             with private_input():
                 _, cells, row_count, column_count = self._table_cells(alias)
                 rows = [[str(cell.text or cell.name or "").strip() for cell in row] for row in cells]
@@ -178,11 +189,23 @@ class SemanticDriver:
             raise QAError(f"La tabla {alias} no informa dimensiones válidas.")
         cells = []
         if row_count:
-            cells = self.bridge.read_table(element, visible_only=False)
+            children = list(element.node.children)
+            count = row_count * column_count
+            if (type(element.node.context_info.childrenCount) is not int
+                    or element.node.context_info.childrenCount != count or len(children) != count
+                    or any(type(child.context_info.indexInParent) is not int
+                           or child.context_info.indexInParent != index for index, child in enumerate(children))):
+                raise QAError(f"Lectura incompleta de la tabla {alias}; revisar la calibración.")
+            # RPA read_table infiere columnas por geometría: las columnas ID de ancho
+            # cero comparten x con la siguiente y rompen esa inferencia. JAB entrega
+            # todas las celdas en orden de índice, incluidas las columnas ocultas.
+            flat = [type(element)(child, scaling_factor=self.bridge.display_scale_factor,
+                                  index=index, column_count=column_count)
+                    for index, child in enumerate(children)]
+            cells = [flat[index:index + column_count] for index in range(0, count, column_count)]
             current = element.node.table.table
             if ((current.rowCount, current.columnCount) != (row_count, column_count)
-                    or not isinstance(cells, list) or len(cells) != row_count
-                    or any(not isinstance(row, list) or len(row) != column_count for row in cells)):
+                    or element.node.context_info.childrenCount != count):
                 raise QAError(f"Lectura incompleta de la tabla {alias}; revisar la calibración.")
         return element, cells, row_count, column_count
 
@@ -326,10 +349,13 @@ class SemanticDriver:
         diagnostic("Atajo permitido enviado", control=alias, shortcut="Ctrl+E")
 
     def keys(self, alias, *keys):
-        """Enviar Tab o Esc al control propio sólo después de confirmar su foco."""
+        """Enviar Tab/Esc; Enter sólo en buscadores de pago/lista, con foco confirmado."""
         # RPA interpreta varios argumentos como un acorde, no como una secuencia.
-        if len(keys) != 1 or not isinstance(keys[0], str) or keys[0].lower() not in {"tab", "esc"}:
-            raise QAError("Sólo se permite una tecla Tab o Esc por acción semántica.")
+        allowed = {"tab", "esc"}
+        if alias in {"list_picker.search", "payment_picker.search"}:
+            allowed.add("enter")
+        if len(keys) != 1 or not isinstance(keys[0], str) or keys[0].lower() not in allowed:
+            raise QAError("Tecla no permitida para este control semántico.")
         try:
             with private_input():
                 self._focus_element(alias)
@@ -356,6 +382,82 @@ class SemanticDriver:
                                  observed="[CAMPO DE ACCESO OMITIDO]" if sensitive else observed)
                 raise AssertionError(message)
             time.sleep(0.25)
+
+    def expect_state(self, alias, state, expected):
+        """Leer permisos/estado accesible sin escribir ni forzar foco."""
+        if state not in {"editable", "focusable", "enabled", "selected", "checked"} or type(expected) is not bool:
+            raise QAError("Estado accesible fuera del contrato.")
+        with private_input():
+            element = self.find(alias)
+            element.node.refresh()
+            states = self._states(element)
+        if not states - {""}:
+            raise QAError("Falta evidencia de estados accesibles; no acredita un permiso denegado.")
+        observed = state in states
+        if observed != expected:
+            message = f"Estado {state} inesperado en {alias}."
+            assertion_failed(message, expected=expected, observed=observed)
+            raise AssertionError(message)
+
+    def expect_choice(self, alias, expected):
+        """Consultar el hijo seleccionado del combo mediante JAB, sin cambiarlo."""
+        try:
+            with private_input():
+                element = self.find(alias)
+                node = element.node
+                node.refresh()
+                wrapper = node._jab_wrapper
+                if (not node.context_info.accessibleSelection
+                        or wrapper.get_accessible_selection_count_from_context(node.context) != 1):
+                    raise QAError("El selector no informa una única opción accesible.")
+                selected = wrapper.get_accessible_selection_from_context(node.context, 0)
+                observed = str(wrapper.get_context_info(selected).name).strip()
+        except QAError:
+            raise
+        except Exception:
+            raise QAError("No se pudo comprobar la opción seleccionada por JAB.") from None
+        if observed not in expected:
+            message = f"Opción incorrecta en {alias}."
+            assertion_failed(message, expected="Medio QA elegido", observed="Otra opción")
+            raise AssertionError(message)
+
+    def _present(self, alias):
+        entry = self.locators["elements"][alias]
+        with private_input():
+            if not self._select_window(entry["window"]):
+                return False
+            found = self.bridge.get_elements(entry["query"], java_elements=True, strict=True)
+            showing = [item for item in found if item.showing]
+            if len(showing) > 1:
+                raise QAError(f"Aviso ambiguo: {alias}.")
+            return bool(showing)
+
+    def observe_notice(self, alias, action, *, expected, duration=4, max_gap=1):
+        """Observar un aviso transitorio; una pausa larga bloquea la conclusión."""
+        if self._present(alias):
+            raise QAError("Quedó un aviso anterior; no se atribuye a la acción actual.")
+        previous = time.monotonic()
+        action()
+        deadline = time.monotonic() + duration
+        seen = False
+        while True:
+            present = self._present(alias)
+            now = time.monotonic()
+            if now - previous > max_gap:
+                raise QAError("La observación del aviso tuvo una interrupción; evidencia incompleta.")
+            previous = now
+            seen = seen or present
+            if present and not expected:
+                message = "Se mostró un aviso de descuento manual con el aviso desactivado."
+                assertion_failed(message, expected="Sin aviso", observed="Aviso visible")
+                raise AssertionError(message)
+            if now >= deadline:
+                break
+            time.sleep(0.1)
+        if seen != expected:
+            message = "No apareció el aviso de descuento manual esperado."
+            assertion_failed(message, expected="Aviso visible", observed="Ausente durante la observación")
+            raise AssertionError(message)
 
     def wait_gone(self, alias, timeout=20):
         entry = self.locators["elements"][alias]

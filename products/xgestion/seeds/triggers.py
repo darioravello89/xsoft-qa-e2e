@@ -1,7 +1,8 @@
 """Read-only certification of database automation reachable by commercial seeds.
 
-Only reviewed XGestion2 f34238183d494259bed1279dd7d9aac0ce16a3ae bodies
-are accepted. No routine, trigger or queue is created, changed or disabled.
+Only reviewed XGestion2 f34238183d494259bed1279dd7d9aac0ce16a3ae bodies,
+plus _pagos triggers from 4b80ca6af137d1a7c06ac6d4545e1c08f9f21f1a, are accepted.
+No routine, trigger or queue is created, changed or disabled.
 Whitespace outside SQL tokens is immaterial; literals and identifiers remain
 case-sensitive and complete. Unknown bodies fail closed without printing SQL.
 """
@@ -180,6 +181,8 @@ _TRIGGER_ARGUMENTS = {
     "_subfamilias": ("0", "0", "subId"),
     "_ubicaciones": ("0", "0", "ubiId"),
     "_proveedores": ("0", "0", "proId"),
+    # DATABASE_SCHEMA.sql:2678-2687, additionally reviewed at 4b80ca6af137d1a7.
+    "_pagos": ("0", "0", "pagId"),
     "articulos": ("0", "0", "artId"),
     "productos_hijos": ("0", "0", "prhId"),
     "productos_opciones": ("0", "0", "ID_ProductoOpcion"),

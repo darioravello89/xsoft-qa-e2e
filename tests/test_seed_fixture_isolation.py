@@ -66,3 +66,31 @@ def test_original_fixture_delegates_unchanged_context_to_guarded_seed(fixtures, 
     sandbox.connection.assert_called_once_with()
     assert result == apply.return_value
     assert fixtures == original
+
+
+def test_profile_is_applied_to_catalog_and_forwarded_to_guarded_connection(fixtures, monkeypatch):
+    sandbox = MagicMock()
+    sandbox.connection.return_value.__enter__.return_value = sentinel.connection
+    apply = Mock(return_value={"catalog_sha256": "profile-fingerprint"})
+    monkeypatch.setattr(engine, "apply_to_connection", apply)
+    profile = ("XG-PRM-070", "inactive")
+
+    assert engine.apply_seed(sandbox, fixtures, journey_profile=profile) == apply.return_value
+
+    assert apply.call_args.kwargs == {"journey_profile": profile}
+    assert apply.call_args.args[0] == sentinel.connection
+
+
+def test_invalid_profile_is_rejected_before_opening_database(fixtures):
+    sandbox = Mock()
+    with pytest.raises(QAError, match="[Pp]erfil"):
+        engine.apply_seed(sandbox, fixtures, journey_profile=("XG-PRM-070", "typo"))
+    sandbox.connection.assert_not_called()
+
+
+def test_new_journey_product_collision_is_guarded_before_connecting(fixtures):
+    fixtures["product"]["id"] = 981801  # XG-PRM-008, disjoint from original 980xxx battery.
+    sandbox = Mock()
+    with pytest.raises(QAError, match="colisiona con los fixtures originales"):
+        engine.apply_seed(sandbox, fixtures)
+    sandbox.connection.assert_not_called()

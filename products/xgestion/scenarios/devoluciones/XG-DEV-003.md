@@ -1,0 +1,59 @@
+---
+{"id":"XG-DEV-003","title":"Devolver parte de los productos sin anular toda la venta","product":"xgestion","module":"devoluciones","tags":["xgestion","regression","devoluciones","stock","cobros","comprobantes"],"status":"planned"}
+---
+
+# XG-DEV-003 — Devolver parte de los productos sin anular toda la venta
+
+## Objetivo
+
+Reintegrar sólo lo devuelto y conservar el resto de la operación y su trazabilidad.
+
+## Estado y alcance
+
+**Pendiente de automatizar — `planned`. Prioridad P0; etapa 4.**
+Ver [mapa de cobros y documentos](../../docs/cobros-documentos.md).
+No tiene Robot, seed propio ni ejecución real del JAR. Los resultados son criterios de aceptación; los pasos con contrato pendiente no afirman que esa funcionalidad exista ni se habilitan por observar la pantalla.
+
+## Precondiciones y datos
+
+- Windows QA exclusivo y offline, escritorio visible, paquete privado autorizado y baseline recuperable. Identificar JAR/SHA256, empresa, sucursal, puesto, operador y documentos de control.
+- Datos QA-COB/QA-PRE/QA-DEV e importes de esta ficha son **propuestas sintéticas pendientes de seed y calibración**. `catalogo-comercial-v1` no acredita estos documentos, pagos o estados.
+- Perfil local no fiscal; sin impresión, integraciones de pago, correo ni red. Sin ofertas, descuentos, recargos, impuestos adicionales ni financiación salvo variante explícita. Medios manuales QA separados de pasarelas reales.
+- Propuesta de fixture: venta pagada en efectivo A × 2 a ARS 1.000 y B × 1 a ARS 500, total ARS 2.500; devolución de A × 1 por ARS 1.000.
+- **Contrato y soporte de UI pendientes.** La revisión acotada verificó anulación completa, no una devolución parcial local. No sustituirla por editar/borrar un renglón cerrado ni inventar un botón.
+
+## Pasos y resultados esperados
+
+| Paso del usuario | Resultado esperado |
+| --- | --- |
+| Una vez identificado y aprobado el circuito, abrir la devolución parcial del documento correcto. | Muestra cantidades originales y ya devueltas; iniciar no revierte dinero ni stock. |
+| Seleccionar sólo A × 1 y cancelar antes de confirmar. | No cambia venta, cantidades devueltas, stock ni dinero. |
+| Retomar y confirmar A × 1 con motivo por la ruta aprobada. | Criterio propuesto: devolución ARS 1.000 y reposición de una A; conserva pendiente de devolución A × 1/B × 1, valor ARS 1.500, sin anular todo. |
+| Intentar devolver A × 2 adicionales. | Rechaza superar la cantidad restante; no devuelve dinero ni stock duplicados. |
+
+## Variantes y dependencias
+
+Todos los pasos están bloqueados hasta identificar soporte, tipo de documento, vínculo con original, impuestos/descuentos y política de importe a reintegrar. Si sólo existe circuito fiscal, requiere su laboratorio y aprobación propios. No afirmar cobertura de devolución parcial con tests de anulación total. Variantes devolución total en varias parciales y centavos sólo después del contrato.
+
+Calibrar controles accesibles para el JAR antes de automatizar; los nombres/atajos leídos en fuente no sustituyen calibración. No usar coordenadas fijas ni extender permisos de doble clic de otras pantallas. Preparar oráculos independientes por identidad, importe original/operativo, medio, moneda y contexto; toda regla no confirmada se resuelve antes de habilitar su variante.
+
+## Evidencia y límites
+
+Contrastar documento, pagos, saldo, caja e inventario según el alcance de los pasos, con importes iniciales/finales y deltas esperados. Separar estados de preparación, persistencia de borrador/pagos y cierre definitivo. No exigir ausencia de todo registro cuando puede existir historia inactiva. Libro diario y caja pueden tener representaciones distintas: no sumar filas indiscriminadamente como dinero duplicado.
+
+Registrar en informe privado JAR/SHA256, commit del harness, paquete, perfil, variante e identidades saneadas. INFO resume, DEBUG describe pasos y TRACE aporta diagnóstico acotado; todo fallo conserva paso, esperado, observado, categoría y evidencia. Causa no determinada si no hay prueba causal; nunca credenciales, configuración privada completa ni filas enteras.
+
+## Recuperación
+
+Conservar evidencia y consultar el estado antes de repetir una confirmación incierta. Cancelar por interfaz cuando el paso lo permita; no improvisar pagos compensatorios ni SQL comercial. Si no existe procedimiento aprobado para el estado parcial, mantener el bloqueo. Restaurar baseline antes de otra variante; anular una operación no reemplaza restaurar el laboratorio.
+
+## Anexo técnico y trazabilidad
+
+Fuente ERP inspeccionada: `daa002d597d0fa7380ace204d3727085c52d1415`. Rutas y líneas relativas a XGestion2:
+
+- `src/ModuloVentas/Vistas/FormVentas.java:1323-1359`.
+- `src/ModuloVentas/Entidades/TicketVenta.java:3302-3382`.
+- `test/ModuloVentas/Entidades/VentaTotalesCalculadorTest.java:87-105`.
+
+Las referencias describen reglas o riesgos; los tests fuente no acreditan el flujo E2E del JAR. Las modalidades pendientes de contrato están delimitadas arriba, sin inventar su soporte.
+

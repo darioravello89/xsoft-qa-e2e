@@ -1,8 +1,10 @@
 # Datos fijos para practicar ventas y ampliar pruebas
 
-`catalogo-comercial-v1` prepara una batería pública de datos sintéticos: **48 artículos, 19 ofertas, 5 listas y 6 precios de lista**, con catálogos auxiliares y 43 movimientos iniciales de stock. Permite volver a los mismos productos y condiciones sin inventar datos para cada caso.
+`catalogo-comercial-v1` prepara una batería pública de datos sintéticos: **387 artículos, 163 ofertas, 9 listas y 3 medios manuales QA**, con catálogos auxiliares y movimientos iniciales de stock. Permite volver a los mismos productos y condiciones sin inventar datos para cada caso.
 
-El seed es opcional para los casos iniciales y los nueve de Venta cotidiana, que conservan el producto del paquete privado —90001 en el ejemplo—. Los siete casos de [promociones](promociones.md) usan artículos de esta batería y declaran el seed como requisito: el runner lo prepara automáticamente al seleccionarlos. Los artículos nuevos tienen códigos `QA-SEED-*` e IDs reservados `980xxx`. Crear los datos no agrega casos Robot ni acredita ventas, ofertas, impuestos o stock del JAR.
+El seed es opcional para los casos iniciales y los nueve de Venta cotidiana, que conservan el producto del paquete privado —90001 en el ejemplo—. Los 77 casos implementados de promociones usan artículos de esta batería y declaran el seed como requisito: el runner lo prepara automáticamente al seleccionarlos. La batería original usa códigos `QA-SEED-*` e IDs `980xxx`; las nuevas canastas agregan códigos `QA-PRM-*` e identidades reservadas por caso/variante (ver sus fichas). Crear los datos no agrega casos Robot ni acredita ventas, ofertas, impuestos o stock del JAR.
+
+Los 48 artículos originales se conservan. Las nuevas canastas usan identidades propias descritas en sus [fichas y guía de ejecución](canastas-ofertas.md), incluidos los perfiles de activación y los medios offline.
 
 ## Revisar sin instalar el producto
 
@@ -98,7 +100,7 @@ Las ofertas usan IDs 980101–980119 en su propia tabla. La vigencia activa es r
 
 El seed no asigna listas a clientes, turnos, usuarios ni sucursales por defecto. Los escenarios deben declarar la lista seleccionada, moneda, cotización, configuración de precios por cantidad y reglas de combinación antes de comparar montos. Tampoco desactiva ofertas ajenas que ya contenga el baseline: el responsable debe preparar el perfil sin condiciones generales que contaminen los ejemplos.
 
-`PRICING_CASES` en [pricing.py](../seeds/pricing.py) conserva 26 ejemplos con resultado calculado desde reglas de fuente, todos `manual_pending` respecto de su validación real. Siete declaran además `e2e_scenario`, que los vincula con XG-PRM-001 a XG-PRM-007: porcentaje, importe fijo, 2x1, segunda al 50 %, vencida, futura e inactiva. Esas fichas tienen automatización implementada; el vínculo no acredita PASS ni convierte los otros 19 ejemplos en escenarios ejecutables. Ejemplos: PCT×3 → 2700; IMP×3 → 2550; 2X1×3 → 2000; segunda al 50%×3 → 2500; combo A+B → 1500; combo 2A+B con descuento al sobrante → 2400. Todos requieren perfil explícito y observación del JAR; los importes públicos no son resultados de una ejecución.
+`PRICING_CASES` en [pricing.py](../seeds/pricing.py) conserva 26 ejemplos con resultado calculado desde reglas de fuente, todos `manual_pending` respecto de su validación real. Los 26 declaran `e2e_scenario`: veinte vínculos apuntan a fichas implementadas de promociones y seis a LPR-016/017/019/020 pendientes. Ningún vínculo acredita PASS ni garantiza los datos adicionales del perfil. Ejemplos: PCT×3 → 2700; IMP×3 → 2550; 2X1×3 → 2000; segunda al 50%×3 → 2500; combo A+B → 1500; combo 2A+B con descuento al sobrante → 2400. Todos requieren perfil explícito y observación del JAR; los importes públicos no son resultados de una ejecución.
 
 Para fraccionados: 0,500 KG con mínimo 0 → 400; con mínimo 1 → 500; 1 KG con mínimo 1 → 800. Hay diferencias entre el cálculo aislado y el filtro de aplicabilidad cuando mínimo 0 se combina con cantidades mayores: no extrapolar estas tres muestras a toda cantidad sin comprobar el recorrido real.
 
@@ -130,7 +132,30 @@ El stock inicial es **un movimiento fijo reservado por producto**; no se agrega 
 
 La recuperación es volver a una restauración controlada. Un fallo de preflight deja la preparación rechazada; no continuar a Robot ni editar manualmente el marcador de propiedad. Guardar el resumen local y corregir paquete, contexto, catálogo o esquema en su origen. Cambiar nombres/IDs directamente en la DB para eludir una colisión rompe el contrato.
 
+## Datos pendientes para los circuitos críticos
+
+El [roadmap financiero y operativo](circuitos-criticos.md) declara 58 fichas con
+fixtures todavía no implementados: saldos de clientes/proveedores por moneda,
+documentos y pagos por estado, planes/cuotas/mora, conceptos y turnos de caja,
+roles, identidades de varios contextos, movimientos de inventario y respaldos.
+Los importes y códigos QA de las fichas son requisitos de una extensión futura;
+`catalogo-comercial-v1` no los crea por existir productos comerciales.
+
+Versionar upserts, controles de colisión y restauración antes de habilitar suites.
+No completar la preparación editando deuda/caja mediante SQL durante una prueba.
+La importación del producto por upserts no sustituye el baseline descartable ni
+su procedimiento de recuperación exacta. Esta entrega no aplica datos a ninguna base.
+
 ## Evidencia y límites
+
+De los 26 ejemplos comerciales, veinte enlazan fichas implementadas y seis
+enlazan fichas de listas pendientes (LPR-016/017/019/020). El
+[mapa de promociones pendientes](promociones-pendientes.md) distingue cada
+recorrido y qué datos nuevos necesita. Un vínculo a una ficha `planned` no la
+automatiza ni garantiza que todos sus perfiles existan en el seed; por ejemplo,
+los casos de listas requieren además clientes, turnos, contextos o configuración de moneda según su ficha.
+Los upserts actuales conservan sus datos y precios; esta ampliación registra
+referencias de cobertura sin aplicar datos a una base.
 
 La referencia inspeccionada es XGestion2 `release/189-lts`, commit `f34238183d494259bed1279dd7d9aac0ce16a3ae`. No demuestra equivalencia con un JAR recibido. Rutas siguientes relativas a ese repositorio:
 
@@ -149,3 +174,25 @@ La referencia inspeccionada es XGestion2 `release/189-lts`, commit `f34238183d49
 Las comprobaciones Python verifican datos, invariantes y el motor; una prueba SQL sobre un esquema sintético acredita el comportamiento del seed en ese esquema. Ninguna reemplaza la comprobación del paquete real ni GUI/venta sobre el JAR. Quedan fuera activación fiscal, impresión, balanza física, listas por cliente/turno asignadas automáticamente e integraciones externas. Para ampliar escenarios, usar el [roadmap](roadmap.md) y actualizar la [cobertura](cobertura.md) solo con evidencia del nivel realmente ejecutado.
 
 Esta es una batería inicial de ejemplos concretos, no la combinatoria completa del producto. Quedan como extensiones explícitas el ingreso manual de precio o nombre, otros impuestos/ITC, ofertas condicionadas por medio de pago, asignaciones de listas por cliente o turno y sus cruces con descuentos, moneda, cantidades, bultos, permisos y recuperación. Cada extensión necesita datos propios, configuración declarada y expectativas observables; no se considera cubierta porque exista un artículo parecido ni porque el seed se aplique correctamente.
+
+## Datos pendientes para los nuevos circuitos
+
+Los mapas de [remitos](remitos.md), [Restobar](restobar.md) y
+[listas](listas-precios.md) separan datos existentes de fixtures propuestos.
+Los 387 productos actuales no equivalen a disponer de proveedores, documentos,
+salón/mesas, recetas actuales y heredadas, opciones, clientes/sucursales/turnos
+ni permisos necesarios para esos recorridos. Preparar sus ampliaciones idempotentes
+al automatizar cada hito, conservando identidad, aislamiento y recuperación.
+Ninguna ficha nueva activa por sí sola esos datos ni ejecuta el seed.
+
+El [complemento crítico](complementos-criticos.md) requiere además canastas de
+cobro combinado, documentos previos con pagos/devoluciones identificados,
+puntos con fecha/saldo y precios/impuestos aprobados. Recuperación/actualización
+requieren copias de bases por versión y fallos controlables. Servicios y
+sincronización necesitan identidades sandbox, estados remotos y procedimientos
+de conciliación propios. Ninguno de esos requisitos se satisface sólo con el
+seed comercial actual; las 50 fichas nuevas siguen `planned` sin `seed` declarado.
+
+## Precio final en USD — P0
+
+[PRM-080..084](ofertas-usd.md) añaden 37 productos y 13 ofertas independientes, prefijos QA-PRM-080..084 y reservas 989000..989429. Artículos USD 100 (ID_Moneda=2), ofertas LXO+$CU con Paga=50, mínimos 1/2 y agrupación sólo para familia/subfamilia/marca. Nunca convertir Paga a 75000: ocultaría la regresión. El catálogo actual tiene 387 artículos y 163 ofertas; se conservan nueve listas y tres medios QA. Las monedas globales sólo se validan. El paquete debe declarar la cotización 1500; el seed no la altera.

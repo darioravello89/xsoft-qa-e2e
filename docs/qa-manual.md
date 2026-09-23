@@ -2,7 +2,7 @@
 
 Estado inicial: **pendiente** de paquete privado legítimo, calibración y ejecución sobre XGestion. Completar este protocolo antes de acreditar la plataforma para QA rutinaria.
 
-La ampliación de roadmap/grupos/logs se revisa primero **sin abrir XGestion**: `qa.cmd check`, `list --groups`, `list --group ventas`, `list --group promociones`, menú y dry-run deben mostrar 21 casos implementados y ninguno planificado: cinco smoke, nueve ventas y siete promociones. Los planificados no se ejecutan; las referencias R01–R20 de Restobar no cuentan como fichas. Usar los tests del framework con canarios sintéticos para revisar sanitización y fallos en INFO/DEBUG/TRACE. Eso acepta el funcionamiento técnico de la ampliación, no el producto.
+La ampliación de roadmap/grupos/logs se revisa primero **sin abrir XGestion**: `qa.cmd check`, `list --groups`, `list --group ventas`, `list --group promociones`, menú y dry-run deben distinguir 96 implementados —cinco smoke, nueve ventas y 82 promociones— de 202 pendientes (PRM-077/078 más remitos, Restobar, listas y circuitos críticos). Los planificados no se ejecutan; las referencias R01–R20 de Restobar no cuentan como fichas. Usar los tests del framework con canarios sintéticos para revisar sanitización y fallos en INFO/DEBUG/TRACE. Eso acepta el funcionamiento técnico de la ampliación, no el producto.
 
 ```text
 QA MANUAL — XSOFT QA E2E
@@ -40,9 +40,12 @@ QA MANUAL — XSOFT QA E2E
 6. Ejecutar .\qa.cmd list --product xgestion --groups y
    .\qa.cmd list --product xgestion --group ventas.
    Abrir .\qa.cmd sin argumentos, Ver grupos y Ejecutar grupo.
-   Esperado: nombres/descripciones/conteos comprensibles; 21 casos
-   implementados y ninguno planned en el catálogo general. En ventas hay
-   nueve implementados y en promociones siete; ninguno planned.
+   Esperado: nombres/descripciones/conteos comprensibles; 96 casos
+   implementados y 202 planned en el catálogo general. En ventas hay
+   nueve implementados y doce planned; en promociones, 77 implementados y 2 planned.
+   Consultar promociones-alcances, promociones-agrupadas, promociones-combos
+   y promociones-condiciones: 31, 21, 5 y 13 implementados respectivamente.
+   Sólo promociones-condiciones conserva 2 pendientes (PRM-077/078).
    Los pendientes no pueden ejecutarse.
    Elegir nivel 1 Resumen, 2 Paso a paso o 3 Diagnóstico en el menú.
 
@@ -103,3 +106,26 @@ y el requisito faltante; no subir paquetes, bases, secretos o reportes a GitHub.
 La aceptación de Venta cotidiana conserva los nueve casos de venta, incluidos los siete incorporados después del lote inicial. Probar cada uno de forma independiente y en grupo, incluidos los dos recorridos consecutivos dentro del mismo proceso. VEN-003/007 usan botón y Ctrl+E con `ventas-teclado-v1` calibrado; sin esa feature conservan el doble clic legado sobre la celda JAB. Comprobar identidad del producto y cambio de la misma fila; en 007, también rechazo del abandono sin mutaciones intermedias. Las 14 fichas anteriores a promociones —cinco smoke y nueve ventas— conservan su alcance.
 
 La aceptación de [promociones](../products/xgestion/docs/promociones.md) añade siete casos y exige registrar sus resultados por separado, junto con SHA256/build JAR y perfil. Confirmar los importes de cada ficha, la cancelación sin persistencia y el cobro posterior único; no extender ese resultado a combos, listas ni demás ejemplos del seed. Una revisión documental, un test Python o un dry-run no acredita ejecución real. Seguir [roadmap](../products/xgestion/docs/roadmap.md) y [cobertura](../products/xgestion/docs/cobertura.md).
+
+La ampliación de [canastas de ofertas](../products/xgestion/docs/canastas-ofertas.md) agrega 70 recorridos: probar alcances, agrupadas, combos, fechas, listas y medios manuales. Para PRM-070 y PRM-079 verificar todas las fases desde baseline, un único resultado por caso y el bloqueo ante evidencia incompleta. Registrar el perfil observado, el SHA256 del JAR y el informe por fase. PRM-077/078 permanecen pendientes hasta disponer del paquete de varias empresas/sucursales. Las leyendas visuales de combos de PRM-060/062 conservan su comprobación manual pendiente de accesibilidad; la automatización verifica la identidad de la oferta persistida.
+
+La ampliación documental agrega 24 remitos, 40 Restobar y 28 listas. Verificar que `list --group remitos`, `restobar` y `listas-precios` permite leer sus fichas y que el menú no los ofrece para ejecutar. El dry-run de regresión conserva 96 casos; ninguna de las 92 fichas nuevas puede aparecer aprobada.
+
+Para la ampliación de circuitos críticos, revisar `list --group ctacte-clientes`,
+`ctacte-proveedores`, `cuotas`, `libro-diario`, `caja`, `conciliacion`,
+`inventario` y `respaldos`. El [mapa central](../products/xgestion/docs/circuitos-criticos.md)
+enlaza 58 fichas nuevas planned. Deben verse en Excel y menú como pendientes,
+sin habilitar ejecución ni aumentar los 96 casos del dry-run. Confirmar que
+cada variante informa los datos, permisos y preparación todavía faltantes.
+
+## Complemento de escenarios críticos
+
+El [mapa complementario](../products/xgestion/docs/complementos-criticos.md) añade 50 fichas
+planned de cobros/documentos, servicios, continuidad y beneficios. Revisar
+los filtros del catálogo y del Excel; deben conservar 96 implementados,
+202 pendientes y ninguna validación real inferida. Los casos nuevos no se
+ejecutan. Datos, accesibilidad y laboratorios propios siguen pendientes.
+
+## Ofertas USD P0
+
+Seguir [el perfil y las trece variantes](../products/xgestion/docs/ofertas-usd.md), seleccionando `ofertas-usd`. Comprobar los cinco IDs PRM-080..084 en menú/Excel, prioridad P0 y validación real pendiente. En el JAR calibrado: USD 100 con precio final USD 50 debe cobrar ARS 75000 a cotización 1500; con dos unidades ARS 150000. Cambiar cantidad y cancelar/retomar no duplica descuentos ni cobros. El informe debe identificar moneda, esperado y observado incluso en INFO. No aprobar si falta alguna variante, perfil o evidencia.

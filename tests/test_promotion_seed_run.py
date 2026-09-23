@@ -97,3 +97,47 @@ def test_seed_receipt_never_inherits_another_run(tmp_path, monkeypatch, status, 
     assert received["XSOFT_QA_SEED"] == expected
     assert received["XSOFT_QA_SEED_DATE"] == ("2026-09-22" if expected else "")
     assert result["code"] == 130
+
+
+@pytest.mark.parametrize("dry_run,provided,expected", [(False, False, ""), (True, True, ""),
+                                                     (False, True, "active")])
+def test_offer_profile_receipt_is_internal_and_never_inherited(tmp_path, monkeypatch, dry_run, provided, expected):
+    from framework import processes
+
+    received = {}
+
+    def capture(*args, **kwargs):
+        received.update(kwargs["env"])
+        raise KeyboardInterrupt
+
+    for name in ("XSOFT_QA_OFFER_VARIANT", "XSOFT_QA_OFFER_PROFILE", "XSOFT_QA_OFFER_CASE"):
+        monkeypatch.setenv(name, "OLD-APPROVAL")
+    monkeypatch.setattr(processes, "run_owned_process", capture)
+    context = {"case_id": "XG-PRM-070", "variant": "active"} if provided else None
+    runner.execute_robot(tmp_path, tmp_path, [{"id": "XG-PRM-070", "title": "Oferta", "tags": []}],
+                         dry_run=dry_run, secrets=[], log_level="INFO", groups=[], profile_context=context,
+                         seed_context={"status": "seed-applied", "name": NAME, "reference_date": "2026-09-22"})
+    assert received.get("XSOFT_QA_OFFER_VARIANT", "") == expected
+    assert "XSOFT_QA_OFFER_CASE" not in received
+    if expected:
+        assert json.loads(received["XSOFT_QA_OFFER_PROFILE"]) == context
+    else:
+        assert not received.get("XSOFT_QA_OFFER_PROFILE")
+
+
+@pytest.mark.parametrize("context,seed", [
+    ({"case_id": "XG-PRM-070", "variant": "unknown"}, {"status": "seed-applied", "name": NAME}),
+    ({"case_id": "XG-PRM-079", "variant": "general-off"}, {"status": "seed-applied", "name": NAME}),
+    ({"case_id": "XG-PRM-070", "variant": "active"}, None),
+])
+def test_unverified_offer_profile_cannot_launch_robot(tmp_path, monkeypatch, context, seed):
+    from framework import processes
+    from framework.errors import QAError
+
+    launch = Mock()
+    monkeypatch.setattr(processes, "run_owned_process", launch)
+    with pytest.raises(QAError):
+        runner.execute_robot(tmp_path, tmp_path, [{"id": "XG-PRM-070", "title": "Oferta", "tags": []}],
+                             dry_run=False, secrets=[], log_level="INFO", groups=[], profile_context=context,
+                             seed_context=seed)
+    launch.assert_not_called()

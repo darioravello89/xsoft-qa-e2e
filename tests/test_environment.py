@@ -52,3 +52,42 @@ def test_app_config_pins_private_connection_without_reimplementing_encryption(tm
         assert actual[key] == values[key]
     with source.open("rb") as handle:
         assert javaproperties.load(handle) == values
+
+
+@pytest.mark.parametrize("name,general,offers,warning", [
+    ("base", "true", "true", "false"), ("general-off", "false", "true", "false"),
+    ("offers-off", "true", "false", "false"), ("allowed-warning-on", "true", "true", "true"),
+    ("allowed-warning-off", "true", "true", "false"),
+])
+def test_offer_profile_sets_only_declared_runtime_properties(tmp_path, name, general, offers, warning):
+    source = tmp_path / "imported.properties"
+    company_key = "empresa.90001.venta.recalcularProductosAlCambiarListaPrecioVenta"
+    original = {company_key: "false", "licencia": "SYNTHETIC-LICENSE", "other.setting": "keep",
+                "pedirPagoAlCerrarTicket": "false"}
+    with source.open("w", encoding="ascii") as handle:
+        javaproperties.dump(original, handle, timestamp=False)
+    runtime = tmp_path / "runtime"
+    runtime.mkdir()
+    profile = SimpleNamespace(runtime=runtime, asset=lambda _: source)
+    receipt = environment.prepare_app_config(profile, offer_profile=name, company_id=90001)
+    with (runtime / "app/config.properties").open("rb") as handle:
+        actual = javaproperties.load(handle)
+    assert actual["venta.permitirDescuentosEdicionArticulos"] == general
+    assert actual["venta.permitirDescuentosManualesArticulosConOferta"] == offers
+    assert actual["alertas.advertirDescuentosManualesArticulosConOferta"] == warning
+    assert actual["venta.listadeprecio.elegir"] == "true" and actual[company_key] == "true"
+    assert actual["pedirPagoAlCerrarTicket"] == "true"
+    assert actual["other.setting"] == "keep" and actual["licencia"] == "SYNTHETIC-LICENSE"
+    assert actual["sincronizadorActiva"] == "false" and actual["conexionBaseDatos"] == "xsoft_qa"
+    assert receipt["profile"] == name and "SYNTHETIC-LICENSE" not in repr(receipt)
+    with source.open("rb") as handle:
+        assert javaproperties.load(handle) == original
+
+
+@pytest.mark.parametrize("name,company", [("arbitrary", 90001), ("base", None), ("base", True),
+                                         ("base", 0), ("base", "../other")])
+def test_invalid_offer_profiles_do_not_write_config(tmp_path, name, company):
+    profile = SimpleNamespace(runtime=tmp_path, asset=lambda _: pytest.fail("Do not read private config"))
+    with pytest.raises(QAError):
+        environment.prepare_app_config(profile, offer_profile=name, company_id=company)
+    assert not (tmp_path / "app").exists()

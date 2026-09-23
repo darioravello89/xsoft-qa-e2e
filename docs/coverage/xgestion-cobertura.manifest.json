@@ -1,11 +1,11 @@
 {
-  "data_sha256": "91145c3d34a016da8a24ac34d5b7b0e46e10fde6df109d383b1e5f13d2342425",
-  "generated_at_utc": "2026-09-22T17:21:01+00:00",
+  "data_sha256": "7b0f509d7704f1d7c4fa72708b94a1d1b300bd6511527e0a0d88d6076fa1583d",
+  "generated_at_utc": "2026-09-23T17:22:35+00:00",
   "generators": {
-    "framework/coverage.py": "8a61b978c434f83a19636bf6dd8aee6742f27ecfb9fcb6a57672290f4c30cd59",
+    "framework/coverage.py": "4ec5b625f0d499444d527ad3d309546049f7287f4b5aa740f4a6903de1678b45",
     "framework/coverage_export.py": "5774d2ed896fac779958eed96d369eeded820c85727ef6fb7f24ea1df4652529",
-    "scripts/build-coverage.mjs": "2bd8ac1323cf8d12ad276d32e260ec8c321af71c91e7c7c23b7298a9fbfd7303"
+    "scripts/build-coverage.mjs": "d516d4f299e9a93c14d9b106413ba712463f0e62a846981df1feaf94640606d3"
   },
   "schema_version": 1,
-  "workbook_sha256": "676109e9b9d7575e57fe46b7c5e776c23d0e06d39732ef43592c64a3d6920e0e"
+  "workbook_sha256": "cefc76ed2bcab757e48982118e7eb595f7982b44270ce2800ee7261ab1aa2c99"
 }

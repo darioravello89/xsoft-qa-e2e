@@ -1,5 +1,6 @@
 """Validar lo que recibe QA en Excel sin requerir Office ni runtime de autoría en CI."""
 
+import re
 import zipfile
 from pathlib import Path
 from xml.etree import ElementTree as ET
@@ -57,9 +58,45 @@ def test_published_workbook_contains_cases_backlog_and_counts_without_false_pass
                 )
             else:
                 assert seed_cells[f"G{number}"] == "Sin ficha"
-        assert "26 ejemplos seed: 7 vinculados a fichas y 19 sin ficha" in summary["A32"]
+        assert "26 ejemplos seed: 26 vinculados a fichas y 0 sin ficha" in summary["A32"]
         tables = [ET.fromstring(archive.read(name)) for name in archive.namelist()
                   if name.startswith("xl/tables/table") and name.endswith(".xml")]
         assert len(tables) == 4
         assert all(table.find("s:autoFilter", NS) is not None for table in tables)
         assert not any("vbaProject" in name or "externalLinks" in name for name in archive.namelist())
+
+
+def test_group_labels_preserve_every_member_and_keep_large_groups_readable():
+    model = build_coverage(ROOT)
+    expected = {group["id"]: group["members"] for group in model["groups"] if group["product"] == "xgestion"}
+    with zipfile.ZipFile(ROOT / "docs/coverage/xgestion-cobertura.xlsx") as archive:
+        groups = ET.fromstring(archive.read("xl/worksheets/sheet2.xml"))
+    seen = {}
+    for row in groups.findall("s:sheetData/s:row", NS):
+        number = int(row.get("r"))
+        if number < 7:
+            continue
+        cells = {cell.get("r"): cell_value(cell) for cell in row.findall("s:c", NS)}
+        group = cells.get(f"C{number}")
+        if not group:
+            continue
+        display = cells[f"I{number}"]
+        expanded = []
+        if display != "Por detallar":
+            for token in re.split(r",\s*|\n", display):
+                if ".." not in token:
+                    expanded.append(token)
+                    continue
+                first, end = token.split("..")
+                match = re.fullmatch(r"(.+?-)(\d+)", first)
+                assert match is not None and end.isdigit(), f"Rango ilegible: {token}"
+                prefix, start = match.groups()
+                assert len(start) == len(end) and int(start) < int(end), f"Rango inválido: {token}"
+                expanded.extend(f"{prefix}{value:0{len(start)}}" for value in range(int(start), int(end) + 1))
+        assert expanded == expected[group], f"El resumen alteró miembros, huecos o prefijos del grupo {group}"
+        if group in {"regression", "promociones"}:
+            assert float(row.get("ht")) <= 160, f"El grupo {group} ocupa demasiado alto para leer el mapa"
+        seen[group] = display
+    assert set(seen) == set(expected)
+    assert seen["promociones"] == "XG-PRM-001..084"
+    assert seen["ofertas-usd"] == "XG-PRM-080..084"

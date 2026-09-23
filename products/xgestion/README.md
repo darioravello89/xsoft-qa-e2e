@@ -43,11 +43,11 @@ Consultar `qa.cmd --help` para los filtros disponibles del runner. No ejecutar R
 
 Cada escenario inicia un JAR propio y lo cierra al terminar. Las ventas del run quedan disponibles para inspección hasta la siguiente restauración. No se borran filas ni se anulan documentos para fabricar un resultado verde.
 
-El catálogo tiene **21 casos implementados y 0 planificados: cinco de smoke, nueve de ventas y siete de promociones**. XG-VEN-003/007 usan botón, cancelación y `Ctrl+E` sólo cuando el paquete declara `ventas-teclado-v1`, verificado para su SHA256; mientras tanto conservan el doble clic legado. El [backlog de accesibilidad CSV](docs/backlog-accesibilidad.csv) deja XG-ACC-001 a XG-ACC-005 como implementados pendientes de validación JAR/JAB. Las mejoras 002–005 pertenecen a Restobar y no cuentan como escenarios ni como cobertura de Venta.
+El catálogo tiene **298 fichas: 96 implementadas —cinco de smoke, nueve de ventas y 82 de promociones— y 202 pendientes**. Consultar el [mapa de ofertas por fórmula y alcance](docs/promociones-pendientes.md): PRM-008..076 y PRM-079 tienen recorridos automatizados; PRM-077/078 esperan el paquete de varios contextos. Las 50 fichas del [complemento crítico](docs/complementos-criticos.md) amplían cobros/documentos, servicios, continuidad y beneficios. Las 58 fichas del [roadmap de circuitos críticos](docs/circuitos-criticos.md) detallan cuentas corrientes, cuotas, Libro Diario, caja, conciliación, inventario y respaldos, todas pendientes de automatizar. Las 92 fichas de [remitos de compra](docs/remitos.md), [Restobar y recetas](docs/restobar.md) y [listas de precios](docs/listas-precios.md) están planificadas, con datos/calibración y automatización pendientes. XG-VEN-003/007 usan botón, cancelación y `Ctrl+E` sólo cuando el paquete declara `ventas-teclado-v1`, verificado para su SHA256; mientras tanto conservan el doble clic legado. El [backlog de accesibilidad CSV](docs/backlog-accesibilidad.csv) deja XG-ACC-001 a XG-ACC-005 como implementados pendientes de validación JAR/JAB. Las mejoras 002–005 pertenecen a Restobar y no cuentan como escenarios ni como cobertura de Venta.
 
 Los siete recorridos VEN-003 a VEN-009 requieren `sales_journeys` y el mapa de columnas/controles de [Venta cotidiana](docs/paquete.md), validados antes de iniciar el JAR. Un paquete con el contrato anterior conserva los siete casos iniciales, pero no habilita esos recorridos. VEN-008/009 mantienen el mismo proceso entre operaciones; VEN-008 observa el reinicio automático de la misma ventana. Ninguno tiene todavía validación real registrada.
 
-Los siete casos de promociones requieren el [perfil y calibración de promociones](docs/promociones.md), con `promociones-v1`, `ventas-etapa1` y `ventas-teclado-v1` verificados para el SHA256 del JAR. El runner prepara automáticamente `catalogo-comercial-v1` cuando un grupo, ID o selección del menú lo requiere; también acepta `--seed catalogo-comercial-v1`. El perfil es ARS, comprobante interno 99, efectivo exacto, Ninguna Lista (ID 0), cliente/turno sin listas, otros descuentos en cero y fidelización deshabilitada. No cambiar la configuración desde el test para permitir su ejecución.
+Los siete casos iniciales de promociones requieren el [perfil y calibración de promociones](docs/promociones.md), con `promociones-v1`, `ventas-etapa1` y `ventas-teclado-v1` verificados para el SHA256 del JAR. El runner prepara automáticamente `catalogo-comercial-v1` cuando un grupo, ID o selección del menú lo requiere; también acepta `--seed catalogo-comercial-v1`. El perfil es ARS, comprobante interno 99, efectivo exacto, Ninguna Lista (ID 0), cliente/turno sin listas, otros descuentos en cero y fidelización deshabilitada. No cambiar la configuración desde el test para permitir su ejecución.
 
 Cada promoción compara producto, cantidad, precio base, subtotal bruto, descuento y neto antes y después de editar con `Ctrl+E`; cancela el cobro sin persistencia y luego registra una sola venta con stock/caja coherentes. Los tres casos de oferta no aplicable comprueban primero una promoción válida de control y la abandonan sin efectos. Ejecutar `qa.cmd run --product xgestion --group promociones --log-level DEBUG` en el laboratorio preparado. La existencia de estos siete casos no valida las demás variantes del seed ni acredita ejecución real.
 
@@ -57,9 +57,26 @@ El [roadmap por etapas](docs/roadmap.md) empieza por Venta y continúa con Resto
 
 En el menú se elige un grupo por número y nombre descriptivo, con sus conteos. INFO resume casos/resultados; `--log-level DEBUG` añade pasos y `--log-level TRACE` diagnóstico saneado. Todos muestran fallos comprensibles, sin secretos. Ver la [guía IA](../../docs/guia-ia.md).
 
+- [Remitos de compra: mapa y variantes](docs/remitos.md)
+- [Restobar: opciones, recetas y recorridos](docs/restobar.md)
+- [Listas de precios: origen, prioridad y variantes](docs/listas-precios.md)
+- [Roadmap de circuitos críticos e integridad](docs/circuitos-criticos.md)
+- [Cuentas corrientes de clientes/proveedores y cuotas](docs/cuentas-corrientes.md)
+- [Libro Diario, arqueo y cierre de caja](docs/libro-diario-caja.md)
+- [Inventario y recuperación de respaldos](docs/inventario-respaldos.md)
+- [50 escenarios complementarios y orden de avance](docs/complementos-criticos.md)
+- [Cobros combinados, presupuestos y devoluciones](docs/cobros-documentos.md)
+- [Facturación electrónica y pagos externos](docs/facturacion-pagos-externos.md)
+- [Interrupciones, concurrencia y actualización](docs/continuidad-operativa.md)
+- [Beneficios, puntos e impuestos](docs/beneficios-impuestos.md)
 - [Contrato del paquete privado](docs/paquete.md)
 - [Batería fija de productos, ofertas y listas — seed opcional](docs/seed.md)
+- [Canastas de ofertas: 70 recorridos, listas, pagos y perfiles](docs/canastas-ofertas.md)
 - [Calibración y aceptación JAB](docs/calibracion.md)
 - [Mapa de teclado y nombres accesibles](docs/mapa-accesibilidad.md)
 - [Escenarios y mantenimiento](docs/escenarios.md)
 - [Referencias verificadas](docs/referencias.md)
+
+## Ofertas USD — P0
+
+[XG-PRM-080..084](docs/ofertas-usd.md) agregan cinco casos con trece variantes, datos USD y comprobaciones de moneda, total, cobro único y persistencia. Seleccionar `ofertas-usd`. Exigen calibración `ofertas-usd-v1`, cotización 1500 y cobro ARS; no reutilizar los importes ARS como si fueran USD. Validación real pendiente.

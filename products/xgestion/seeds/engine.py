@@ -7,6 +7,8 @@ from datetime import date, datetime
 from decimal import Decimal
 
 from framework.errors import QAError
+from products.xgestion.offer_journeys.currencies import SOURCE_COMMIT as USD_SOURCE_COMMIT
+from products.xgestion.seeds.journeys import JOURNEY_SOURCE_COMMIT
 from products.xgestion.seeds.model import NAME, SOURCE_COMMIT, SeedContext, merge_tables
 
 NUMERIC = {"decimal", "numeric", "tinyint", "smallint", "mediumint", "int", "bigint", "bit", "float", "double"}
@@ -169,11 +171,14 @@ def apply_tables(connection, tables, *, preflight=None):
                       "Revisar esquema, restricciones y datos del paquete.") from None
 
 
-def catalog(context):
+def catalog(context, *, journey_profile=None):
+    from products.xgestion.offer_journeys.catalog import get_journeys
+    from products.xgestion.seeds.journeys import build_journey_tables
     from products.xgestion.seeds.pricing import pricing_tables
     from products.xgestion.seeds.products import product_tables
 
-    return merge_tables(product_tables(context) + pricing_tables(context))
+    return merge_tables(product_tables(context) + pricing_tables(context)
+                        + build_journey_tables(context, get_journeys(), journey_profile=journey_profile))
 
 
 def describe_seed(reference_date=None):
@@ -181,6 +186,8 @@ def describe_seed(reference_date=None):
     tables = catalog(context)
     by_name = {table.name: len(table.rows) for table in tables}
     return {"name": NAME, "reference_date": context.reference_date.isoformat(), "source_commit": SOURCE_COMMIT,
+            "journey_source_commit": JOURNEY_SOURCE_COMMIT,
+            "usd_source_commit": USD_SOURCE_COMMIT,
             "counts": {"tables": len(tables), "row_count": sum(by_name.values()), "products": by_name["articulos"],
                        "offers": by_name["ofertas"], "price_lists": by_name["t_fin_listaprecio"]},
             "tables": [{"name": table.name, "row_count": len(table.rows)} for table in tables]}
@@ -193,7 +200,9 @@ def render_seed(reference_date=None):
              "-- Aplicar mediante qa.cmd seed --apply o qa.cmd run --seed catalogo-comercial-v1.",
              "-- El comando verifica propiedad, esquema, claves y transaccion antes de escribir.",
              "-- Contexto SINTETICO de ejemplo: empresa 90001, sucursal 1, puesto 1, usuario 90001.",
-             f"-- Fecha de referencia: {context.reference_date.isoformat()}; fuente ERP: {SOURCE_COMMIT}."]
+             f"-- Fecha de referencia: {context.reference_date.isoformat()}; fuente ERP base: {SOURCE_COMMIT}.",
+             f"-- Fuente ERP de recorridos y pagos manuales: {JOURNEY_SOURCE_COMMIT}.",
+             f"-- Fuente ERP de snapshots USD (regla esperada indicada por usuario): {USD_SOURCE_COMMIT}."]
     for table in catalog(context):
         lines.extend(["", f"-- Tabla {table.name}: {len(table.rows)} filas, se omiten las identicas."])
         for row in table.rows:
@@ -233,13 +242,15 @@ def check_context(connection, context):
         check_required_row(connection, table, where, {})
     for table, key, identifier, expected in REQUISITES:
         check_required_row(connection, table, {key: identifier}, expected)
+    # Read-only prerequisite: VerificadorDeBaseDeDatos.java:1507-1517 at 4b80ca6a.
+    check_required_row(connection, "t_sis_tipopago", {"ID_TipoPago": 1}, {"Nombre_TipoPago": "Cobrado"})
 
 
-def apply_to_connection(connection, context):
+def apply_to_connection(connection, context, *, journey_profile=None):
     """Shared core for the guarded sandbox and the explicit synthetic DB tests."""
     from products.xgestion.seeds.isolation import check_isolation
 
-    tables = catalog(context)
+    tables = catalog(context, journey_profile=journey_profile)
     encoded = json.dumps([asdict(table) for table in tables], sort_keys=True, default=str).encode()
     fingerprint = hashlib.sha256(encoded).hexdigest()
 
@@ -249,21 +260,26 @@ def apply_to_connection(connection, context):
 
     result = apply_tables(connection, tables, preflight=preflight)
     return {"name": NAME, "reference_date": context.reference_date.isoformat(), "source_commit": SOURCE_COMMIT,
+            "journey_source_commit": JOURNEY_SOURCE_COMMIT,
+            "usd_source_commit": USD_SOURCE_COMMIT,
             "catalog_sha256": fingerprint, **result}
 
 
-def apply_seed(sandbox, fixtures, *, reference_date=None):
+def apply_seed(sandbox, fixtures, *, reference_date=None, journey_profile=None):
     from products.xgestion.contracts import validate_fixtures
 
     validate_fixtures(fixtures)
     declared = fixtures["context"]
     context = SeedContext(*(declared[key] for key in ("empresa", "sucursal", "computadora", "usuario_id")),
                           reference_date or date.today())
-    articles = next(table.rows for table in catalog(context) if table.name == "articulos")
+    articles = next(table.rows for table in catalog(context, journey_profile=journey_profile)
+                    if table.name == "articulos")
     fixture_codes = {value.rstrip().casefold() for value in (
         fixtures["product"]["code"], fixtures["nonexistent_product_code"])}
     if any(row["artId"] == fixtures["product"]["id"] or row["artCodigo"].casefold() in fixture_codes
            for row in articles):
         raise QAError("El catálogo seed colisiona con los fixtures originales; no se modifica el paquete.")
     with sandbox.connection() as connection:
+        if journey_profile is not None:
+            return apply_to_connection(connection, context, journey_profile=journey_profile)
         return apply_to_connection(connection, context)

@@ -144,3 +144,22 @@ def test_seed_status_remains_structural_when_a_secret_matches_it(tmp_path, statu
     result = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
     assert result["seed"]["status"] == status
     assert result["seed"]["message"] == "Valor privado [REDACTADO]"
+
+
+def test_profile_report_links_only_existing_local_evidence_and_labels_omissions(tmp_path):
+    from framework.reporting import write_run_report
+
+    child = tmp_path / "cases/XG-PRM-070/active/report.html"
+    child.parent.mkdir(parents=True)
+    child.write_text("synthetic child", encoding="utf-8")
+    case = {"id": "XG-PRM-070", "title": "Oferta", "status": "blocked", "phases": [
+        {"variant": "active <unsafe>", "status": "passed", "executed": True,
+         "evidence": ["cases/XG-PRM-070/active/report.html", "javascript:alert(1)", "../outside.html"]},
+        {"variant": "inactive", "status": "blocked", "executed": False,
+         "reason": "No ejecutada por bloqueo", "evidence": ["cases/missing/report.html"]},
+    ]}
+    write_run_report(tmp_path, {"status": "blocked", "mode": "e2e", "case_results": [case]})
+    document = (tmp_path / "report.html").read_text(encoding="utf-8")
+    assert "href='cases/XG-PRM-070/active/report.html'" in document
+    assert "javascript:" not in document and "../outside" not in document and "cases/missing" not in document
+    assert "No ejecutada por bloqueo" in document and "&lt;unsafe&gt;" in document

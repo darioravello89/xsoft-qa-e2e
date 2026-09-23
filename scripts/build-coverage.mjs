@@ -36,8 +36,22 @@ const col = index => String.fromCharCode(65 + index);
 const literal = value => typeof value === 'string' && /^[=+@-]/.test(value) ? `'${value}` : value ?? '';
 const text = value => typeof value === 'object' && value !== null ? `${value.label}\n${value.url}` : value;
 const link = (url, label) => ({ url, label });
-const caseList = ids => Array.from({ length: Math.ceil(ids.length / 2) },
-  (_, index) => ids.slice(index * 2, index * 2 + 2).join(', ')).join('\n');
+function caseList(ids) {
+  const ranges = [];
+  for (let index = 0; index < ids.length;) {
+    const first = /^(.*?)(\d+)$/.exec(ids[index]);
+    let end = index;
+    while (first && end + 1 < ids.length) {
+      const next = String(Number(first[2]) + end - index + 1).padStart(first[2].length, '0');
+      if (ids[end + 1] !== first[1] + next) break;
+      end += 1;
+    }
+    ranges.push(end > index ? `${ids[index]}..${ids[end].slice(first[1].length)}` : ids[index]);
+    index = end + 1;
+  }
+  return Array.from({ length: Math.ceil(ranges.length / 3) },
+    (_, index) => ranges.slice(index * 3, index * 3 + 3).join(', ')).join('\n');
+}
 function sourceLink(sheet, address, item) {
   if (!item.url.startsWith(data.repository_url + '/')) throw new Error('Referencia pública fuera del repositorio.');
   // HYPERLINK does not calculate in the bundled engine. Keep readable literal URLs,
@@ -106,10 +120,10 @@ scenarios.getRange(`C7:D${data.scenarios.length + 6}`).conditionalFormats.add('c
 
 table('Grupos', 'Grupos de ejecución para QA',
   'Los grupos se superponen: no sumar sus cantidades. “Parcial” indica automatización disponible, sin afirmar que estén cubiertas todas las variantes de esa familia.',
-  ['Etapa', 'Grupo', 'Clave de ejecución', 'Qué permite revisar', 'Automatizados', 'Pendientes', 'Manuales', 'Situación', 'IDs incluidos'],
+  ['Etapa', 'Grupo', 'Clave de ejecución', 'Qué permite revisar', 'Automatizados', 'Pendientes', 'Manuales', 'Situación', 'IDs incluidos (..: rango)'],
   data.groups.map(item => [item.stage, item.title, item.id, item.description, item.counts.implemented, item.counts.planned,
     item.counts.manual, { partial: 'Parcial: ejecutable', planned: 'Pendiente', manual: 'Manual', 'no-scenarios': 'Sin fichas' }[item.status],
-    caseList(item.members) || 'Por detallar']), [60, 240, 170, 430, 115, 105, 85, 180, 260], 'GroupsTable');
+    caseList(item.members) || 'Por detallar']), [60, 240, 170, 430, 115, 105, 85, 180, 450], 'GroupsTable');
 sheets.Grupos.getRange(`E7:G${data.groups.length + 6}`).format.horizontalAlignment = 'center';
 
 const backlog = [
@@ -118,10 +132,10 @@ const backlog = [
   ...data.backlog.roadmap_variants.map(item => ['Familia del roadmap', item.stage, item.title, item.variants,
     `${item.priority} · ${item.limits}`, 'Por detallar', link(item.doc_url, 'Ver roadmap')]),
   ...data.backlog.restobar.map(item => [`Restobar · ${item.id}`, item.stage, item.title, item.dependencies,
-    item.priority, 'Pendiente de ficha', link(item.doc_url, 'Ver recorrido')]),
+    item.priority, 'Ver fichas relacionadas', link(item.doc_url, 'Ver recorrido')]),
 ];
-table('Por detallar', 'Lo que falta convertir en casos',
-  'Estas familias y recorridos orientan el trabajo pendiente. Las tablas fuente se solapan: no sumar filas como casos E2E. Los recorridos R01–R20 todavía no tienen fichas ejecutables.',
+table('Por detallar', 'Familias y referencias del roadmap',
+  'Estas familias y recorridos orientan el trabajo pendiente. Las tablas fuente se solapan: no sumar filas como casos E2E. R01–R20 se vinculan a fichas pendientes de automatización; no agregan casos al catálogo.',
   ['Tipo de referencia', 'Etapa', 'Funcionalidad / recorrido', 'Variantes y dependencias', 'Prioridad / límites / estado fuente', 'Siguiente trabajo', 'Referencia'],
   backlog, [175, 65, 370, 470, 430, 200, 340], 'BacklogTable');
 
@@ -178,7 +192,7 @@ summary.getRange('B7:B28').format.horizontalAlignment = 'center';
 const linkedExamples = data.seed_examples.filter(item => item.e2e_scenario).length;
 const notes = [
   `${data.counts.groups} grupos de ejecución. Sus conteos se solapan; el total de fichas se cuenta una vez por ID.`,
-  `${data.counts.backlog_restobar} recorridos Restobar sin ficha. ${data.counts.seed_examples} ejemplos seed: ${linkedExamples} vinculados a fichas y ${data.counts.seed_examples - linkedExamples} sin ficha. No se suman al total.`,
+  `${data.counts.backlog_restobar} referencias Restobar vinculadas a fichas. ${data.counts.seed_examples} ejemplos seed: ${linkedExamples} vinculados a fichas y ${data.counts.seed_examples - linkedExamples} sin ficha. No se suman al total.`,
   'Automatización: azul = implementada · ámbar = pendiente. “Validación real” requiere JAR, entorno y reporte de ejecución.',
   'Actualización: editar fichas, grupos o roadmap en el repositorio; ejecutar qa.cmd coverage y guardar los archivos generados juntos.',
   'No editar este Excel a mano: la regeneración reemplaza su contenido. Guía: docs/cobertura.md.',

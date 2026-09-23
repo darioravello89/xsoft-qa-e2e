@@ -10,6 +10,7 @@ from urllib.parse import quote, quote_plus
 from xml.etree import ElementTree
 
 from framework.errors import QAError
+from framework.paths import safe_path
 
 _PRIVATE_KEY = re.compile(r"password|passwd|secret|token|authorization|cookie|credential|api.?key|sql|params|rows", re.I)
 _ANSI = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
@@ -145,6 +146,19 @@ def write_run_report(directory: Path, payload: dict) -> None:
     def esc(value):
         return html.escape(str(value))
 
+    def evidence_links(paths):
+        links = []
+        for name in dict.fromkeys(item for item in paths if isinstance(item, str)):
+            if not re.fullmatch(r"[A-Za-z0-9_./-]+", name):
+                continue
+            try:
+                path = safe_path(directory, name)
+            except QAError:
+                continue
+            if path.is_file():
+                links.append(f"<a href='{esc(name)}'>Ver informe</a>")
+        return " · ".join(links)
+
     status = payload["status"]
     label = STATUS_LABELS.get(status, status)
     banner = ("Esta ejecución no acredita una suite aprobada. Revisar el bloqueo y la evidencia."
@@ -171,6 +185,23 @@ def write_run_report(directory: Path, payload: dict) -> None:
             detail = "<br>".join(f"{esc(name)}: {esc(failure.get(key, ''))}" for name, key in
                                 (("Paso", "step"), ("Comprobación", "message"), ("Esperado", "expected"),
                                  ("Observado", "observed"), ("Categoría", "category"), ("Causa", "cause")))
+        links = evidence_links(case.get("evidence", []) + (failure.get("evidence", []) if failure else []))
+        if links:
+            detail += f"<p>{links}</p>"
+        if case.get("phases"):
+            detail += "<p>Perfiles del mismo caso:</p><ul>"
+            for phase in case["phases"]:
+                state = STATUS_LABELS.get(phase["status"], phase["status"])
+                detail += (f"<li><strong>{esc(phase['variant'])}</strong>: {esc(state)}"
+                           f" · {esc(phase.get('elapsed_seconds', 0))} s")
+                if not phase.get("executed"):
+                    detail += f" — {esc(phase.get('reason', 'No se ejecutó Robot.'))}"
+                if phase.get("failure"):
+                    detail += f"<br>{esc(phase['failure'].get('message', 'Fase incompleta.'))}"
+                if links := evidence_links(phase.get("evidence", [])):
+                    detail += f"<br>{links}"
+                detail += "</li>"
+            detail += "</ul>"
         parts.append(f"<tr><td>{esc(case['id'])}: {esc(case['title'])}</td>"
                      f"<td>{esc(STATUS_LABELS.get(case['status'], case['status']))}</td><td>{detail}</td></tr>")
     parts.append("</table><h2>Grupos</h2>")

@@ -82,6 +82,21 @@ def test_absent_triggers_do_not_require_or_execute_a_function():
     assert len(connection.calls) == 1
 
 
+@pytest.mark.parametrize("event", ["INSERT", "UPDATE"])
+def test_payment_trigger_requires_the_exact_reviewed_body_and_audit_actor(event):
+    connection = MetadataConnection()
+    action = event.lower()
+    body = (f"BEGIN SELECT fEnviarSincronizacion(NEW.Empresa,0,0,NEW.pagId,"
+            f"'_pagos','{action}',NEW.usuario_{action}) INTO @resultado; END")
+    connection.triggers = [trigger(name=f"_pagos_AFTER_{event}", table_name="_pagos", event=event, body=body)]
+    tables = [SeedTable("_pagos", ("Empresa", "pagId"), ("pagNombre",), [])]
+    check_triggers(connection, tables)
+    assert all(sql.startswith("SELECT ") for sql, _ in connection.calls)
+    connection.triggers[0]["body"] = body.replace("NEW.pagId", "NEW.otroId")
+    with pytest.raises(QAError, match="cuerpo"):
+        check_triggers(connection, tables)
+
+
 @pytest.mark.parametrize(("body", "kind"), [("RETURN 1", "int"),
                                            (LEGACY_FUNCTION, "bit"), (CURRENT_FUNCTION, "int")])
 def test_known_complete_function_variants_and_exact_source_trigger_are_accepted(body, kind):

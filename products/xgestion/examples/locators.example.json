@@ -15,7 +15,8 @@
     "payment_picker": "CALIBRAR PickerPago",
     "payment": "CALIBRAR Cobro",
     "cancel": "CALIBRAR Confirmación",
-    "editor": "CALIBRAR Item de venta"
+    "editor": "CALIBRAR Item de venta",
+    "list_picker": "CALIBRAR título de list_picker"
   },
   "elements": {
     "login.user": {
@@ -199,6 +200,81 @@
     "sale.cancel_reject": {
       "window": "cancel",
       "query": "CALIBRAR selector observado para sale.cancel_reject"
+    },
+    "editor.remove": {
+      "window": "editor",
+      "query": "CALIBRAR selector observado para editor.remove"
+    },
+    "editor.manual": {
+      "window": "editor",
+      "query": "CALIBRAR selector observado para editor.manual"
+    },
+    "editor.manual_percent": {
+      "window": "editor",
+      "query": "CALIBRAR selector observado para editor.manual_percent"
+    },
+    "editor.manual_warning": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para editor.manual_warning"
+    },
+    "sale.choose_price_list": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.choose_price_list"
+    },
+    "list_picker.lines": {
+      "window": "list_picker",
+      "query": "CALIBRAR selector observado para list_picker.lines",
+      "column_count": 0,
+      "columns": {
+        "id": -1,
+        "name": -1
+      }
+    },
+    "list_picker.search": {
+      "window": "list_picker",
+      "query": "CALIBRAR selector observado para list_picker.search"
+    },
+    "sale.choose_payment": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.choose_payment"
+    },
+    "sale.payment_method": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.payment_method"
+    },
+    "payment_picker.lines": {
+      "window": "payment_picker",
+      "query": "CALIBRAR selector observado para payment_picker.lines",
+      "column_count": 0,
+      "columns": {
+        "id": -1,
+        "name": -1,
+        "discount": -1
+      }
+    },
+    "payment_picker.search": {
+      "window": "payment_picker",
+      "query": "CALIBRAR selector observado para payment_picker.search"
+    },
+    "payment.method": {
+      "window": "payment",
+      "query": "CALIBRAR selector observado para payment.method"
+    },
+    "sale.usd_rate": {
+      "window": "main",
+      "query": "CALIBRAR selector observado para sale.usd_rate"
+    },
+    "payment.total_currency": {
+      "window": "payment",
+      "query": "CALIBRAR selector observado para payment.total_currency"
+    },
+    "payment.amount_currency": {
+      "window": "payment",
+      "query": "CALIBRAR selector observado para payment.amount_currency"
+    },
+    "payment.change_currency": {
+      "window": "payment",
+      "query": "CALIBRAR selector observado para payment.change_currency"
     }
   }
 }

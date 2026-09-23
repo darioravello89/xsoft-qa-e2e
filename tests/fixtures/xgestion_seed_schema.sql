@@ -588,6 +588,36 @@ CREATE TABLE `producto_codigo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Migraciones verificadas ausentes del snapshot historico.
+-- Fuente 4b80ca6af137d1a7c06ac6d4545e1c08f9f21f1a: DATABASE_SCHEMA.sql:226-245.
+CREATE TABLE `_pagos` (
+  `Empresa` int(11) NOT NULL,
+  `Empresa_Nombre` varchar(250) DEFAULT NULL,
+  `pagId` int(11) NOT NULL,
+  `pagNombre` varchar(255) DEFAULT '',
+  `pagPorcentajeDescuento` decimal(10,2) DEFAULT 0.00,
+  `activo` bit(1) DEFAULT b'1',
+  `fecha_insert` datetime DEFAULT NULL,
+  `usuario_insert` varchar(50) DEFAULT NULL,
+  `fecha_update` datetime DEFAULT NULL,
+  `usuario_update` varchar(50) DEFAULT NULL,
+  `fecha_sync` datetime DEFAULT NULL,
+  `ID_TipoPago` int(11) DEFAULT 1,
+  `pagComisionMedioPago` decimal(10,2) DEFAULT 0.00,
+  `Orden` int(11) DEFAULT 0,
+  `ID_PedidosYa` varchar(255) DEFAULT NULL,
+  `ID_TiendaNube` varchar(255) DEFAULT NULL,
+  `Configuracion` varchar(5000) DEFAULT NULL,
+  PRIMARY KEY (`Empresa`,`pagId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Fuente mismo commit: VerificadorDeBaseDeDatos.java:1507-1517, Constantes.java:842.
+-- El catálogo Cobrado/A Cobrar lo prepara el baseline sintético, nunca el seed.
+CREATE TABLE `t_sis_tipopago` (
+  `ID_TipoPago` int(11) NOT NULL DEFAULT 0,
+  `Nombre_TipoPago` varchar(55) NULL DEFAULT '',
+  PRIMARY KEY (`ID_TipoPago`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
 -- VerificadorDeBaseDeDatos.java:3872-3873 y :3901-3902.
 ALTER TABLE `articulos`
   ADD COLUMN `artPrecioBulto` DECIMAL(18,3) NOT NULL DEFAULT 0.000;

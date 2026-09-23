@@ -10,7 +10,29 @@ import javaproperties
 
 from framework.config import Profile
 from framework.errors import QAError
-from framework.paths import protect
+from framework.paths import protect, safe_path
+
+_OFFER_PROFILES = {
+    "base": ("true", "true", "false"),
+    "general-off": ("false", "true", "false"),
+    "offers-off": ("true", "false", "false"),
+    "allowed-warning-on": ("true", "true", "true"),
+    "allowed-warning-off": ("true", "true", "false"),
+}
+
+
+def _offer_properties(name, company_id):
+    if name not in _OFFER_PROFILES or type(company_id) is not int or company_id <= 0:
+        raise QAError("El perfil de ofertas debe identificar una variante y empresa QA válidas.")
+    general, offers, warning = _OFFER_PROFILES[name]
+    recalculate = "venta.recalcularProductosAlCambiarListaPrecioVenta"
+    # Config.java and FormVentaDetalle.java: permissions/warning are global;
+    # only the recalculation switch uses empresa.<id> precedence.
+    return {"venta.permitirDescuentosEdicionArticulos": general,
+            "venta.permitirDescuentosManualesArticulosConOferta": offers,
+            "alertas.advertirDescuentosManualesArticulosConOferta": warning,
+            "venta.listadeprecio.elegir": "true", "pedirPagoAlCerrarTicket": "true", recalculate: "true",
+            f"empresa.{company_id}.{recalculate}": "true"}
 
 
 def ensure_offline() -> None:
@@ -83,7 +105,8 @@ def doctor(profile: Profile, *, calibration: bool = True) -> list[str]:
             "Configuración QA presente", "Calibración validada" if calibration else "Modo inspección de login"]
 
 
-def prepare_app_config(profile: Profile) -> None:
+def prepare_app_config(profile: Profile, *, offer_profile=None, company_id=None) -> dict:
+    overrides = _offer_properties(offer_profile, company_id) if offer_profile is not None else {}
     directory = profile.runtime / "app"
     if not directory.resolve().is_relative_to(profile.runtime.resolve()):
         raise QAError("La carpeta de ejecución de XGestión sale del runtime privado.")
@@ -93,7 +116,14 @@ def prepare_app_config(profile: Profile) -> None:
         values = javaproperties.load(source)
     values.update({"conexionIp": "127.0.0.1", "conexionPuerto": "13317", "conexionBaseDatos": "xsoft_qa",
                    "sincronizadorActiva": "false"})
+    values.update(overrides)
     # Las credenciales cifradas las prepara el administrador con el ERP, no se reimplementa su cifrado.
-    with (directory / "config.properties").open("w", encoding="ascii", newline="\n") as target:
+    destination = safe_path(directory, "config.properties")
+    with destination.open("w", encoding="ascii", newline="\n") as target:
         javaproperties.dump(values, target, timestamp=False)
-    protect(directory / "config.properties")
+    protect(destination)
+    with destination.open("rb") as target:
+        actual = javaproperties.load(target)
+    if actual != values:
+        raise QAError("La copia local de configuración no coincide con el perfil preparado.")
+    return {"profile": offer_profile or "baseline", "properties": overrides}

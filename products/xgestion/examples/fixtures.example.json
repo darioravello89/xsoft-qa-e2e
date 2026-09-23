@@ -46,5 +46,28 @@
       "price_list": "CALIBRAR lista inicial",
       "document": "CALIBRAR comprobante inicial"
     }
+  },
+  "offer_journeys": {
+    "schema_version": 1,
+    "item_removal_requires_supervisor": false,
+    "manual_price_list_enabled": true,
+    "recalculate_price_list": true,
+    "manual_amount_mode": true,
+    "manual_payments_offline": true,
+    "choose_payment_on_close": true,
+    "manual_warning_observation": {
+      "verified": false,
+      "duration_seconds": 4,
+      "minimum_visible_seconds": 2,
+      "max_sample_gap_seconds": 1
+    }
+  },
+  "offer_usd": {
+    "schema_version": 1,
+    "product_currency": "USD",
+    "row_currency": "USD",
+    "document_currency": "ARS",
+    "payment_currency": "ARS",
+    "exchange_rate": "1500.00"
   }
 }

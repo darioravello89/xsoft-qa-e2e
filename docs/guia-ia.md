@@ -40,8 +40,31 @@ Ante un bloqueo no pidas a la IA que quite el control. Primero debe identificar 
 
 ## Planificar y ampliar con IA
 
-Elegir una familia del roadmap y una variante concreta. Para Venta cotidiana ya existen XG-VEN-003 a XG-VEN-009: reutilizar sus IDs y criterios. Los siete casos de esa ampliación están implementados y requieren `sales_journeys`. VEN-003/007 usan botón y `Ctrl+E` únicamente con `ventas-teclado-v1` verificado para el SHA256 del JAR; los paquetes anteriores conservan el doble clic autorizado sobre una celda identificada por JAB. Verificar el editor y el resultado, sin coordenadas fijas ni sustituir la edición por cargar otro producto. El estado de accesibilidad se registra en el [CSV del producto](../products/xgestion/docs/backlog-accesibilidad.csv), separado del catálogo E2E. Para Restobar consultar el backlog R01–R20 antes de inventar cobertura. Esos identificadores de planificación no son IDs del catálogo ni se pueden pasar a `run --scenario`.
+Elegir una familia del roadmap y una variante concreta. Para Venta cotidiana ya existen XG-VEN-003 a XG-VEN-009: reutilizar sus IDs y criterios. Los siete casos de esa ampliación están implementados y requieren `sales_journeys`. VEN-003/007 usan botón y `Ctrl+E` únicamente con `ventas-teclado-v1` verificado para el SHA256 del JAR; los paquetes anteriores conservan el doble clic autorizado sobre una celda identificada por JAB. Verificar el editor y el resultado, sin coordenadas fijas ni sustituir la edición por cargar otro producto. El estado de accesibilidad se registra en el [CSV del producto](../products/xgestion/docs/backlog-accesibilidad.csv), separado del catálogo E2E. Para Restobar consultar el [mapa y sus 40 fichas](../products/xgestion/docs/restobar.md). R01–R20 se conservan como referencias del roadmap, vinculadas a XG-RES; no se pasan a `run --scenario` ni suman casos adicionales.
 
 Pedir primero la ficha del recorrido, perfil y evidencia. Al implementar, actualizar grupos, ficha, adaptador, oráculos y Robot según [nuevas features](nuevas-features.md). Los tests fuente del ERP son insumo para reglas y riesgos; no sustituir acciones de usuario por llamadas internas de negocio ni declarar QA real por revisar esos tests.
 
-El catálogo actual contiene 21 fichas implementadas y ninguna planificada: cinco smoke, nueve ventas y siete promociones, todas con ejecución real pendiente. Para ampliar promociones, reutilizar XG-PRM-001 a XG-PRM-007 sin duplicarlos y diseñar nuevos IDs para listas, combos, alcances o combinaciones aún no cubiertos. Los 26 ejemplos seed siguen siendo expectativas públicas: siete están vinculados a esas fichas; escribir el vínculo no acredita el JAR. Revisar `docs/specs/005-promociones.md`, mantener el marcador `seed` de las fichas que lo requieren y regenerar el mapa de cobertura después de actualizar sus fuentes.
+El catálogo actual contiene 298 fichas: 96 implementadas y 202 planificadas, todas con ejecución real pendiente. Para ampliar promociones, leer el [mapa de pendientes](../products/xgestion/docs/promociones-pendientes.md) y reutilizar los IDs XG-PRM-008..079. Los subgrupos `promociones-alcances`, `promociones-agrupadas`, `promociones-combos` y `promociones-condiciones` permiten consultar y ejecutar sus fichas implementadas. Para los 70 nuevos recorridos, completar la [calibración de canastas](../products/xgestion/docs/canastas-ofertas.md); PRM-077/078 no se ejecutan. Los filtros `ofertas-familia`, `ofertas-subfamilia`, `ofertas-marca`, `ofertas-sector` y `ofertas-producto` cruzan alcances sin duplicar casos.
+
+Los 26 ejemplos seed siguen siendo expectativas públicas: veinte están vinculados a fichas implementadas y seis a fichas LPR pendientes (016/017/019/020). Un vínculo no acredita el JAR ni garantiza todos los datos de un escenario. Revisar `docs/specs/005-promociones.md` y `006-backlog-promociones.md`, preparar los fixtures nuevos declarados y conservar los IDs al automatizar. Mantener el marcador `seed` de las fichas implementadas que lo requieren y regenerar el mapa después de actualizar sus fuentes.
+
+Los grupos `remitos`, `restobar` y `listas-precios` son backlog documentado: leer sus mapas y fichas antes de implementar. No generar PASS ni usar el seed de ofertas como si contuviera todos sus datos. Priorizar recepción/stock, recetas con varios renglones y precedencia cliente/turno/base; las divergencias de reglas entre Venta y Restobar deben resolverse, no copiarse de un circuito al otro.
+
+Para cuentas corrientes, Libro Diario, caja e integridad, comenzar por el
+[roadmap de circuitos críticos](../products/xgestion/docs/circuitos-criticos.md)
+y sus 58 fichas planned. No equiparar cobro manual, cuota y pago a proveedor,
+ni sumar todas las filas de finanzas como efectivo. Las dependencias sin
+procedimiento y los criterios pendientes bloquean la variante. Importar una
+base mediante upserts no demuestra recuperar una fotografía anterior.
+
+## Complemento de escenarios críticos
+
+El [mapa complementario](../products/xgestion/docs/complementos-criticos.md) añade 50 fichas
+planned de cobros/documentos, servicios, continuidad y beneficios. Revisar
+los filtros del catálogo y del Excel; deben conservar 96 implementados,
+202 pendientes y ninguna validación real inferida. Los casos nuevos no se
+ejecutan. Datos, accesibilidad y laboratorios propios siguen pendientes.
+
+## Ofertas USD P0
+
+Para PRM-080..084 leer [ofertas-usd-v1](../products/xgestion/docs/ofertas-usd.md). No convertir Paga=50 a ARS en el seed, no relajar selectores ni aceptar ARS 50 como esperado. Se requieren las trece variantes y moneda visible/persistida consistente; un fallo o bloqueo mantiene pendiente la aceptación del circuito.

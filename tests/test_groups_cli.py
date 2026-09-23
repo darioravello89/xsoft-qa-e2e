@@ -196,3 +196,67 @@ def test_public_registry_contains_available_and_planned_capabilities():
     groups = {item["id"] for item in catalog.load_groups(root, "xgestion")}
     assert {"smoke", "regression", "ventas", "stock", "precios", "promociones", "cobros", "monedas",
             "cuenta-corriente", "permisos", "caja", "mesas", "mozos-qr", "fiscal", "recuperacion"} <= groups
+
+
+def test_pending_offer_backlog_is_visible_but_never_selected_for_execution():
+    root = Path(__file__).resolve().parents[1]
+    cases = catalog.validate_catalog(root)
+    pending_ids = {"XG-PRM-077", "XG-PRM-078"}
+    planned = [case for case in cases if case["status"] == "planned" and case["id"].startswith("XG-PRM-")]
+    assert {case["id"] for case in planned} == pending_ids
+    assert all("test" not in case for case in planned)
+    groups = {group["id"]: group for group in catalog.group_overview(root, "xgestion", cases)}
+    for group, count in {"promociones-alcances": 36, "promociones-agrupadas": 21,
+                         "promociones-combos": 5, "promociones-condiciones": 15, "ofertas-usd": 5}.items():
+        pending = 2 if group == "promociones-condiciones" else 0
+        assert groups[group]["counts"] == {"implemented": count - pending, "planned": pending, "manual": 0}
+        selected = catalog.select_cases(cases, "xgestion", group, None)
+        assert len(selected) == len({case["id"] for case in selected}) == count - pending
+        assert not pending_ids.intersection(case["id"] for case in selected)
+    for identifier in pending_ids:
+        with pytest.raises(QAError, match="ejecutables"):
+            catalog.select_cases(cases, "xgestion", None, identifier)
+    promotions = catalog.select_cases(cases, "xgestion", "promociones", None)
+    assert {case["id"] for case in promotions} == {
+        f"XG-PRM-{number:03}" for number in range(1, 85)
+    } - pending_ids
+    regression = catalog.select_cases(cases, "xgestion", "regression", None)
+    assert len(regression) == len({case["id"] for case in regression}) == 96
+    assert not pending_ids.intersection(case["id"] for case in regression)
+
+
+@pytest.mark.parametrize("group,count", [("remitos", 24), ("restobar", 40), ("listas-precios", 28)])
+def test_new_operational_backlog_is_visible_without_enabling_execution(group, count):
+    root = Path(__file__).resolve().parents[1]
+    cases = catalog.validate_catalog(root)
+    overview = next(item for item in catalog.group_overview(root, "xgestion", cases) if item["id"] == group)
+    assert overview["counts"] == {"implemented": 0, "planned": count, "manual": 0}
+    with pytest.raises(QAError, match="ejecutables"):
+        catalog.select_cases(cases, "xgestion", group, None)
+    selected = catalog.select_cases(cases, "xgestion", "regression", None)
+    assert len(selected) == len({case["id"] for case in selected}) == 96
+    pending = [case for case in cases if group in case["tags"]]
+    assert all(not case.get("test") and not case.get("seed") for case in pending)
+    assert not {case["id"] for case in pending}.intersection(case["id"] for case in selected)
+
+
+@pytest.mark.parametrize("group,prefix,count", [
+    ("ctacte-clientes", "CCC", 10), ("ctacte-proveedores", "CCP", 8), ("cuotas", "CUO", 6),
+    ("libro-diario", "LDI", 8), ("caja", "CAJ", 10), ("conciliacion", "FIN", 10),
+    ("inventario", "INV", 4), ("respaldos", "BKP", 2),
+    ("cobros-combinados", "COB", 8), ("presupuestos", "PRE", 6), ("devoluciones", "DEV", 6),
+    ("fiscal", "FEL", 6), ("pagos-externos", "PEX", 6), ("concurrencia", "CON", 4),
+    ("actualizacion", "ACT", 4), ("beneficios", "BEN", 6),
+])
+def test_critical_circuits_are_planned_and_cannot_be_executed(group, prefix, count):
+    root = Path(__file__).resolve().parents[1]
+    cases = catalog.validate_catalog(root)
+    documented = [case for case in cases if case["id"].startswith(f"XG-{prefix}-")]
+    assert {case["id"] for case in documented} == {f"XG-{prefix}-{number:03}" for number in range(1, count + 1)}
+    assert all(case["status"] == "planned" and group in case["tags"] for case in documented)
+    assert all("test" not in case and "seed" not in case for case in documented)
+    with pytest.raises(QAError, match="ejecutables"):
+        catalog.select_cases(cases, "xgestion", group, None)
+    regression = catalog.select_cases(cases, "xgestion", "regression", None)
+    assert len(regression) == len({case["id"] for case in regression}) == 96
+    assert not {case["id"] for case in documented}.intersection(case["id"] for case in regression)

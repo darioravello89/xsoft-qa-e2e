@@ -1,6 +1,6 @@
 # Ejecutar promociones simples
 
-El grupo `promociones` contiene XG-PRM-001 a XG-PRM-007. Cada caso carga un
+Esta guía describe el lote inicial XG-PRM-001 a XG-PRM-007 del grupo `promociones`. Cada caso carga un
 artículo, cambia su cantidad por teclado, cancela el cobro y lo retoma para cobrar
 una sola vez. La automatización está implementada; falta validarla sobre el FAT JAR.
 
@@ -10,7 +10,7 @@ una sola vez. La automatización está implementada; falta validarla sobre el FA
 .\qa.cmd report --latest
 ```
 
-El menú **Ejecutar grupo → Promociones** selecciona los mismos siete casos.
+El menú **Ejecutar grupo → Promociones** selecciona los 77 casos implementados, incluidos estos siete y los 70 de [canastas de ofertas](canastas-ofertas.md), que requieren calibración adicional. Para probar sólo un caso inicial, usar `--scenario XG-PRM-001`.
 Sus fichas declaran `seed: catalogo-comercial-v1`: el runner lo informa, restaura
 el baseline QA y aplica/verifica los upserts antes de iniciar XGestion. Esto también
 ocurre al elegir un solo ID o `regression`. Se puede escribir `--seed
@@ -111,11 +111,20 @@ baseline y prepara de nuevo el catálogo. No corregir importes o movimientos con
 para aprobar un caso. INFO resume, DEBUG muestra pasos y TRACE añade diagnóstico
 saneado; ningún nivel implica registrar credenciales o configuración completa.
 
-Quedan pendientes combos, umbrales, fracciones, ofertas por alcance o pago,
-descuentos combinados y listas. Ver [roadmap](roadmap.md), [seed](seed.md) y
-[especificación del lote](../../../docs/specs/005-promociones.md).
+Los [72 escenarios del backlog original PRM-008..079](promociones-pendientes.md) desglosan
+umbrales, fórmulas por producto/familia/subfamilia/marca/sector, agrupadas, combos,
+fracciones, prioridad, vigencia, listas, pago, aislamiento y descuento manual.
+Se implementaron 70; PRM-077/078 conservan `planned` sin ejecución disponible. Ver [roadmap](roadmap.md),
+[seed](seed.md) y [especificación del lote implementado](../../../docs/specs/005-promociones.md).
 
 Fuente inspeccionada: XGestion2 `925589278503f2d339beeb0a79f773c605512dd8`,
 `OfertaCalculador`, `OfertaLineaService`, `FormVenta`, `FormVentaDetalle`,
 `TicketVenta` y `VentaListaPrecioPrioridadPolicy`. Esa referencia acredita reglas
 observadas en fuente, no ejecución E2E del artefacto distribuido.
+
+
+La ampliación implementa 70 de esos recorridos. Ver [canastas, perfiles y calibración](canastas-ofertas.md). PRM-077/078 siguen pendientes del paquete de varios contextos.
+
+## Regresión monetaria crítica
+
+[Ofertas USD — P0](ofertas-usd.md): PRM-080..084 automatizan precio final USD 50 por los cinco alcances, con mínimos, agrupación y cobro. Requieren su extensión privada de calibración; mantienen documento/cobro ARS. Ejecutarlos además del lote ARS ante cambios de ofertas.

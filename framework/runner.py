@@ -18,7 +18,8 @@ from framework.config import load_profile
 from framework.environment import doctor, ensure_offline, prepare_app_config
 from framework.errors import QAError
 from framework.events import EventStream, EventWriter, format_event, normalize_level
-from framework.paths import protect
+from framework.paths import protect, safe_path
+from framework.profile_runs import PROFILE_VARIANTS, run_profiled_cases
 from framework.reporting import (
     STATUS_LABELS,
     build_robot_reports,
@@ -91,7 +92,7 @@ def summarize_groups(groups, cases, results):
 
 
 def execute_robot(root, directory, cases, *, dry_run, secrets, log_level, groups, timeout=1800, emit=None,
-                  seed_context=None):
+                  seed_context=None, profile_context=None):
     """Run synthetic or real suites through the same owned process and event path."""
     from framework.processes import run_owned_process
 
@@ -116,6 +117,17 @@ def execute_robot(root, directory, cases, *, dry_run, secrets, log_level, groups
     applied = seed_context if not dry_run and seed_context and seed_context.get("status") == "seed-applied" else {}
     env.update({"XSOFT_QA_SEED": applied.get("name", ""),
                 "XSOFT_QA_SEED_DATE": applied.get("reference_date", "")})
+    for name in ("XSOFT_QA_OFFER_VARIANT", "XSOFT_QA_OFFER_PROFILE", "XSOFT_QA_OFFER_CASE"):
+        env.pop(name, None)
+    if not dry_run and profile_context is not None:
+        valid = (isinstance(profile_context, dict) and set(profile_context) == {"case_id", "variant"}
+                 and len(cases) == 1 and profile_context["case_id"] == cases[0]["id"]
+                 and profile_context["variant"] in PROFILE_VARIANTS.get(cases[0]["id"], ())
+                 and applied.get("name") == "catalogo-comercial-v1")
+        if not valid:
+            raise QAError("El perfil separado necesita preparación verificada del caso y su seed.")
+        env.update({"XSOFT_QA_OFFER_VARIANT": profile_context["variant"],
+                    "XSOFT_QA_OFFER_PROFILE": json.dumps(profile_context)})
     interrupted = None
     result = None
     with EventStream(directory / "events.jsonl", level=log_level, secrets=secrets, emit=emit) as stream:
@@ -190,6 +202,133 @@ def execute_robot(root, directory, cases, *, dry_run, secrets, log_level, groups
             "skipped": stats.skipped if stats else 0}
 
 
+def _needs_offer_config(cases):
+    return any(case["id"].startswith("XG-PRM-") and 8 <= int(case["id"].rsplit("-", 1)[1]) <= 84
+               for case in cases)
+
+
+def _execute_profile_selection(root, directory, cases, *, profile, sandbox, secrets, log_level,
+                               groups, seed_context, progress):
+    """The parent owns every restore; no UI keyword changes database/config profiles."""
+    from products.xgestion.seeds.command import read_seed_fixtures
+    from products.xgestion.seeds.engine import apply_seed
+
+    ordinary = [case for case in cases if case["id"] not in PROFILE_VARIANTS]
+    plans = [(case, PROFILE_VARIANTS[case["id"]]) for case in cases if case["id"] in PROFILE_VARIANTS]
+    fixtures = read_seed_fixtures(profile)
+    metadata = {}
+
+    def prepare_directory(child):
+        safe_path(directory, child.relative_to(directory).as_posix())
+        child.mkdir(parents=True, exist_ok=True)
+        protect(child)
+
+    def finish(child, result):
+        prepare_directory(child)
+        try:
+            build_robot_reports(child, secrets)
+        except Exception:
+            state = "cancelled" if result["code"] == 130 else "blocked"
+            result.update(code=130 if state == "cancelled" else 2,
+                          case_results=[failure_result(row, status=state,
+                                                       reason="La evidencia Robot de la fase está incompleta.",
+                                                       step="Generación del informe")
+                                        for row in result["case_results"]], failed=0)
+        code = result["code"]
+        state = {0: "passed", 1: "failed", 2: "blocked", 130: "cancelled"}[code]
+        extra = safe_value({**metadata.get(child, {}), **result}, secrets)
+        extra.pop("code")
+        extra["counts"] = dict(Counter(row["status"] for row in extra["case_results"]))
+        try:
+            write_summary(child, status=state, mode="e2e", cases=[row["id"] for row in result["case_results"]],
+                          code=code, **extra)
+            write_run_report(child, {"status": state, "mode": "e2e", **extra})
+            if not (child / "report.html").is_file():
+                raise QAError("No se completó el informe de la fase.")
+        except (Exception, KeyboardInterrupt) as error:
+            code = 130 if code == 130 or isinstance(error, KeyboardInterrupt) else 2
+            state = "cancelled" if code == 130 else "blocked"
+            reason = "La evidencia final de esta fase está incompleta."
+            result.update(code=code, failed=0,
+                          case_results=[failure_result(row, status=state, reason=reason,
+                                                       step="Generación del informe")
+                                        for row in result["case_results"]])
+            # A failed write must not leave an earlier green phase summary/report.
+            for name in ("summary.json", "report.html"):
+                try:
+                    (child / name).unlink(missing_ok=True)
+                except OSError:
+                    pass
+            fallback = safe_value({**metadata.get(child, {}), **result}, secrets)
+            fallback.pop("code")
+            fallback["counts"] = {state: len(result["case_results"])}
+            try:
+                write_summary(child, status=state, mode="e2e", cases=[row["id"] for row in result["case_results"]],
+                              code=code, **fallback)
+            except Exception:
+                try:
+                    (child / "summary.json").unlink(missing_ok=True)
+                except OSError:
+                    pass
+            raise
+
+    def prepare(case, variant, child):
+        prepare_directory(child)
+        progress("restore", f"{case['id']} — Perfil {variant}: restaurando baseline y preparando datos.")
+        try:
+            ensure_offline()
+            sandbox.restore()
+            ensure_offline()
+            applied = {**apply_seed(sandbox, fixtures, journey_profile=(case["id"], variant)),
+                       "status": "seed-applied"}
+            configuration = prepare_app_config(
+                profile, offer_profile=variant if case["id"] == "XG-PRM-079" else "base",
+                company_id=fixtures["context"]["empresa"])
+            metadata[child] = {"seed": applied, "configuration": configuration,
+                               "offer_profile": {"case_id": case["id"], "variant": variant}}
+            return applied
+        except QAError as error:
+            reason = safe_value(str(error), secrets)
+            event = EventWriter(child / "events.jsonl", secrets=secrets).emit(
+                "INFO", "run_error", reason,
+                failure=failure_result(case, reason=reason, step=f"Preparar perfil {variant}")["failure"])
+            (child / "console.log").write_text(format_event(event) + "\n", encoding="utf-8")
+            raise
+
+    def execute(selected, child, receipt, variant):
+        return execute_robot(root, child, selected, dry_run=False, secrets=secrets, log_level=log_level,
+                             groups=groups, seed_context=receipt,
+                             profile_context={"case_id": selected[0]["id"], "variant": variant})
+
+    ordinary_result = {"code": 0, "case_results": [], "total": 0, "failed": 0, "skipped": 0}
+    if ordinary:
+        child = safe_path(directory, "cases/standard")
+        prepare_directory(child)
+        metadata[child] = {"seed": seed_context}
+        ordinary_result = execute_robot(root, child, ordinary, dry_run=False, secrets=secrets,
+                                        log_level=log_level, groups=groups, seed_context=seed_context)
+        finish(child, ordinary_result)
+        for row in ordinary_result["case_results"]:
+            row["evidence"] = ["cases/standard/report.html"]
+            if row.get("failure"):
+                row["failure"]["evidence"] = list(row["evidence"])
+    profiled = run_profiled_cases(plans, directory, prepare=prepare, execute=execute, finish_report=finish,
+                                  initial_halt=ordinary_result["code"] if ordinary_result["code"] in (2, 130) else 0)
+    ranking = {0: 0, 1: 1, 2: 2, 130: 3}
+    code = max((ordinary_result["code"], profiled["code"]), key=ranking.__getitem__)
+    by_id = {row["id"]: row for row in ordinary_result["case_results"] + profiled["case_results"]}
+    if set(by_id) != {case["id"] for case in cases}:
+        raise QAError("No se pudieron reunir todos los resultados de la selección por perfiles.")
+    results = [by_id[case["id"]] for case in cases]
+    for row in results:
+        progress("case_end", f"Resultado del caso completo: {STATUS_LABELS[row['status']]} — {row['title']}",
+                 case_id=row["id"], name=row["title"], status=row["status"],
+                 elapsed_seconds=row.get("elapsed_seconds", 0),
+                 **({"failure": row["failure"]} if row.get("failure") else {}))
+    return {"code": code, "case_results": results, "total": len(results),
+            "failed": sum(row["status"] == "failed" for row in results), "skipped": ordinary_result["skipped"]}
+
+
 def run(root: Path, product: str, group: str | None = None, scenario: str | None = None,
         dry_run: bool = False, inspect: bool = False, *, log_level: str = "INFO", seed: str | None = None) -> int:
     if seed and (product != "xgestion" or seed != "catalogo-comercial-v1" or inspect):
@@ -241,7 +380,14 @@ def run(root: Path, product: str, group: str | None = None, scenario: str | None
                                if any(label in k.upper() for label in ("PASSWORD", "USER", "SECRET", "TOKEN", "KEY")))
                 progress("preflight", "Comprobando requisitos del entorno.")
                 doctor(profile, calibration=not inspect)
-                prepare_app_config(profile)
+                if not inspect and _needs_offer_config(cases):
+                    from products.xgestion.seeds.command import read_seed_fixtures
+                    fixtures = read_seed_fixtures(profile)
+                    extra["configuration"] = prepare_app_config(
+                        profile, offer_profile="base", company_id=fixtures["context"]["empresa"])
+                    resources.callback(prepare_app_config, profile)
+                else:
+                    prepare_app_config(profile)
                 from framework.fixtures.mysql import MySQLSandbox
                 sandbox = MySQLSandbox(profile)
                 resources.callback(sandbox.stop)
@@ -267,8 +413,13 @@ def run(root: Path, product: str, group: str | None = None, scenario: str | None
                 inspect_login(profile, directory)
                 code, status = 0, "inspection-only"
             else:
-                extra.update(execute_robot(root, directory, cases, dry_run=dry_run, secrets=secrets,
-                                           log_level=log_level, groups=groups, seed_context=extra.get("seed")))
+                if not dry_run and any(case["id"] in PROFILE_VARIANTS for case in cases):
+                    extra.update(_execute_profile_selection(
+                        root, directory, cases, profile=profile, sandbox=sandbox, secrets=secrets,
+                        log_level=log_level, groups=groups, seed_context=extra.get("seed"), progress=progress))
+                else:
+                    extra.update(execute_robot(root, directory, cases, dry_run=dry_run, secrets=secrets,
+                                               log_level=log_level, groups=groups, seed_context=extra.get("seed")))
                 code = extra.pop("code")
                 interrupted = interrupted or code == 130
                 status = ("validated-only" if dry_run and code == 0 else "passed" if code == 0

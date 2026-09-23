@@ -42,6 +42,8 @@ def database(server):
             row = {key: identifier, **expected}
             query(conn, f"INSERT INTO `{table}` ({','.join(row)}) VALUES ({','.join('%s' for _ in row)})",
                   tuple(row.values()))
+        query(conn, "INSERT INTO t_sis_tipopago(ID_TipoPago,Nombre_TipoPago) VALUES(1,'Cobrado')")
+        query(conn, "INSERT INTO _pagos(Empresa,pagId,pagNombre) VALUES(90001,1,'EFECTIVO-ORIGINAL')")
         query(conn, "INSERT INTO articulos(Empresa,artId,artCodigo,artNombre,artPrecioVenta) "
                     "VALUES(90001,90001,'QA-E2E-001','PRODUCTO-ORIGINAL',1000)")
         conn.commit()
@@ -63,12 +65,56 @@ def test_full_catalog_is_repeatable_and_preserves_original_fixture(database):
     assert second["counts"] == {"inserted": 0, "updated": 0, "unchanged": first["counts"]["inserted"]}
     assert snapshot(conn, ctx) == before
     assert first["catalog_sha256"] == second["catalog_sha256"]
-    assert len(before["articulos"]) == 49
-    assert len(before["ofertas"]) == 19
-    assert len(before["t_fin_listaprecio"]) == 5
+    declared = {table.name: len(table.rows) for table in catalog(ctx)}
+    assert len(before["articulos"]) == declared["articulos"] + 1
+    assert len(before["ofertas"]) == declared["ofertas"]
+    assert len(before["t_fin_listaprecio"]) == declared["t_fin_listaprecio"]
+    assert len(before["_pagos"]) == declared["_pagos"] + 1
+    assert query(conn, "SELECT pagNombre FROM _pagos WHERE pagId=1")[0]["pagNombre"] == "EFECTIVO-ORIGINAL"
     assert query(conn, "SELECT artPrecioVenta FROM articulos WHERE artId=90001")[0]["artPrecioVenta"] == 1000
     assert query(conn, "SELECT SUM(moaCantidad) AS amount FROM movimientos_articulos "
                       "WHERE moaArticuloCodigo=980002")[0]["amount"] == 10.5
+
+
+def test_wrong_global_payment_type_blocks_without_replacing_it(database):
+    conn, ctx = database
+    query(conn, "UPDATE t_sis_tipopago SET Nombre_TipoPago='A Cobrar' WHERE ID_TipoPago=1")
+    conn.commit()
+    with pytest.raises(QAError, match="global incompatible"):
+        apply_to_connection(conn, ctx)
+    assert query(conn, "SELECT Nombre_TipoPago FROM t_sis_tipopago WHERE ID_TipoPago=1")[0][
+        "Nombre_TipoPago"] == "A Cobrar"
+    assert query(conn, "SELECT COUNT(*) AS n FROM articulos")[0]["n"] == 1
+    assert query(conn, "SELECT COUNT(*) AS n FROM _pagos")[0]["n"] == 1
+
+
+@pytest.mark.parametrize("identifier,name", [(989901, "PAGO-AJENO"), (99, "qa-prm-efectivo ")])
+def test_dedicated_payment_identity_or_name_collision_rolls_back_entire_seed(database, identifier, name):
+    conn, ctx = database
+    query(conn, "INSERT INTO _pagos(Empresa,pagId,pagNombre) VALUES(90001,%s,%s)", (identifier, name))
+    conn.commit()
+    with pytest.raises(QAError, match="[Cc]olisi"):
+        apply_to_connection(conn, ctx)
+    assert query(conn, "SELECT COUNT(*) AS n FROM articulos")[0]["n"] == 1
+    assert query(conn, "SELECT COUNT(*) AS n FROM _pagos")[0]["n"] == 2
+
+
+def test_activation_profile_updates_one_row_and_retains_the_control_offer(database):
+    conn, ctx = database
+    initial = apply_to_connection(conn, ctx)
+    before = snapshot(conn, ctx)
+    inactive = apply_to_connection(conn, ctx, journey_profile=("XG-PRM-070", "inactive"))
+    after = snapshot(conn, ctx)
+    assert inactive["counts"]["updated"] == 1
+    assert inactive["catalog_sha256"] != initial["catalog_sha256"]
+    for table, values in before.items():
+        expected = [dict(row, activo=b"\x00") if table == "ofertas" and row["ofeId"] == 988000 else row
+                    for row in values]
+        assert after[table] == expected
+    restored = apply_to_connection(conn, ctx, journey_profile=("XG-PRM-070", "active-again"))
+    assert restored["counts"]["updated"] == 1
+    assert restored["catalog_sha256"] == initial["catalog_sha256"]
+    assert snapshot(conn, ctx) == before
 
 
 @pytest.mark.parametrize("kind,code,config", [
