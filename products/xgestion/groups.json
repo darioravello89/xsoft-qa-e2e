@@ -443,6 +443,24 @@
       "title": "Ofertas en USD — P0",
       "description": "Precio final USD 50 por producto, familia, subfamilia, marca y sector; 13 variantes de cantidad, agrupación y cobro.",
       "stage": 2
+    },
+    {
+      "id": "circuitos-completos",
+      "title": "Circuitos completos de stock y dinero",
+      "description": "Venta USD, recepción y cierre automatizados; cuenta corriente pendiente por accesibilidad.",
+      "stage": 4
+    },
+    {
+      "id": "atajos-listados",
+      "title": "Atajos de los listados",
+      "description": "13 recorridos pendientes de teclado, identidad, búsqueda, orden y restricciones.",
+      "stage": 0
+    },
+    {
+      "id": "filtros-listados",
+      "title": "Filtros por teclado",
+      "description": "Ocho modales pendientes: foco, borrador, aplicar una vez y cancelar por cada salida.",
+      "stage": 0
     }
   ]
 }

@@ -1,7 +1,7 @@
 # Complemento de cobertura crítica
 
 Este mapa agrega **50 fichas pendientes de automatización** a los circuitos ya
-documentados. El catálogo queda en **298 fichas: 96 implementadas y 202 pendientes**.
+documentados. El catálogo queda en **315 fichas: 99 implementadas y 216 pendientes**.
 No hay nueva automatización ni validación del JAR en esta entrega.
 
 ## Baterías y selección
@@ -45,7 +45,7 @@ también contiene pruebas implementadas anteriores: ejecutarlo no ejecuta REC.
 
 | Hito | Preparación | Criterio de avance |
 | --- | --- | --- |
-| 0. Aceptar la base | Paquete privado, calibración y baseline de los 96 casos implementados. | Evidencia real por JAR/perfil, distinta de lint o dry-run. |
+| 0. Aceptar la base | Paquete privado, calibración y baseline de los 99 casos implementados. | Evidencia real por JAR/perfil, distinta de lint o dry-run. |
 | 1. Cobros combinados | Medios manuales QA, cotización fija, control accesible de pagos. | Un cierre con importes por medio/moneda coherentes; cancelar/reintentar no duplica efectos. |
 | 2. Documentos | Presupuestos/preventas y ventas previas con historia conocida. Definir qué documento se edita y cómo se devuelve dinero. | Convertir o revertir una sola vez; saldos, stock y documentos quedan relacionados. Contratos parciales no definidos bloquean su variante. |
 | 3. Beneficios | Precios/tasas, descuentos, clientes y puntos con saldo/fecha conocidos. | Cálculo independiente coincide con pantalla, cobro e histórico; no se trasladan puntos de otro cliente. |

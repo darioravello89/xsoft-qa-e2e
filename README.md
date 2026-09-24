@@ -4,13 +4,29 @@ Pruebas automatizadas para que QA compruebe escenarios de XSoft con un menú o c
 
 **Estado: suite implementada; VALIDACIÓN REAL PENDIENTE.** El repositorio incluye escenarios, controles y documentación. Para confirmar funcionamiento sobre el producto falta importar el paquete privado de QA, calibrar los selectores sobre ese JAR y completar las pruebas reales descritas en [aceptación](docs/qa-manual.md). Un `check`, un `dry-run` o un CI verde no equivalen a haber probado XGestion.
 
-**[Descargar Excel: qué está implementado y qué falta en XGestion](docs/coverage/xgestion-cobertura.xlsx)** · [Cómo leerlo y mantenerlo actualizado](docs/cobertura.md). La foto pública separa las **298 fichas —96 implementadas y 202 pendientes—** de la validación real, todavía no registrada en el mapa. El [mapa de ofertas](products/xgestion/docs/promociones-pendientes.md) cruza fórmulas, producto/familia/subfamilia/marca/sector, agrupadas, combos y condiciones comerciales. Los grupos, el backlog Restobar y los ejemplos del seed no agregan casos ejecutables por sí mismos.
+**[Descargar Excel: qué está implementado y qué falta en XGestion](docs/coverage/xgestion-cobertura.xlsx)** · [Cómo leerlo y mantenerlo actualizado](docs/cobertura.md). La foto pública separa las **315 fichas —99 implementadas y 216 pendientes—** de la validación real, todavía no registrada en el mapa. El [mapa de ofertas](products/xgestion/docs/promociones-pendientes.md) cruza fórmulas, producto/familia/subfamilia/marca/sector, agrupadas, combos y condiciones comerciales. Los grupos, el backlog Restobar y los ejemplos del seed no agregan casos ejecutables por sí mismos.
 
 El [complemento de escenarios críticos](products/xgestion/docs/complementos-criticos.md)
 agrega 50 fichas pendientes: cobros combinados, presupuesto/preventa, devoluciones,
 facturación, pagos externos, interrupciones, concurrencia, actualización y beneficios.
 
 ## Mapas de escenarios por circuito
+
+**[Atajos de los 13 listados](products/xgestion/docs/atajos-listados.md)**:
+KEY-001..013 documentan búsqueda, foco, navegación circular, identidad,
+restricciones y ocho modales de filtros. **Automatización y ejecución JAB
+pendientes**: todavía faltan VM y paquete. El FAT JAR exacto de `3f8648035`
+ya está construido; [ruta, SHA-256 y estado por pantalla](products/xgestion/docs/evidencia-atajos-3f8648035.md).
+Consultar `qa.cmd list --product xgestion --group atajos-listados`;
+`filtros-listados` muestra las ocho pantallas con modal. Los grupos pendientes
+no se ejecutan ni figuran aprobados.
+
+**Nuevo:** [circuitos completos de stock y dinero](products/xgestion/docs/circuitos-completos.md):
+venta USD, remito con actualización de costos/precios y cierre de caja automatizados.
+Cuenta corriente sigue pendiente de validar el nuevo Enter en el JAR
+(ACC-010 / KEY-001; doble clic no autorizado).
+Para preparar tu PC sin VM ni paquete todavía, seguí la
+[guía de primera ejecución desde cero](docs/primera-ejecucion-circuitos.md).
 
 | Circuito | Qué contempla | Estado |
 | --- | --- | --- |
@@ -31,11 +47,12 @@ define el orden de avance, los datos y los criterios de aceptación de las próx
 58 fichas: cuentas corrientes de clientes/proveedores, cuotas, Libro Diario,
 caja, conciliación, inventario y respaldos. Consultar también
 `qa.cmd list --product xgestion --group ctacte-clientes`, `--group libro-diario`,
-`--group caja` o `--group conciliacion`. Todas siguen pendientes de automatización.
+`--group caja` o `--group conciliacion`. Las 58 fichas originales siguen pendientes;
+FIN-011/013/014 agregan tres perfiles concretos automatizados y FIN-012 queda bloqueado.
 
 Cada mapa enlaza las fichas con datos, pasos, variantes y resultados. Para consultar:
 `qa.cmd list --product xgestion --group remitos`, `--group restobar` o
-`--group listas-precios`. Estos grupos nuevos todavía no se ejecutan; el Excel
+`--group listas-precios`. Remitos ya incluye FIN-013; Restobar y listas siguen pendientes. El Excel
 permite filtrarlos por **Grupos para QA** y **Automatización = Pendiente**.
 Los datos nuevos y su calibración se prepararán al automatizar cada hito. Los accesos por teclado pendientes de remitos y selectores de opciones/recetas están en el [backlog de accesibilidad](products/xgestion/docs/backlog-accesibilidad.csv), ACC-007/008.
 
@@ -93,12 +110,12 @@ Ejecutalos desde la carpeta del repositorio. Podés usar siempre el menú con `.
 | `.\qa.cmd check` | Validar estructura, documentación y catálogo. |
 | `.\qa.cmd coverage` | Mantenedor/IA: regenerar JSON, Excel y manifiesto del mapa público. |
 | `.\qa.cmd coverage --check` | Comprobar los tres archivos publicados, sin necesitar Node. |
-| `.\qa.cmd seed --dry-run --export` | Revisar 387 productos, 163 ofertas y 9 listas sin abrir MySQL. |
+| `.\qa.cmd seed --dry-run --export` | Revisar 395 productos, 163 ofertas y 9 listas sin abrir MySQL. |
 | `.\qa.cmd seed --apply` | Restaurar la base privada QA y aplicar/verificar sus upserts; reemplaza sus datos. |
 | `.\qa.cmd run --product xgestion --group ventas --seed catalogo-comercial-v1` | Preparar la batería antes de ejecutar los casos implementados. |
-| `.\qa.cmd run --product xgestion --group regression --dry-run` | Validar los 96 escenarios implementados sin abrir XGestion ni conectarse a MySQL. |
+| `.\qa.cmd run --product xgestion --group regression --dry-run` | Validar los 99 escenarios implementados sin abrir XGestion ni conectarse a MySQL. |
 
-Los grupos filtran el mismo catálogo: un caso puede pertenecer a `regression`, `ventas` y `efectivo`; no se duplica su ejecución por tener varias etiquetas. Hoy hay **96 casos implementados —cinco de smoke, nueve de ventas y 82 de promociones— y 202 pendientes**. XG-PRM-008..076 y XG-PRM-079 se ejecutan en los subgrupos de alcances, agrupadas, combos y condiciones. XG-PRM-077/078 esperan el paquete de varios contextos. XG-VEN-003 a XG-VEN-009 requieren la extensión privada `sales_journeys`, la grilla y el editor calibrados; los paquetes anteriores conservan los siete casos iniciales. Ver [calibración de Venta cotidiana](products/xgestion/docs/calibracion.md). Un grupo sin casos implementados explica el pendiente y no produce un PASS.
+Los grupos filtran el mismo catálogo: un caso puede pertenecer a `regression`, `ventas` y `efectivo`; no se duplica su ejecución por tener varias etiquetas. Hoy hay **99 casos implementados —cinco de smoke, nueve de ventas, 82 de promociones y tres circuitos— y 216 pendientes**. XG-PRM-008..076 y XG-PRM-079 se ejecutan en los subgrupos de alcances, agrupadas, combos y condiciones. XG-PRM-077/078 esperan el paquete de varios contextos. XG-VEN-003 a XG-VEN-009 requieren la extensión privada `sales_journeys`, la grilla y el editor calibrados; los paquetes anteriores conservan los siete casos iniciales. Ver [calibración de Venta cotidiana](products/xgestion/docs/calibracion.md). Un grupo sin casos implementados explica el pendiente y no produce un PASS.
 
 XG-PRM-001 a XG-PRM-007 comprueban porcentaje, importe fijo, 2x1, segunda unidad al 50 % y ofertas vencidas, futuras o inactivas. Cada uno edita cantidad, cancela el cobro y lo retoma una sola vez. Requieren el [perfil de promociones](products/xgestion/docs/promociones.md): ARS, comprobante interno 99, Ninguna Lista, otros descuentos en cero y calibración `promociones-v1`, `ventas-etapa1` y `ventas-teclado-v1` para el SHA256 del JAR. El runner prepara automáticamente `catalogo-comercial-v1` cuando la selección lo requiere; también se acepta `--seed catalogo-comercial-v1`. No altera el perfil comercial para superar un bloqueo. Estos casos siguen pendientes de validación real.
 

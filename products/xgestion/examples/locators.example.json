@@ -16,7 +16,11 @@
     "payment": "CALIBRAR Cobro",
     "cancel": "CALIBRAR Confirmación",
     "editor": "CALIBRAR Item de venta",
-    "list_picker": "CALIBRAR título de list_picker"
+    "list_picker": "CALIBRAR título de list_picker",
+    "purchase_confirmation": "CALIBRAR ventana purchase_confirmation",
+    "shift": "CALIBRAR ventana shift",
+    "fund": "CALIBRAR ventana fund",
+    "cash": "CALIBRAR ventana cash"
   },
   "elements": {
     "login.user": {
@@ -275,6 +279,162 @@
     "payment.change_currency": {
       "window": "payment",
       "query": "CALIBRAR selector observado para payment.change_currency"
+    },
+    "menu.purchases": {
+      "window": "main",
+      "query": "CALIBRAR selector único menu.purchases"
+    },
+    "menu.receipt": {
+      "window": "main",
+      "query": "CALIBRAR selector único menu.receipt"
+    },
+    "purchase.provider": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.provider"
+    },
+    "purchase.provider_option": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.provider_option"
+    },
+    "purchase.document": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.document"
+    },
+    "purchase.paid": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.paid"
+    },
+    "purchase.code": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.code"
+    },
+    "purchase.name": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.name"
+    },
+    "purchase.quantity": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.quantity"
+    },
+    "purchase.cost": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.cost"
+    },
+    "purchase.discount": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.discount"
+    },
+    "purchase.add": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.add"
+    },
+    "purchase.lines": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.lines",
+      "column_count": 14,
+      "columns": {
+        "code": 1,
+        "name": 2,
+        "quantity": 3,
+        "unit_price": 5,
+        "total": 8
+      }
+    },
+    "purchase.total": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.total"
+    },
+    "purchase.rate": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.rate"
+    },
+    "purchase.stock": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.stock"
+    },
+    "purchase.update_price": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.update_price"
+    },
+    "purchase.bonus_price": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.bonus_price"
+    },
+    "purchase.confirm": {
+      "window": "main",
+      "query": "CALIBRAR selector único purchase.confirm"
+    },
+    "purchase.reject": {
+      "window": "purchase_confirmation",
+      "query": "CALIBRAR selector único purchase.reject"
+    },
+    "purchase.accept": {
+      "window": "purchase_confirmation",
+      "query": "CALIBRAR selector único purchase.accept"
+    },
+    "purchase.supplier_debt": {
+      "window": "purchase_confirmation",
+      "query": "CALIBRAR selector único purchase.supplier_debt"
+    },
+    "menu.shift": {
+      "window": "main",
+      "query": "CALIBRAR selector único menu.shift"
+    },
+    "shift.user": {
+      "window": "shift",
+      "query": "CALIBRAR selector único shift.user"
+    },
+    "shift.password": {
+      "window": "shift",
+      "query": "CALIBRAR selector único shift.password"
+    },
+    "shift.confirm": {
+      "window": "shift",
+      "query": "CALIBRAR selector único shift.confirm"
+    },
+    "fund.cancel": {
+      "window": "fund",
+      "query": "CALIBRAR selector único fund.cancel"
+    },
+    "menu.cash_report": {
+      "window": "main",
+      "query": "CALIBRAR selector único menu.cash_report"
+    },
+    "cash.turn": {
+      "window": "cash",
+      "query": "CALIBRAR selector único cash.turn"
+    },
+    "cash.computer": {
+      "window": "cash",
+      "query": "CALIBRAR selector único cash.computer"
+    },
+    "cash.income": {
+      "window": "cash",
+      "query": "CALIBRAR selector único cash.income"
+    },
+    "cash.expense": {
+      "window": "cash",
+      "query": "CALIBRAR selector único cash.expense"
+    },
+    "cash.cash": {
+      "window": "cash",
+      "query": "CALIBRAR selector único cash.cash"
+    },
+    "cash.credit": {
+      "window": "cash",
+      "query": "CALIBRAR selector único cash.credit"
+    },
+    "cash.debit": {
+      "window": "cash",
+      "query": "CALIBRAR selector único cash.debit"
+    },
+    "cash.other": {
+      "window": "cash",
+      "query": "CALIBRAR selector único cash.other"
+    },
+    "cash.total": {
+      "window": "cash",
+      "query": "CALIBRAR selector único cash.total"
     }
   }
 }

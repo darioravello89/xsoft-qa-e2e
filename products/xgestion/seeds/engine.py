@@ -8,6 +8,7 @@ from decimal import Decimal
 
 from framework.errors import QAError
 from products.xgestion.offer_journeys.currencies import SOURCE_COMMIT as USD_SOURCE_COMMIT
+from products.xgestion.seeds.circuits import SOURCE_COMMIT as CIRCUIT_SOURCE_COMMIT
 from products.xgestion.seeds.journeys import JOURNEY_SOURCE_COMMIT
 from products.xgestion.seeds.model import NAME, SOURCE_COMMIT, SeedContext, merge_tables
 
@@ -173,11 +174,12 @@ def apply_tables(connection, tables, *, preflight=None):
 
 def catalog(context, *, journey_profile=None):
     from products.xgestion.offer_journeys.catalog import get_journeys
+    from products.xgestion.seeds.circuits import circuit_tables
     from products.xgestion.seeds.journeys import build_journey_tables
     from products.xgestion.seeds.pricing import pricing_tables
     from products.xgestion.seeds.products import product_tables
 
-    return merge_tables(product_tables(context) + pricing_tables(context)
+    return merge_tables(product_tables(context) + pricing_tables(context) + circuit_tables(context)
                         + build_journey_tables(context, get_journeys(), journey_profile=journey_profile))
 
 
@@ -188,6 +190,7 @@ def describe_seed(reference_date=None):
     return {"name": NAME, "reference_date": context.reference_date.isoformat(), "source_commit": SOURCE_COMMIT,
             "journey_source_commit": JOURNEY_SOURCE_COMMIT,
             "usd_source_commit": USD_SOURCE_COMMIT,
+            "circuit_source_commit": CIRCUIT_SOURCE_COMMIT,
             "counts": {"tables": len(tables), "row_count": sum(by_name.values()), "products": by_name["articulos"],
                        "offers": by_name["ofertas"], "price_lists": by_name["t_fin_listaprecio"]},
             "tables": [{"name": table.name, "row_count": len(table.rows)} for table in tables]}
@@ -202,7 +205,8 @@ def render_seed(reference_date=None):
              "-- Contexto SINTETICO de ejemplo: empresa 90001, sucursal 1, puesto 1, usuario 90001.",
              f"-- Fecha de referencia: {context.reference_date.isoformat()}; fuente ERP base: {SOURCE_COMMIT}.",
              f"-- Fuente ERP de recorridos y pagos manuales: {JOURNEY_SOURCE_COMMIT}.",
-             f"-- Fuente ERP de snapshots USD (regla esperada indicada por usuario): {USD_SOURCE_COMMIT}."]
+             f"-- Fuente ERP de snapshots USD (regla esperada indicada por usuario): {USD_SOURCE_COMMIT}.",
+             f"-- Fuente ERP de productos de circuitos comerciales: {CIRCUIT_SOURCE_COMMIT}."]
     for table in catalog(context):
         lines.extend(["", f"-- Tabla {table.name}: {len(table.rows)} filas, se omiten las identicas."])
         for row in table.rows:
@@ -262,6 +266,7 @@ def apply_to_connection(connection, context, *, journey_profile=None):
     return {"name": NAME, "reference_date": context.reference_date.isoformat(), "source_commit": SOURCE_COMMIT,
             "journey_source_commit": JOURNEY_SOURCE_COMMIT,
             "usd_source_commit": USD_SOURCE_COMMIT,
+            "circuit_source_commit": CIRCUIT_SOURCE_COMMIT,
             "catalog_sha256": fingerprint, **result}
 
 

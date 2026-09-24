@@ -221,11 +221,13 @@ def test_pending_offer_backlog_is_visible_but_never_selected_for_execution():
         f"XG-PRM-{number:03}" for number in range(1, 85)
     } - pending_ids
     regression = catalog.select_cases(cases, "xgestion", "regression", None)
-    assert len(regression) == len({case["id"] for case in regression}) == 96
+    assert len(regression) == len({case["id"] for case in regression}) == 99
     assert not pending_ids.intersection(case["id"] for case in regression)
 
 
-@pytest.mark.parametrize("group,count", [("remitos", 24), ("restobar", 40), ("listas-precios", 28)])
+@pytest.mark.parametrize("group,count", [
+    ("restobar", 40), ("listas-precios", 28), ("atajos-listados", 13), ("filtros-listados", 8),
+])
 def test_new_operational_backlog_is_visible_without_enabling_execution(group, count):
     root = Path(__file__).resolve().parents[1]
     cases = catalog.validate_catalog(root)
@@ -234,7 +236,7 @@ def test_new_operational_backlog_is_visible_without_enabling_execution(group, co
     with pytest.raises(QAError, match="ejecutables"):
         catalog.select_cases(cases, "xgestion", group, None)
     selected = catalog.select_cases(cases, "xgestion", "regression", None)
-    assert len(selected) == len({case["id"] for case in selected}) == 96
+    assert len(selected) == len({case["id"] for case in selected}) == 99
     pending = [case for case in cases if group in case["tags"]]
     assert all(not case.get("test") and not case.get("seed") for case in pending)
     assert not {case["id"] for case in pending}.intersection(case["id"] for case in selected)
@@ -251,12 +253,31 @@ def test_new_operational_backlog_is_visible_without_enabling_execution(group, co
 def test_critical_circuits_are_planned_and_cannot_be_executed(group, prefix, count):
     root = Path(__file__).resolve().parents[1]
     cases = catalog.validate_catalog(root)
-    documented = [case for case in cases if case["id"].startswith(f"XG-{prefix}-")]
+    documented = [case for case in cases if case["id"].startswith(f"XG-{prefix}-")
+                  and int(case["id"].rsplit("-", 1)[1]) <= count]
     assert {case["id"] for case in documented} == {f"XG-{prefix}-{number:03}" for number in range(1, count + 1)}
     assert all(case["status"] == "planned" and group in case["tags"] for case in documented)
     assert all("test" not in case and "seed" not in case for case in documented)
-    with pytest.raises(QAError, match="ejecutables"):
-        catalog.select_cases(cases, "xgestion", group, None)
+    if group in {"libro-diario", "caja", "conciliacion"}:
+        assert all(case["status"] == "implemented" for case in
+                   catalog.select_cases(cases, "xgestion", group, None))
+    else:
+        with pytest.raises(QAError, match="ejecutables"):
+            catalog.select_cases(cases, "xgestion", group, None)
     regression = catalog.select_cases(cases, "xgestion", "regression", None)
-    assert len(regression) == len({case["id"] for case in regression}) == 96
+    assert len(regression) == len({case["id"] for case in regression}) == 99
     assert not {case["id"] for case in documented}.intersection(case["id"] for case in regression)
+
+
+def test_integrated_circuits_select_only_implemented_and_preserve_remito_backlog():
+    root = Path(__file__).resolve().parents[1]
+    cases = catalog.validate_catalog(root)
+    selected = catalog.select_cases(cases, "xgestion", "circuitos-completos", None)
+    assert {case["id"] for case in selected} == {"XG-FIN-011", "XG-FIN-013", "XG-FIN-014"}
+    assert len(selected) == 3
+    receipt = catalog.select_cases(cases, "xgestion", "remitos", None)
+    assert [case["id"] for case in receipt] == ["XG-FIN-013"]
+    backlog = [case for case in cases if case["id"].startswith("XG-REM-")]
+    assert len(backlog) == 24 and all(case["status"] == "planned" for case in backlog)
+    with pytest.raises(QAError, match="ejecutables"):
+        catalog.select_cases(cases, "xgestion", None, "XG-FIN-012")

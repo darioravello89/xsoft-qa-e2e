@@ -1,6 +1,6 @@
 # Datos fijos para practicar ventas y ampliar pruebas
 
-`catalogo-comercial-v1` prepara una batería pública de datos sintéticos: **387 artículos, 163 ofertas, 9 listas y 3 medios manuales QA**, con catálogos auxiliares y movimientos iniciales de stock. Permite volver a los mismos productos y condiciones sin inventar datos para cada caso.
+`catalogo-comercial-v1` prepara una batería pública de datos sintéticos: **395 artículos, 163 ofertas, 9 listas y 3 medios manuales QA**, con catálogos auxiliares y movimientos iniciales de stock. Permite volver a los mismos productos y condiciones sin inventar datos para cada caso.
 
 El seed es opcional para los casos iniciales y los nueve de Venta cotidiana, que conservan el producto del paquete privado —90001 en el ejemplo—. Los 77 casos implementados de promociones usan artículos de esta batería y declaran el seed como requisito: el runner lo prepara automáticamente al seleccionarlos. La batería original usa códigos `QA-SEED-*` e IDs `980xxx`; las nuevas canastas agregan códigos `QA-PRM-*` e identidades reservadas por caso/variante (ver sus fichas). Crear los datos no agrega casos Robot ni acredita ventas, ofertas, impuestos o stock del JAR.
 
@@ -177,9 +177,17 @@ Esta es una batería inicial de ejemplos concretos, no la combinatoria completa 
 
 ## Datos pendientes para los nuevos circuitos
 
+Los [circuitos completos](circuitos-completos.md) ya agregan ocho productos
+QA-CIR (990101..990108), siete movimientos iniciales y tres clasificaciones
+990100 mediante upserts con identidad. Total: 395 artículos, 163 ofertas y nueve
+listas. Fuente de esta extensión: `0adea394095e4ceff54344bf38cbf21b7c01a5e8`.
+No crea clientes, deuda ni ventas; el recorrido de recepción crea su propio
+remito mediante UI. Fracción, bulto y servicio tienen datos; su venta específica
+todavía está pendiente. No se altera el catálogo global de monedas.
+
 Los mapas de [remitos](remitos.md), [Restobar](restobar.md) y
 [listas](listas-precios.md) separan datos existentes de fixtures propuestos.
-Los 387 productos actuales no equivalen a disponer de proveedores, documentos,
+Los 395 productos actuales no equivalen a disponer de proveedores, documentos,
 salón/mesas, recetas actuales y heredadas, opciones, clientes/sucursales/turnos
 ni permisos necesarios para esos recorridos. Preparar sus ampliaciones idempotentes
 al automatizar cada hito, conservando identidad, aislamiento y recuperación.
@@ -195,4 +203,4 @@ seed comercial actual; las 50 fichas nuevas siguen `planned` sin `seed` declarad
 
 ## Precio final en USD — P0
 
-[PRM-080..084](ofertas-usd.md) añaden 37 productos y 13 ofertas independientes, prefijos QA-PRM-080..084 y reservas 989000..989429. Artículos USD 100 (ID_Moneda=2), ofertas LXO+$CU con Paga=50, mínimos 1/2 y agrupación sólo para familia/subfamilia/marca. Nunca convertir Paga a 75000: ocultaría la regresión. El catálogo actual tiene 387 artículos y 163 ofertas; se conservan nueve listas y tres medios QA. Las monedas globales sólo se validan. El paquete debe declarar la cotización 1500; el seed no la altera.
+[PRM-080..084](ofertas-usd.md) añaden 37 productos y 13 ofertas independientes, prefijos QA-PRM-080..084 y reservas 989000..989429. Artículos USD 100 (ID_Moneda=2), ofertas LXO+$CU con Paga=50, mínimos 1/2 y agrupación sólo para familia/subfamilia/marca. Nunca convertir Paga a 75000: ocultaría la regresión. El catálogo actual tiene 395 artículos y 163 ofertas; se conservan nueve listas y tres medios QA. Las monedas globales sólo se validan. El paquete debe declarar la cotización 1500; el seed no la altera.

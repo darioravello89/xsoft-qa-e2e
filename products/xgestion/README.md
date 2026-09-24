@@ -1,5 +1,9 @@
 # XGestion: primeras pruebas automatizadas
 
+Los [circuitos completos](docs/circuitos-completos.md) incorporan FIN-011/013/014:
+venta USD, recepción con costos/precios y cierre de caja. FIN-012 queda pendiente
+por ACC-010, sin doble clic autorizado. Ver la [primera ejecución](../../docs/primera-ejecucion-circuitos.md).
+
 Esta suite ejecuta el JAR Windows mediante Java Access Bridge y valida lo observado en pantalla. Las ventas se contrastan con consultas SQL de lectura sobre la instancia QA local. No invoca métodos internos de negocio ni usa el checkout del ERP.
 
 **Estado: implementación inicial; ejecución GUI real pendiente.** Los ejemplos de localizadores son borradores y bloquean ejecución. Un QA responsable debe preparar el paquete privado, calibrar contra el JAR exacto y aprobar el recorrido en la VM aislada. Un `dryrun` verde sólo valida estructura Robot.
@@ -43,7 +47,7 @@ Consultar `qa.cmd --help` para los filtros disponibles del runner. No ejecutar R
 
 Cada escenario inicia un JAR propio y lo cierra al terminar. Las ventas del run quedan disponibles para inspección hasta la siguiente restauración. No se borran filas ni se anulan documentos para fabricar un resultado verde.
 
-El catálogo tiene **298 fichas: 96 implementadas —cinco de smoke, nueve de ventas y 82 de promociones— y 202 pendientes**. Consultar el [mapa de ofertas por fórmula y alcance](docs/promociones-pendientes.md): PRM-008..076 y PRM-079 tienen recorridos automatizados; PRM-077/078 esperan el paquete de varios contextos. Las 50 fichas del [complemento crítico](docs/complementos-criticos.md) amplían cobros/documentos, servicios, continuidad y beneficios. Las 58 fichas del [roadmap de circuitos críticos](docs/circuitos-criticos.md) detallan cuentas corrientes, cuotas, Libro Diario, caja, conciliación, inventario y respaldos, todas pendientes de automatizar. Las 92 fichas de [remitos de compra](docs/remitos.md), [Restobar y recetas](docs/restobar.md) y [listas de precios](docs/listas-precios.md) están planificadas, con datos/calibración y automatización pendientes. XG-VEN-003/007 usan botón, cancelación y `Ctrl+E` sólo cuando el paquete declara `ventas-teclado-v1`, verificado para su SHA256; mientras tanto conservan el doble clic legado. El [backlog de accesibilidad CSV](docs/backlog-accesibilidad.csv) deja XG-ACC-001 a XG-ACC-005 como implementados pendientes de validación JAR/JAB. Las mejoras 002–005 pertenecen a Restobar y no cuentan como escenarios ni como cobertura de Venta.
+El catálogo tiene **315 fichas: 99 implementadas —cinco de smoke, nueve de ventas, 82 de promociones y tres circuitos— y 216 pendientes**. Consultar el [mapa de ofertas por fórmula y alcance](docs/promociones-pendientes.md): PRM-008..076 y PRM-079 tienen recorridos automatizados; PRM-077/078 esperan el paquete de varios contextos. Las 50 fichas del [complemento crítico](docs/complementos-criticos.md) amplían cobros/documentos, servicios, continuidad y beneficios. Las 58 fichas del [roadmap de circuitos críticos](docs/circuitos-criticos.md) detallan cuentas corrientes, cuotas, Libro Diario, caja, conciliación, inventario y respaldos, todas pendientes de automatizar. Las 92 fichas de [remitos de compra](docs/remitos.md), [Restobar y recetas](docs/restobar.md) y [listas de precios](docs/listas-precios.md) están planificadas, con datos/calibración y automatización pendientes. XG-VEN-003/007 usan botón, cancelación y `Ctrl+E` sólo cuando el paquete declara `ventas-teclado-v1`, verificado para su SHA256; mientras tanto conservan el doble clic legado. El [backlog de accesibilidad CSV](docs/backlog-accesibilidad.csv) deja XG-ACC-001 a XG-ACC-005 como implementados pendientes de validación JAR/JAB. Las mejoras 002–005 pertenecen a Restobar y no cuentan como escenarios ni como cobertura de Venta.
 
 Los siete recorridos VEN-003 a VEN-009 requieren `sales_journeys` y el mapa de columnas/controles de [Venta cotidiana](docs/paquete.md), validados antes de iniciar el JAR. Un paquete con el contrato anterior conserva los siete casos iniciales, pero no habilita esos recorridos. VEN-008/009 mantienen el mismo proceso entre operaciones; VEN-008 observa el reinicio automático de la misma ventana. Ninguno tiene todavía validación real registrada.
 
@@ -80,3 +84,11 @@ En el menú se elige un grupo por número y nombre descriptivo, con sus conteos.
 ## Ofertas USD — P0
 
 [XG-PRM-080..084](docs/ofertas-usd.md) agregan cinco casos con trece variantes, datos USD y comprobaciones de moneda, total, cobro único y persistencia. Seleccionar `ofertas-usd`. Exigen calibración `ofertas-usd-v1`, cotización 1500 y cobro ARS; no reutilizar los importes ARS como si fueran USD. Validación real pendiente.
+
+## Atajos de listados
+
+[KEY-001..013](docs/atajos-listados.md): 13 escenarios documentados,
+ninguno automatizado ni ejecutado todavía. Ver [artefacto/hash y evidencia
+por pantalla](docs/evidencia-atajos-3f8648035.md).
+`qa.cmd list --product xgestion --group atajos-listados` muestra el backlog;
+`filtros-listados` reúne las ocho pantallas con modal.

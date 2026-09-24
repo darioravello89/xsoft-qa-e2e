@@ -2,10 +2,18 @@
 
 Este paso lo hace una persona responsable del paquete QA una vez por JAR/perfil UI. El resto del equipo importa el paquete ya verificado. No marcar `verified` por revisar código ni por ejecutar unit tests.
 
+Para los [trece listados del commit 3f8648035](atajos-listados.md), la calibración
+está pendiente. El [artefacto exacto](evidencia-atajos-3f8648035.md) ya se
+construyó. Identificar buscadores, tablas, leyendas, destinos y modales por
+nombre/rol/estado en ese JAR; verificar foco sin forzarlo tras el atajo.
+No reutilizar supuestos sobre columnas ID ocultas de otras suites. Registrar
+identidad visible y comprobarla en la ficha abierta. Orden, X nativa y recarga
+única requieren evidencia propia; si no son observables, conservar BLOQUEADO.
+
 El lote de siete promociones requiere además la [calibración promociones-v1](promociones.md),
 con columnas separadas de bruto, oferta y neto y edición por teclado. La calibración
 de Venta cotidiana por sí sola no habilita ese lote. El catálogo completo tiene
-96 casos: cinco de smoke, nueve de Venta cotidiana y 82 de promociones. Los 70 nuevos requieren el [contrato de canastas](canastas-ofertas.md).
+99 casos: cinco de smoke, nueve de Venta cotidiana, 82 de promociones y tres circuitos. Los 70 nuevos requieren el [contrato de canastas](canastas-ofertas.md).
 
 1. Preparar la VM Windows con escritorio interactivo desbloqueado, JDK 17 de 64 bits, JAB/DLL de 64 bits y el paquete QA válido. Después de setup, desconectar la red y crear un snapshot limpio antes de ejecutar el JAR; en PC física, una imagen recuperable equivalente. Ejecutar el doctor del repositorio. Si el único bloqueo pendiente es la calibración inicial, continuar con `inspect`, que mantiene los demás controles. La instancia MySQL debe ser exclusiva: el ERP configura variables globales del servidor al arrancar.
 2. Usar `qa.cmd inspect` para obtener el árbol inicial. La inspección arranca su propio JAR; permite navegar e ingresar manualmente en la UI. Pulsar Enter en la consola captura la estructura de sus ventanas actuales; `q` termina y cierra sólo ese proceso. Nunca escribir credenciales en consola. No hay capturas de imagen ni valores de campos: éstos omiten nombres/descripciones; también se redactan secretos conocidos del perfil.
@@ -14,7 +22,7 @@ de Venta cotidiana por sí sola no habilita ese lote. El catálogo completo tien
 5. Verificar cada selector exacto (`strict=True`) y que encuentre exactamente un elemento visible. Formularios Swing pueden repetir nombres en pestañas ocultas; incluir jerarquía/rol/nombre/índice estructural observado en el selector, nunca elegir el primer resultado de una lista.
 6. Completar fixtures con textos UI reales, identidad y producto del dump. No exportar contraseñas ni árboles sin sanear. Nunca añadir capturas o valores reales al ejemplo público.
 7. Documentar responsable, fecha, versión JAB y SHA256 del JAR; cambiar la calibración privada a `verified`. Importar el mapa con `qa.cmd calibrate --locators RUTA_AL_MAPA_VERIFICADO.json`: el runner actualiza solamente mapa y su hash, conservando JAR/base/credenciales. Este registro afirma calibración humana, no reemplaza el siguiente smoke automatizado. Para distribuir el paquete final al resto del equipo, incorporarlo al ZIP privado y recalcular su manifest.
-8. Completar la extensión de Venta cotidiana descrita abajo antes de habilitar sus siete casos nuevos. Ejecutar los grupos `smoke` y `ventas` (catorce casos en conjunto) con restauración previa y egress bloqueado; los siete iniciales pueden aceptarse por separado con un paquete anterior. Para PRM-001..007 completar el contrato de promociones; para los otros 70, la [calibración de canastas](canastas-ofertas.md). `regression` selecciona 96 casos implementados. Validar el resumen del runner, detalle Robot y evidencias posteriores al login. Repetir la corrida desde baseline para confirmar independencia.
+8. Completar la extensión de Venta cotidiana descrita abajo antes de habilitar sus siete casos nuevos. Ejecutar los grupos `smoke` y `ventas` (catorce casos en conjunto) con restauración previa y egress bloqueado; los siete iniciales pueden aceptarse por separado con un paquete anterior. Para PRM-001..007 completar el contrato de promociones; para los otros 70, la [calibración de canastas](canastas-ofertas.md). `regression` selecciona 99 casos implementados. Validar el resumen del runner, detalle Robot y evidencias posteriores al login. Repetir la corrida desde baseline para confirmar independencia.
 
 ## Verificar la extensión `ventas-etapa1`
 
@@ -52,3 +60,7 @@ Conservar Windows offline después de la inspección y las pruebas. Antes de rec
 ## Extensión P0 de ofertas USD
 
 PRM-080..084 requieren [ofertas-usd-v1](ofertas-usd.md), además de canastas: originales USD, documento y cobro ARS, cotización 1500 y tres selectores monetarios del diálogo visibles. Calibrar los aliases nuevos para el SHA256 del JAR. No habilitar la extensión por copiar los ejemplos ni inferir moneda de importes sin unidad. Son cinco casos y trece variantes, todos con validación real pendiente.
+
+## Circuitos de stock y dinero
+
+Para FIN-011/013/014 agregar las capacidades y aliases de [circuitos-completos.md](circuitos-completos.md#perfil-privado-y-calibración). Validar columnas de remito, autenticación de turno, identidad del puesto y balance en el JAR. FIN-012 permanece pendiente hasta resolver ACC-010; no calibrar ni autorizar doble clic.

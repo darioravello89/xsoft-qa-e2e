@@ -2,7 +2,9 @@
 
 Este mapa organiza la cobertura por lo que hace una persona en XGestion: primero vender, luego administrar lo vendido y después trabajar en Restobar. Describe las familias observadas y sus variantes; no promete probar todas las combinaciones posibles del ERP.
 
-La [cobertura actual](cobertura.md) distingue automatización disponible, escenarios planificados y evidencia real. Hoy hay 298 fichas: 96 implementadas —cinco de smoke, nueve de Venta cotidiana y 82 de promociones— y 202 `planned`: dos promociones, 24 remitos, 40 Restobar, 28 listas, 58 de circuitos críticos y 50 del [complemento de cobertura crítica](complementos-criticos.md). El [mapa de fórmulas y alcances](promociones-pendientes.md) organiza PRM-008..079 y sus dependencias. Los nuevos mapas de [remitos](remitos.md), [Restobar/opciones/recetas](restobar.md) y [listas](listas-precios.md) detallan los próximos recorridos. Sus fichas están pendientes de automatización; otras familias permanecen por desglosar. La ejecución real sobre el JAR sigue pendiente. XPORTAL, Mozos Flutter y Consultador conservan su onboarding independiente.
+La [cobertura actual](cobertura.md) distingue automatización disponible, escenarios planificados y evidencia real. Hoy hay 315 fichas: 99 implementadas —cinco de smoke, nueve de Venta cotidiana, 82 de promociones y tres circuitos— y 216 `planned`: dos promociones, 24 remitos, 40 Restobar, 28 listas, 58 de circuitos críticos, FIN-012 pendiente de validar el nuevo acceso, 13 de atajos/listados y 50 del [complemento de cobertura crítica](complementos-criticos.md). El [mapa de fórmulas y alcances](promociones-pendientes.md) organiza PRM-008..079 y sus dependencias. Los nuevos mapas de [remitos](remitos.md), [Restobar/opciones/recetas](restobar.md) y [listas](listas-precios.md) detallan los próximos recorridos. Sus fichas están pendientes de automatización; otras familias permanecen por desglosar. La ejecución real sobre el JAR sigue pendiente. XPORTAL, Mozos Flutter y Consultador conservan su onboarding independiente.
+
+Los [circuitos completos](circuitos-completos.md) tienen tres perfiles automatizados: FIN-011/013/014. FIN-012 espera validar el nuevo Enter de acceso al cliente (KEY-001); doble clic no autorizado. Los perfiles nuevos no completan todas las variantes de las fichas originales.
 
 El **[roadmap de circuitos críticos](circuitos-criticos.md)** detalla las próximas
 baterías P0 de deuda/dinero/integridad: clientes, proveedores, cuotas, Libro Diario,
@@ -209,3 +211,10 @@ Cada ampliación sigue [nuevas features](../../../docs/nuevas-features.md): deci
 ## Criterio crítico de aceptación: ofertas USD
 
 [PRM-080..084](ofertas-usd.md), prioridad P0: producto, familia, subfamilia, marca y sector; trece variantes de precio final USD 50, umbrales, agrupación, exclusiones y cancelación/cobro único. Implementados, pendientes de ejecución sobre el JAR. Un fallo o bloqueo mantiene pendiente la aceptación del circuito de ofertas. Agregar al control de cualquier cambio en promociones. Cotizaciones adicionales, impuestos, otras fórmulas USD, listas y presupuestos/reaperturas conservan cobertura pendiente.
+
+## Atajos y filtros de listados
+
+El [mapa de los trece listados](atajos-listados.md) agrega KEY-001..013,
+pendientes de automatización y JAB real. Ocho incluyen filtros por teclado.
+El [FAT JAR exacto de 3f8648035](evidencia-atajos-3f8648035.md) está construido;
+no hay VM ni paquete privado. Incluye estados y bloqueos por pantalla.

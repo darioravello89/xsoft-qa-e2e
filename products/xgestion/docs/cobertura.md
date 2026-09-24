@@ -8,10 +8,11 @@ Consultar el **[Excel de cobertura](../../../docs/coverage/xgestion-cobertura.xl
 
 | Capa | Disponible | Qué demuestra |
 | --- | --- | --- |
-| Catálogo | 298 fichas: 96 `implemented` y 202 `planned`; 0 `manual`. | Objetivos, datos y resultados documentados. |
-| Automatización | 96 casos Robot implementados: 5 smoke, 9 ventas y 82 promociones. | Existe código ejecutable y comprobaciones definidas. |
-| Datos comerciales | [Seed opcional](seed.md): 387 artículos, 163 ofertas, 9 listas y 3 medios manuales QA y 26 ejemplos de cálculo pendientes de validar. | Datos reproducibles para ampliar los escenarios; no suma casos automatizados. |
+| Catálogo | 315 fichas: 99 `implemented` y 216 `planned`; 0 `manual`. | Objetivos, datos y resultados documentados. |
+| Automatización | 99 casos Robot implementados: 5 smoke, 9 ventas, 82 promociones y 3 circuitos. | Existe código ejecutable y comprobaciones definidas. |
+| Datos comerciales | [Seed opcional](seed.md): 395 artículos, 163 ofertas, 9 listas y 3 medios manuales QA y 26 ejemplos de cálculo pendientes de validar. | Datos reproducibles para ampliar los escenarios; no suma casos automatizados. |
 | Extensión de Venta | VEN-003 a VEN-009 implementados. | Siete recorridos requieren `sales_journeys`, grilla y editor calibrados; no acreditan E2E real por existir. |
+| Circuitos completos | [FIN-011/013/014](circuitos-completos.md) implementados; FIN-012 planned por ACC-010. | Venta USD, recepción/costos/precios y cierre; falta VM, paquete y validación JAR. |
 | Promociones simples | PRM-001 a PRM-007 implementados y vinculados a siete ejemplos seed. | Recalcular, cancelar/retomar y cobrar; perfil y calibración propios, E2E real pendiente. |
 | Canastas de ofertas | [PRM-008..076 y PRM-079](canastas-ofertas.md): 70 recorridos nuevos implementados. | Fórmulas/alcances, agrupadas, combos, fechas, listas, pagos y permisos. E2E real pendiente. |
 | Nuevos circuitos | [24 remitos](remitos.md), [40 Restobar](restobar.md) y [28 listas](listas-precios.md), todos `planned`. | Fichas y variantes disponibles; faltan datos, adaptadores, calibración y automatización. |
@@ -19,6 +20,7 @@ Consultar el **[Excel de cobertura](../../../docs/coverage/xgestion-cobertura.xl
 | Complemento crítico | [50 fichas COB/PRE/DEV/FEL/PEX/REC/CON/ACT/BEN](complementos-criticos.md), todas `planned`. | Datos, pasos, riesgos y dependencias; no añade pruebas ejecutables. |
 | Contextos pendientes | PRM-077/078. | Falta el paquete QA de varias sucursales/empresas; sin suite ejecutable. |
 | Controles del repositorio | Lint, tests del framework, catálogo y dry-run. | Coherencia técnica; registrar el resultado de cada ejecución. |
+| Atajos de listados | [KEY-001..013](atajos-listados.md), 13 `planned`; ocho con filtros. | FAT JAR 3f8648035 construido; automatización y ejecución JAB pendientes. |
 | Producto real | Pendiente de paquete privado, calibración y ejecución. | Todavía no acredita acceso, venta ni recuperación en el JAR. |
 
 `implemented` no significa validado en el producto; `planned` no significa fallado. Un caso `manual` describe un procedimiento sin automatización ejecutable y necesita su propia evidencia. Ninguno cambia a aprobado por pertenecer a un grupo.
@@ -49,9 +51,9 @@ Consultar el **[Excel de cobertura](../../../docs/coverage/xgestion-cobertura.xl
 | [XG-PRM-006](../scenarios/promociones/XG-PRM-006.md) | Conservar el precio normal antes del inicio de una promoción. | Disponible | Pendiente |
 | [XG-PRM-007](../scenarios/promociones/XG-PRM-007.md) | Conservar el precio normal cuando la promoción está desactivada. | Disponible | Pendiente |
 
-Los conteos vivos salen del catálogo: `qa.cmd list --product xgestion --groups`. Hoy `smoke` tiene cinco implementados; `regression`, 96 implementados y 202 pendientes; `ventas`, nueve implementados; y `promociones`, 77 implementados y 2 pendientes. Los subgrupos de alcances, agrupadas, combos y condiciones tienen 31, 21, 5 y 13 implementados; condiciones conserva 2 pendientes. Un escenario puede pertenecer a varios grupos: no sumar sus conteos como si fueran casos diferentes. Los tags iniciales se conservan para no alterar selecciones existentes.
+Los conteos vivos salen del catálogo: `qa.cmd list --product xgestion --groups`. Hoy `smoke` tiene cinco implementados; `regression`, 99 implementados y 216 pendientes; `ventas`, nueve implementados; y `promociones`, 82 implementados y 2 pendientes. Los subgrupos de alcances, agrupadas, combos y condiciones tienen 36, 21, 5 y 13 implementados; condiciones conserva 2 pendientes. Un escenario puede pertenecer a varios grupos: no sumar sus conteos como si fueran casos diferentes. Los tags iniciales se conservan para no alterar selecciones existentes.
 
-El efectivo exacto, el vuelto y el reintento pertenecen a sus grupos según los tags del catálogo; los conteos de esas familias no implican cobertura de pagos múltiples, crédito ni otras monedas. R01–R20 son referencias del roadmap vinculadas a las fichas XG-RES; no agregan casos a las 298 fichas ni al denominador de automatización.
+El efectivo exacto, el vuelto y el reintento pertenecen a sus grupos según los tags del catálogo; los conteos de esas familias no implican cobertura de pagos múltiples, crédito ni otras monedas. R01–R20 son referencias del roadmap vinculadas a las fichas XG-RES; no agregan casos a las 315 fichas ni al denominador de automatización.
 
 Los siete casos PRM iniciales requieren el [perfil de promociones](promociones.md); los 70 nuevos añaden [canastas, listas, pagos y perfiles](canastas-ofertas.md) y la preparación automática del seed al seleccionarlos; también se puede indicar `--seed catalogo-comercial-v1`. Los 26 ejemplos comerciales continúan separados del catálogo: veinte enlazan fichas implementadas y seis enlazan fichas LPR pendientes (016/017/019/020). Los vínculos no acreditan automatización ni garantizan todos los datos requeridos por la ficha. En UI se distingue subtotal bruto, descuento y neto; en persistencia `vecTotal` es bruto, `vecOferta` el descuento automático y `venTotal` el neto. Los negativos implementados prueban antes una oferta válida de control y la abandonan sin efectos.
 

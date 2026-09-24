@@ -28,19 +28,19 @@ def public_repo(tmp_path):
 def test_current_catalog_has_unique_cases_and_no_real_validation():
     data = build_coverage(ROOT)
     assert data["schema_version"] == 1
-    assert data["counts"]["documented"] == 298
+    assert data["counts"]["documented"] == 315
     assert {key: data["counts"][key] for key in ("implemented", "planned", "manual", "real_validated")} == {
-        "implemented": 96, "planned": 202, "manual": 0, "real_validated": 0,
+        "implemented": 99, "planned": 216, "manual": 0, "real_validated": 0,
     }
-    assert len({case["id"] for case in data["scenarios"]}) == 298
+    assert len({case["id"] for case in data["scenarios"]}) == 315
     assert {case["validation"] for case in data["scenarios"]} == {"pending"}
     pending = [case for case in data["scenarios"] if case["status"] == "planned"]
-    assert {case["id"] for case in pending} == {"XG-PRM-077", "XG-PRM-078"} | {
+    assert {case["id"] for case in pending} == {"XG-PRM-077", "XG-PRM-078", "XG-FIN-012"} | {
         f"XG-{prefix}-{number:03}" for prefix, count in (
             ("REM", 24), ("RES", 40), ("LPR", 28), ("CCC", 10), ("CCP", 8), ("CUO", 6),
             ("LDI", 8), ("CAJ", 10), ("FIN", 10), ("INV", 4), ("BKP", 2),
             ("COB", 8), ("PRE", 6), ("DEV", 6), ("FEL", 6), ("PEX", 6),
-            ("REC", 4), ("CON", 4), ("ACT", 4), ("BEN", 6),
+            ("REC", 4), ("CON", 4), ("ACT", 4), ("BEN", 6), ("KEY", 13),
         )
         for number in range(1, count + 1)
     }
@@ -65,10 +65,10 @@ def test_groups_are_overlapping_selections_not_extra_cases():
     assert groups["promociones"]["counts"]["implemented"] == 82
     assert groups["promociones"]["counts"]["planned"] == 2
     assert len(groups["promociones"]["members"]) == 84
-    assert len(groups["regression"]["members"]) == 298
-    assert groups["regression"]["counts"]["implemented"] == 96
-    assert groups["regression"]["counts"]["planned"] == 202
-    assert len(set().union(*(set(group["members"]) for group in data["groups"]))) == 298
+    assert len(groups["regression"]["members"]) == 315
+    assert groups["regression"]["counts"]["implemented"] == 99
+    assert groups["regression"]["counts"]["planned"] == 216
+    assert len(set().union(*(set(group["members"]) for group in data["groups"]))) == 315
     case = next(case for case in data["scenarios"] if case["id"] == "XG-VEN-003")
     assert case["stage"] == 1
     assert case["priority"] == "P0"
@@ -149,7 +149,7 @@ def test_public_source_edits_change_hash_and_backlog_without_changing_case_count
     roadmap.write_text(content, encoding="utf-8")
     after = build_coverage(public_repo)
     assert after["counts"]["backlog_restobar"] == before["counts"]["backlog_restobar"] + 1
-    assert after["counts"]["documented"] == 298
+    assert after["counts"]["documented"] == 315
     assert next(row for row in after["backlog"]["restobar"] if row["id"] == "R21")["priority"] == "P2"
     assert before["sources"] != after["sources"]
 
@@ -188,9 +188,9 @@ def test_new_documented_scenario_updates_counts_and_members_without_new_evidence
     body = body.replace("XG-VEN-003", "XG-VEN-010")
     new_case.write_text("---\n" + json.dumps(metadata) + "\n---" + body, encoding="utf-8")
     data = build_coverage(public_repo)
-    assert data["counts"]["documented"] == 299
-    assert data["counts"]["planned"] == 203
-    assert data["counts"]["implemented"] == 96
+    assert data["counts"]["documented"] == 316
+    assert data["counts"]["planned"] == 217
+    assert data["counts"]["implemented"] == 99
     assert data["counts"]["real_validated"] == 0
     assert "XG-VEN-010" in next(group["members"] for group in data["groups"] if group["id"] == "ventas")
     planned = next(case for case in data["scenarios"] if case["id"] == "XG-VEN-010")
@@ -258,7 +258,7 @@ def test_seed_examples_link_to_existing_scenarios_without_claiming_validation():
     assert all(item["status"] == "manual_pending" for item in PRICING_CASES)
     assert all(item["e2e_status"] is None and item["e2e_doc_url"] is None
                for item in data["seed_examples"] if not item.get("e2e_scenario"))
-    assert data["counts"]["documented"] == 298
+    assert data["counts"]["documented"] == 315
     assert data["counts"]["seed_examples"] == 26
     assert data["counts"]["real_validated"] == 0
 
@@ -277,4 +277,4 @@ def test_restobar_roadmap_references_resolve_to_planned_scenarios_without_extra_
         assert related, f"{reference['id']} perdió el vínculo con las fichas"
         assert all(scenarios[identifier]["status"] == "planned" for identifier in related)
         assert reference["id"] not in scenarios
-    assert len(scenarios) == data["counts"]["documented"] == 298
+    assert len(scenarios) == data["counts"]["documented"] == 315

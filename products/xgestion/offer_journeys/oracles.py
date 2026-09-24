@@ -190,6 +190,8 @@ def assert_basket_sale(products, lines, before, after, *, user_id, payment_id, r
 
 
 class BasketOracle(XGestionOracle):
+    extra_columns = {}
+
     def __init__(self, connection, fixtures, products, payment_id=None):
         super().__init__(connection, fixtures)
         self.products = products
@@ -212,6 +214,8 @@ class BasketOracle(XGestionOracle):
         usd = any(product.currency == "USD" for product in self.products)
         rows = {}
         for table, columns in STATE_COLUMNS.items():
+            if table in self.extra_columns:
+                columns += "," + self.extra_columns[table]
             if table == "ventas":
                 columns += ",CAENumero"
                 if usd:

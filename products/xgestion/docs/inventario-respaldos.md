@@ -49,7 +49,7 @@ Además, el exportador puede capturar errores de lectura por tabla y continuar. 
 
 ## Datos y evidencia
 
-Los códigos QA-INV, documentos, ingredientes, sucursales y copias descritos son especificaciones de fixtures nuevos. Esta entrega no reserva IDs ni crea upserts. No asumir que los 387 productos del seed comercial ya cubren inventario, receta o restauración.
+Los códigos QA-INV, documentos, ingredientes, sucursales y copias descritos son especificaciones de fixtures nuevos. Esta entrega no reserva IDs ni crea upserts. No asumir que los 395 productos del seed comercial ya cubren inventario, receta o restauración.
 
 Cada ejecución futura registrará JAR/SHA256, paquete, perfil, ámbito, baseline, pasos, esperado/observado y reporte local. En inventario, verificar movimientos por identidad y unidad; en recuperación, comparar manifest, vínculos y la siguiente operación. Nunca publicar dumps, .xbd, contenido descifrado, credenciales, capturas de autenticación o filas completas.
 

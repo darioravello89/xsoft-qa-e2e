@@ -2,7 +2,7 @@
 
 De las 72 fichas del backlog inicial, **70 están automatizadas**: XG-PRM-008..076 y XG-PRM-079.
 XG-PRM-077/078 siguen pendientes: todavía no existe el paquete de varias sucursales/empresas.
-La [cobertura general](cobertura.md) cuenta 298 fichas: 96 implementadas y 202 pendientes, incluidas las nuevas familias de remitos, Restobar y listas.
+La [cobertura general](cobertura.md) cuenta 315 fichas: 99 implementadas y 216 pendientes, incluidas las nuevas familias de remitos, Restobar y listas.
 La evidencia real sigue pendiente. Preparar los [contratos de canastas](canastas-ofertas.md) antes de ejecutar.
 
 ## Cómo consultar y priorizar

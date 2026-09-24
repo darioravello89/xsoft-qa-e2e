@@ -32,7 +32,7 @@ Las expectativas son constantes revisadas; nunca se copian desde la respuesta de
 
 ## Datos fijos y aislamiento
 
-El [seed](seed.md) contiene 387 artículos, 163 ofertas y 9 listas en total,
+El [seed](seed.md) contiene 395 artículos, 163 ofertas y 9 listas en total,
 más tres medios **manuales internos QA**:
 
 | Referencia | ID reservado | Nombre visible |

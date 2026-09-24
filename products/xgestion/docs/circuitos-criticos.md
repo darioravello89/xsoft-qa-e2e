@@ -3,10 +3,15 @@
 Este mapa agrega **58 fichas pendientes de automatización**. Describe qué debe
 comprobar QA antes de aceptar los circuitos de mayor riesgo. No modifica el ERP,
 no instala datos y no acredita ejecución real. El catálogo general contiene
-298 fichas: 96 implementadas y 202 pendientes; las variantes no suman otros IDs.
+302 fichas: 99 implementadas y 203 pendientes; las variantes no suman otros IDs.
 
 Consultar el [Excel de cobertura](../../../docs/coverage/xgestion-cobertura.xlsx),
 el [roadmap general](roadmap.md) y la [matriz](cobertura.md).
+
+La ampliación de [circuitos completos](circuitos-completos.md) incorpora otros
+cuatro IDs: FIN-011/013/014 automatizados, FIN-012 pendiente por ACC-010.
+Las 58 fichas de este mapa conservan sus variantes pendientes; los perfiles
+nuevos no acreditan todos sus recorridos.
 
 ## Baterías y grupos
 
@@ -39,7 +44,7 @@ qa.cmd list --product xgestion --group respaldos
 ```
 
 Estos grupos nuevos son consultables y permanecen no ejecutables mientras sólo
-contengan `planned`. `run --group regression` sigue seleccionando 96 casos
+contengan `planned`. `run --group regression` sigue seleccionando 99 casos
 implementados. Los nuevos escenarios no se incluyen como aprobados en un dry-run.
 
 ## Hitos de implementación y aceptación
@@ -159,6 +164,6 @@ exportaciones y capturas sin credenciales ni datos de producción en el reposito
 
 El [mapa complementario](complementos-criticos.md) añade 50 fichas
 planned de cobros/documentos, servicios, continuidad y beneficios. Revisar
-los filtros del catálogo y del Excel; deben conservar 96 implementados,
-202 pendientes y ninguna validación real inferida. Los casos nuevos no se
+los filtros del catálogo y del Excel; deben conservar 99 implementados,
+203 pendientes y ninguna validación real inferida. Los casos nuevos no se
 ejecutan. Datos, accesibilidad y laboratorios propios siguen pendientes.
