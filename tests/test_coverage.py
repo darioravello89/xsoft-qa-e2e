@@ -30,7 +30,7 @@ def test_current_catalog_has_unique_cases_and_no_real_validation():
     assert data["schema_version"] == 1
     assert data["counts"]["documented"] == 315
     assert {key: data["counts"][key] for key in ("implemented", "planned", "manual", "real_validated")} == {
-        "implemented": 99, "planned": 216, "manual": 0, "real_validated": 0,
+        "implemented": 112, "planned": 203, "manual": 0, "real_validated": 0,
     }
     assert len({case["id"] for case in data["scenarios"]}) == 315
     assert {case["validation"] for case in data["scenarios"]} == {"pending"}
@@ -40,7 +40,7 @@ def test_current_catalog_has_unique_cases_and_no_real_validation():
             ("REM", 24), ("RES", 40), ("LPR", 28), ("CCC", 10), ("CCP", 8), ("CUO", 6),
             ("LDI", 8), ("CAJ", 10), ("FIN", 10), ("INV", 4), ("BKP", 2),
             ("COB", 8), ("PRE", 6), ("DEV", 6), ("FEL", 6), ("PEX", 6),
-            ("REC", 4), ("CON", 4), ("ACT", 4), ("BEN", 6), ("KEY", 13),
+            ("REC", 4), ("CON", 4), ("ACT", 4), ("BEN", 6),
         )
         for number in range(1, count + 1)
     }
@@ -66,8 +66,12 @@ def test_groups_are_overlapping_selections_not_extra_cases():
     assert groups["promociones"]["counts"]["planned"] == 2
     assert len(groups["promociones"]["members"]) == 84
     assert len(groups["regression"]["members"]) == 315
-    assert groups["regression"]["counts"]["implemented"] == 99
-    assert groups["regression"]["counts"]["planned"] == 216
+    assert groups["regression"]["counts"]["implemented"] == 112
+    assert groups["regression"]["counts"]["planned"] == 203
+    assert groups["atajos-listados"]["counts"] == {
+        "documented": 13, "implemented": 13, "planned": 0, "manual": 0, "real_validated": 0,
+    }
+    assert groups["filtros-listados"]["counts"]["implemented"] == 8
     assert len(set().union(*(set(group["members"]) for group in data["groups"]))) == 315
     case = next(case for case in data["scenarios"] if case["id"] == "XG-VEN-003")
     assert case["stage"] == 1
@@ -189,8 +193,8 @@ def test_new_documented_scenario_updates_counts_and_members_without_new_evidence
     new_case.write_text("---\n" + json.dumps(metadata) + "\n---" + body, encoding="utf-8")
     data = build_coverage(public_repo)
     assert data["counts"]["documented"] == 316
-    assert data["counts"]["planned"] == 217
-    assert data["counts"]["implemented"] == 99
+    assert data["counts"]["planned"] == 204
+    assert data["counts"]["implemented"] == 112
     assert data["counts"]["real_validated"] == 0
     assert "XG-VEN-010" in next(group["members"] for group in data["groups"] if group["id"] == "ventas")
     planned = next(case for case in data["scenarios"] if case["id"] == "XG-VEN-010")

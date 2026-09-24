@@ -2,9 +2,11 @@
 
 Este paso lo hace una persona responsable del paquete QA una vez por JAR/perfil UI. El resto del equipo importa el paquete ya verificado. No marcar `verified` por revisar código ni por ejecutar unit tests.
 
-Para los [trece listados del commit 3f8648035](atajos-listados.md), la calibración
-está pendiente. El [artefacto exacto](evidencia-atajos-3f8648035.md) ya se
-construyó. Identificar buscadores, tablas, leyendas, destinos y modales por
+Para los [trece listados](atajos-listados.md), la calibración JAB real está
+pendiente. La [suite y el contrato privado](atajos-automatizacion.md) ya existen.
+El [artefacto exacto de 3f8648035](evidencia-atajos-3f8648035.md) se
+construyó; los cambios posteriores de cabecera requieren su propio JAR.
+Identificar buscadores, tablas, leyendas, destinos y modales por
 nombre/rol/estado en ese JAR; verificar foco sin forzarlo tras el atajo.
 No reutilizar supuestos sobre columnas ID ocultas de otras suites. Registrar
 identidad visible y comprobarla en la ficha abierta. Orden, X nativa y recarga
@@ -22,7 +24,7 @@ de Venta cotidiana por sí sola no habilita ese lote. El catálogo completo tien
 5. Verificar cada selector exacto (`strict=True`) y que encuentre exactamente un elemento visible. Formularios Swing pueden repetir nombres en pestañas ocultas; incluir jerarquía/rol/nombre/índice estructural observado en el selector, nunca elegir el primer resultado de una lista.
 6. Completar fixtures con textos UI reales, identidad y producto del dump. No exportar contraseñas ni árboles sin sanear. Nunca añadir capturas o valores reales al ejemplo público.
 7. Documentar responsable, fecha, versión JAB y SHA256 del JAR; cambiar la calibración privada a `verified`. Importar el mapa con `qa.cmd calibrate --locators RUTA_AL_MAPA_VERIFICADO.json`: el runner actualiza solamente mapa y su hash, conservando JAR/base/credenciales. Este registro afirma calibración humana, no reemplaza el siguiente smoke automatizado. Para distribuir el paquete final al resto del equipo, incorporarlo al ZIP privado y recalcular su manifest.
-8. Completar la extensión de Venta cotidiana descrita abajo antes de habilitar sus siete casos nuevos. Ejecutar los grupos `smoke` y `ventas` (catorce casos en conjunto) con restauración previa y egress bloqueado; los siete iniciales pueden aceptarse por separado con un paquete anterior. Para PRM-001..007 completar el contrato de promociones; para los otros 70, la [calibración de canastas](canastas-ofertas.md). `regression` selecciona 99 casos implementados. Validar el resumen del runner, detalle Robot y evidencias posteriores al login. Repetir la corrida desde baseline para confirmar independencia.
+8. Completar la extensión de Venta cotidiana descrita abajo antes de habilitar sus siete casos nuevos. Ejecutar los grupos `smoke` y `ventas` (catorce casos en conjunto) con restauración previa y egress bloqueado; los siete iniciales pueden aceptarse por separado con un paquete anterior. Para PRM-001..007 completar el contrato de promociones; para los otros 70, la [calibración de canastas](canastas-ofertas.md). `regression` selecciona 112 casos implementados. Validar el resumen del runner, detalle Robot y evidencias posteriores al login. Repetir la corrida desde baseline para confirmar independencia.
 
 ## Verificar la extensión `ventas-etapa1`
 

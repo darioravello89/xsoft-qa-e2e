@@ -41,6 +41,8 @@ El archivo privado de credenciales contiene:
 
 - `QA_LOGIN_USER`: usuario QA de XGestion.
 - `QA_LOGIN_PASSWORD`: contraseña de ese usuario QA.
+- `QA_KEYBOARD_RESTRICTED_USER` y `QA_KEYBOARD_RESTRICTED_PASSWORD`: operador
+  restringido dedicado a los 13 listados, requerido sólo por `atajos-listados`.
 - `QA_DB_PASSWORD`: contraseña dedicada de la instancia local QA.
 - `QA_JAVA_HOME`: opcional; el setup puede detectar Java 17 si se omite. Si se informa, debe señalar el JDK de esa PC, no el del equipo que preparó el ZIP.
 

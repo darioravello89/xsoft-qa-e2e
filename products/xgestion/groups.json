@@ -453,13 +453,13 @@
     {
       "id": "atajos-listados",
       "title": "Atajos de los listados",
-      "description": "13 recorridos pendientes de teclado, identidad, búsqueda, orden y restricciones.",
+      "description": "13 recorridos automatizados de teclado, identidad, búsqueda, orden y restricciones; validación JAB pendiente.",
       "stage": 0
     },
     {
       "id": "filtros-listados",
       "title": "Filtros por teclado",
-      "description": "Ocho modales pendientes: foco, borrador, aplicar una vez y cancelar por cada salida.",
+      "description": "Ocho recorridos automatizados de filtros; validación JAB pendiente.",
       "stage": 0
     }
   ]

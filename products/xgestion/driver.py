@@ -383,6 +383,46 @@ class SemanticDriver:
                 raise AssertionError(message)
             time.sleep(0.25)
 
+    def press_focused(self, alias, key):
+        """Enviar un atajo de listado sólo si JAB confirma el foco previo."""
+        chords = {"ctrl+b": ("ctrl", "b"), "ctrl+f": ("ctrl", "f"),
+                  "up": ("up",), "down": ("down",), "enter": ("enter",),
+                  "tab": ("tab",), "shift+tab": ("shift", "tab"),
+                  "home": ("home",), "esc": ("esc",)}
+        if key not in chords:
+            raise QAError("Tecla fuera del contrato de listados.")
+        element = self.find(alias)
+        element.node.refresh()
+        if "focused" not in self._states(element):
+            raise QAError(f"JAB no confirma foco previo en {alias}; no se enviará {key}.")
+        with private_input():
+            self.bridge.press_keys(*chords[key])
+        diagnostic("Tecla de listado enviada", control=alias, key=key)
+
+    def selected_row_identities(self, alias, column):
+        """Leer identidades visibles seleccionadas sin cambiar foco ni selección."""
+        if type(column) is not int or column < 0:
+            raise QAError("Columna de identidad visible no calibrada.")
+        with private_input():
+            _, cells, _, columns = self._table_cells(alias)
+            if column >= columns:
+                raise QAError("Columna de identidad fuera de la tabla.")
+            selected = []
+            for row in cells:
+                for cell in row:
+                    cell.node.refresh()
+                if any("selected" in self._states(cell) for cell in row):
+                    selected.append(str(row[column].text or row[column].name or "").strip())
+        if any(not identity for identity in selected):
+            raise QAError("Una fila seleccionada no tiene identidad visible.")
+        return selected
+
+    def selected_row_identity(self, alias, column):
+        selected = self.selected_row_identities(alias, column)
+        if len(selected) != 1:
+            raise QAError("JAB no confirma una sola fila seleccionada con identidad visible.")
+        return selected[0]
+
     def expect_state(self, alias, state, expected):
         """Leer permisos/estado accesible sin escribir ni forzar foco."""
         if state not in {"editable", "focusable", "enabled", "selected", "checked"} or type(expected) is not bool:
@@ -401,6 +441,14 @@ class SemanticDriver:
 
     def expect_choice(self, alias, expected):
         """Consultar el hijo seleccionado del combo mediante JAB, sin cambiarlo."""
+        observed = self.choice_text(alias)
+        if observed not in expected:
+            message = f"Opción incorrecta en {alias}."
+            assertion_failed(message, expected="Medio QA elegido", observed="Otra opción")
+            raise AssertionError(message)
+
+    def choice_text(self, alias):
+        """Leer exactamente la opción seleccionada del combo JAB."""
         try:
             with private_input():
                 element = self.find(alias)
@@ -416,10 +464,9 @@ class SemanticDriver:
             raise
         except Exception:
             raise QAError("No se pudo comprobar la opción seleccionada por JAB.") from None
-        if observed not in expected:
-            message = f"Opción incorrecta en {alias}."
-            assertion_failed(message, expected="Medio QA elegido", observed="Otra opción")
-            raise AssertionError(message)
+        if not observed:
+            raise QAError("El combo no informa el nombre de su opción seleccionada.")
+        return observed
 
     def _present(self, alias):
         entry = self.locators["elements"][alias]

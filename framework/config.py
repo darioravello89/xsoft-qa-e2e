@@ -11,6 +11,7 @@ from framework.paths import safe_path
 
 ENV_KEYS = {
     "QA_JAVA_HOME", "QA_LOGIN_USER", "QA_LOGIN_PASSWORD", "QA_DB_PASSWORD",
+    "QA_KEYBOARD_RESTRICTED_USER", "QA_KEYBOARD_RESTRICTED_PASSWORD",
     "XPORTAL_BASE_URL", "CONSULTADOR_BASE_URL", "MOZOS_APK_PATH",
 }
 ASSETS = {"app", "mysql", "dump", "config", "fixtures", "locators", "credentials"}

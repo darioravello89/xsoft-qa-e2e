@@ -221,12 +221,12 @@ def test_pending_offer_backlog_is_visible_but_never_selected_for_execution():
         f"XG-PRM-{number:03}" for number in range(1, 85)
     } - pending_ids
     regression = catalog.select_cases(cases, "xgestion", "regression", None)
-    assert len(regression) == len({case["id"] for case in regression}) == 99
+    assert len(regression) == len({case["id"] for case in regression}) == 112
     assert not pending_ids.intersection(case["id"] for case in regression)
 
 
 @pytest.mark.parametrize("group,count", [
-    ("restobar", 40), ("listas-precios", 28), ("atajos-listados", 13), ("filtros-listados", 8),
+    ("restobar", 40), ("listas-precios", 28),
 ])
 def test_new_operational_backlog_is_visible_without_enabling_execution(group, count):
     root = Path(__file__).resolve().parents[1]
@@ -236,7 +236,7 @@ def test_new_operational_backlog_is_visible_without_enabling_execution(group, co
     with pytest.raises(QAError, match="ejecutables"):
         catalog.select_cases(cases, "xgestion", group, None)
     selected = catalog.select_cases(cases, "xgestion", "regression", None)
-    assert len(selected) == len({case["id"] for case in selected}) == 99
+    assert len(selected) == len({case["id"] for case in selected}) == 112
     pending = [case for case in cases if group in case["tags"]]
     assert all(not case.get("test") and not case.get("seed") for case in pending)
     assert not {case["id"] for case in pending}.intersection(case["id"] for case in selected)
@@ -265,8 +265,18 @@ def test_critical_circuits_are_planned_and_cannot_be_executed(group, prefix, cou
         with pytest.raises(QAError, match="ejecutables"):
             catalog.select_cases(cases, "xgestion", group, None)
     regression = catalog.select_cases(cases, "xgestion", "regression", None)
-    assert len(regression) == len({case["id"] for case in regression}) == 99
+    assert len(regression) == len({case["id"] for case in regression}) == 112
     assert not {case["id"] for case in documented}.intersection(case["id"] for case in regression)
+
+
+def test_keyboard_groups_select_unique_cases_with_real_validation_pending():
+    root = Path(__file__).resolve().parents[1]
+    cases = catalog.validate_catalog(root)
+    keyboard = catalog.select_cases(cases, "xgestion", "atajos-listados", None)
+    filters = catalog.select_cases(cases, "xgestion", "filtros-listados", None)
+    assert {case["id"] for case in keyboard} == {f"XG-KEY-{number:03}" for number in range(1, 14)}
+    assert len(filters) == 8
+    assert {case["id"] for case in filters} <= {case["id"] for case in keyboard}
 
 
 def test_integrated_circuits_select_only_implemented_and_preserve_remito_backlog():

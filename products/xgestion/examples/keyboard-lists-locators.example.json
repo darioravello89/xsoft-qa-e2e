@@ -1,0 +1,866 @@
+{
+  "calibration": {
+    "verified_features": [
+      "atajos-listados-v1"
+    ]
+  },
+  "windows": {
+    "main": "CALIBRAR ventana principal",
+    "key001.detail": "CALIBRAR editor de XG-KEY-001",
+    "key001.restriction": "CALIBRAR aviso de XG-KEY-001",
+    "key001.filters": "CALIBRAR Filtros - XG-KEY-001",
+    "key002.detail": "CALIBRAR editor de XG-KEY-002",
+    "key002.restriction": "CALIBRAR aviso de XG-KEY-002",
+    "key002.filters": "CALIBRAR Filtros - XG-KEY-002",
+    "key003.detail": "CALIBRAR editor de XG-KEY-003",
+    "key003.restriction": "CALIBRAR aviso de XG-KEY-003",
+    "key003.filters": "CALIBRAR Filtros - XG-KEY-003",
+    "key004.detail": "CALIBRAR editor de XG-KEY-004",
+    "key004.restriction": "CALIBRAR aviso de XG-KEY-004",
+    "key004.filters": "CALIBRAR Filtros - XG-KEY-004",
+    "key005.detail": "CALIBRAR editor de XG-KEY-005",
+    "key005.restriction": "CALIBRAR aviso de XG-KEY-005",
+    "key006.detail": "CALIBRAR editor de XG-KEY-006",
+    "key006.restriction": "CALIBRAR aviso de XG-KEY-006",
+    "key006.filters": "CALIBRAR Filtros - XG-KEY-006",
+    "key007.detail": "CALIBRAR editor de XG-KEY-007",
+    "key007.restriction": "CALIBRAR aviso de XG-KEY-007",
+    "key007.filters": "CALIBRAR Filtros - XG-KEY-007",
+    "key008.detail": "CALIBRAR editor de XG-KEY-008",
+    "key008.restriction": "CALIBRAR aviso de XG-KEY-008",
+    "key009.detail": "CALIBRAR editor de XG-KEY-009",
+    "key009.restriction": "CALIBRAR aviso de XG-KEY-009",
+    "key010.detail": "CALIBRAR editor de XG-KEY-010",
+    "key010.restriction": "CALIBRAR aviso de XG-KEY-010",
+    "key010.filters": "CALIBRAR Filtros - XG-KEY-010",
+    "key010.purchase.remito": "CALIBRAR pantalla Remito",
+    "key010.purchase.factura": "CALIBRAR pantalla Factura",
+    "key010.purchase.transferencia": "CALIBRAR pantalla Transferencia",
+    "key010.purchase.carniceria": "CALIBRAR pantalla Carniceria",
+    "key011.detail": "CALIBRAR editor de XG-KEY-011",
+    "key011.restriction": "CALIBRAR aviso de XG-KEY-011",
+    "key012.detail": "CALIBRAR editor de XG-KEY-012",
+    "key012.restriction": "CALIBRAR aviso de XG-KEY-012",
+    "key013.detail": "CALIBRAR editor de XG-KEY-013",
+    "key013.restriction": "CALIBRAR aviso de XG-KEY-013",
+    "key013.filters": "CALIBRAR Filtros - XG-KEY-013"
+  },
+  "elements": {
+    "key001.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.open"
+    },
+    "key001.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.search"
+    },
+    "key001.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.table"
+    },
+    "key001.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.legend"
+    },
+    "key001.detail_identity": {
+      "window": "key001.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.detail_identity"
+    },
+    "key001.detail_close": {
+      "window": "key001.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.detail_close"
+    },
+    "key001.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.sort_control"
+    },
+    "key001.detail_extra": {
+      "window": "key001.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.detail_extra"
+    },
+    "key001.restriction.notice": {
+      "window": "key001.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.restriction.notice"
+    },
+    "key001.restriction.dismiss": {
+      "window": "key001.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.restriction.dismiss"
+    },
+    "key001.filters.comercial": {
+      "window": "key001.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.filters.comercial"
+    },
+    "key001.filters.desde": {
+      "window": "key001.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.filters.desde"
+    },
+    "key001.filters.hasta": {
+      "window": "key001.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.filters.hasta"
+    },
+    "key001.filters.apply": {
+      "window": "key001.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.filters.apply"
+    },
+    "key001.filters.cancel": {
+      "window": "key001.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.filters.cancel"
+    },
+    "key001.filters.close_x": {
+      "window": "key001.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.filters.close_x"
+    },
+    "key001.filters.reload_revision": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.filters.reload_revision"
+    },
+    "key001.filters.error": {
+      "window": "key001.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.filters.error"
+    },
+    "key001.filters.error_dismiss": {
+      "window": "key001.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key001.filters.error_dismiss"
+    },
+    "key002.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.open"
+    },
+    "key002.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.search"
+    },
+    "key002.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.table"
+    },
+    "key002.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.legend"
+    },
+    "key002.detail_identity": {
+      "window": "key002.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.detail_identity"
+    },
+    "key002.detail_close": {
+      "window": "key002.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.detail_close"
+    },
+    "key002.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.sort_control"
+    },
+    "key002.detail_extra": {
+      "window": "key002.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.detail_extra"
+    },
+    "key002.restriction.notice": {
+      "window": "key002.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.restriction.notice"
+    },
+    "key002.restriction.dismiss": {
+      "window": "key002.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.restriction.dismiss"
+    },
+    "key002.filters.desde": {
+      "window": "key002.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.filters.desde"
+    },
+    "key002.filters.hasta": {
+      "window": "key002.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.filters.hasta"
+    },
+    "key002.filters.apply": {
+      "window": "key002.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.filters.apply"
+    },
+    "key002.filters.cancel": {
+      "window": "key002.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.filters.cancel"
+    },
+    "key002.filters.close_x": {
+      "window": "key002.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.filters.close_x"
+    },
+    "key002.filters.reload_revision": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.filters.reload_revision"
+    },
+    "key002.filters.error": {
+      "window": "key002.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.filters.error"
+    },
+    "key002.filters.error_dismiss": {
+      "window": "key002.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key002.filters.error_dismiss"
+    },
+    "key003.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.open"
+    },
+    "key003.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.search"
+    },
+    "key003.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.table"
+    },
+    "key003.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.legend"
+    },
+    "key003.detail_identity": {
+      "window": "key003.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.detail_identity"
+    },
+    "key003.detail_close": {
+      "window": "key003.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.detail_close"
+    },
+    "key003.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.sort_control"
+    },
+    "key003.detail_extra": {
+      "window": "key003.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.detail_extra"
+    },
+    "key003.restriction.notice": {
+      "window": "key003.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.restriction.notice"
+    },
+    "key003.restriction.dismiss": {
+      "window": "key003.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.restriction.dismiss"
+    },
+    "key003.filters.desde": {
+      "window": "key003.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.filters.desde"
+    },
+    "key003.filters.hasta": {
+      "window": "key003.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.filters.hasta"
+    },
+    "key003.filters.apply": {
+      "window": "key003.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.filters.apply"
+    },
+    "key003.filters.cancel": {
+      "window": "key003.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.filters.cancel"
+    },
+    "key003.filters.close_x": {
+      "window": "key003.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.filters.close_x"
+    },
+    "key003.filters.reload_revision": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.filters.reload_revision"
+    },
+    "key003.filters.error": {
+      "window": "key003.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.filters.error"
+    },
+    "key003.filters.error_dismiss": {
+      "window": "key003.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key003.filters.error_dismiss"
+    },
+    "key004.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.open"
+    },
+    "key004.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.search"
+    },
+    "key004.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.table"
+    },
+    "key004.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.legend"
+    },
+    "key004.detail_identity": {
+      "window": "key004.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.detail_identity"
+    },
+    "key004.detail_close": {
+      "window": "key004.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.detail_close"
+    },
+    "key004.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.sort_control"
+    },
+    "key004.detail_extra": {
+      "window": "key004.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.detail_extra"
+    },
+    "key004.restriction.notice": {
+      "window": "key004.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.restriction.notice"
+    },
+    "key004.restriction.dismiss": {
+      "window": "key004.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.restriction.dismiss"
+    },
+    "key004.filters.desde": {
+      "window": "key004.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.filters.desde"
+    },
+    "key004.filters.hasta": {
+      "window": "key004.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.filters.hasta"
+    },
+    "key004.filters.tipo": {
+      "window": "key004.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.filters.tipo"
+    },
+    "key004.filters.apply": {
+      "window": "key004.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.filters.apply"
+    },
+    "key004.filters.cancel": {
+      "window": "key004.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.filters.cancel"
+    },
+    "key004.filters.close_x": {
+      "window": "key004.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.filters.close_x"
+    },
+    "key004.filters.reload_revision": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.filters.reload_revision"
+    },
+    "key004.filters.error": {
+      "window": "key004.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.filters.error"
+    },
+    "key004.filters.error_dismiss": {
+      "window": "key004.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key004.filters.error_dismiss"
+    },
+    "key005.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.open"
+    },
+    "key005.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.search"
+    },
+    "key005.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.table"
+    },
+    "key005.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.legend"
+    },
+    "key005.detail_identity": {
+      "window": "key005.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.detail_identity"
+    },
+    "key005.detail_close": {
+      "window": "key005.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.detail_close"
+    },
+    "key005.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.sort_control"
+    },
+    "key005.detail_extra": {
+      "window": "key005.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.detail_extra"
+    },
+    "key005.restriction.notice": {
+      "window": "key005.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.restriction.notice"
+    },
+    "key005.restriction.dismiss": {
+      "window": "key005.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key005.restriction.dismiss"
+    },
+    "key006.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.open"
+    },
+    "key006.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.search"
+    },
+    "key006.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.table"
+    },
+    "key006.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.legend"
+    },
+    "key006.detail_identity": {
+      "window": "key006.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.detail_identity"
+    },
+    "key006.detail_close": {
+      "window": "key006.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.detail_close"
+    },
+    "key006.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.sort_control"
+    },
+    "key006.detail_extra": {
+      "window": "key006.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.detail_extra"
+    },
+    "key006.restriction.notice": {
+      "window": "key006.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.restriction.notice"
+    },
+    "key006.restriction.dismiss": {
+      "window": "key006.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.restriction.dismiss"
+    },
+    "key006.filters.estado": {
+      "window": "key006.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.estado"
+    },
+    "key006.filters.proveedor": {
+      "window": "key006.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.proveedor"
+    },
+    "key006.filters.categoria": {
+      "window": "key006.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.categoria"
+    },
+    "key006.filters.subcategoria": {
+      "window": "key006.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.subcategoria"
+    },
+    "key006.filters.orden": {
+      "window": "key006.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.orden"
+    },
+    "key006.filters.direccion": {
+      "window": "key006.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.direccion"
+    },
+    "key006.filters.apply": {
+      "window": "key006.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.apply"
+    },
+    "key006.filters.cancel": {
+      "window": "key006.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.cancel"
+    },
+    "key006.filters.close_x": {
+      "window": "key006.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.close_x"
+    },
+    "key006.filters.reload_revision": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key006.filters.reload_revision"
+    },
+    "key007.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.open"
+    },
+    "key007.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.search"
+    },
+    "key007.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.table"
+    },
+    "key007.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.legend"
+    },
+    "key007.detail_identity": {
+      "window": "key007.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.detail_identity"
+    },
+    "key007.detail_close": {
+      "window": "key007.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.detail_close"
+    },
+    "key007.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.sort_control"
+    },
+    "key007.detail_extra": {
+      "window": "key007.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.detail_extra"
+    },
+    "key007.restriction.notice": {
+      "window": "key007.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.restriction.notice"
+    },
+    "key007.restriction.dismiss": {
+      "window": "key007.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.restriction.dismiss"
+    },
+    "key007.filters.zona": {
+      "window": "key007.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.filters.zona"
+    },
+    "key007.filters.apply": {
+      "window": "key007.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.filters.apply"
+    },
+    "key007.filters.cancel": {
+      "window": "key007.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.filters.cancel"
+    },
+    "key007.filters.close_x": {
+      "window": "key007.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.filters.close_x"
+    },
+    "key007.filters.reload_revision": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key007.filters.reload_revision"
+    },
+    "key008.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.open"
+    },
+    "key008.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.search"
+    },
+    "key008.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.table"
+    },
+    "key008.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.legend"
+    },
+    "key008.detail_identity": {
+      "window": "key008.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.detail_identity"
+    },
+    "key008.detail_close": {
+      "window": "key008.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.detail_close"
+    },
+    "key008.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.sort_control"
+    },
+    "key008.detail_extra": {
+      "window": "key008.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.detail_extra"
+    },
+    "key008.restriction.notice": {
+      "window": "key008.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.restriction.notice"
+    },
+    "key008.restriction.dismiss": {
+      "window": "key008.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key008.restriction.dismiss"
+    },
+    "key009.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.open"
+    },
+    "key009.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.search"
+    },
+    "key009.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.table"
+    },
+    "key009.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.legend"
+    },
+    "key009.detail_identity": {
+      "window": "key009.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.detail_identity"
+    },
+    "key009.detail_close": {
+      "window": "key009.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.detail_close"
+    },
+    "key009.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.sort_control"
+    },
+    "key009.detail_extra": {
+      "window": "key009.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.detail_extra"
+    },
+    "key009.restriction.notice": {
+      "window": "key009.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.restriction.notice"
+    },
+    "key009.restriction.dismiss": {
+      "window": "key009.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key009.restriction.dismiss"
+    },
+    "key010.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.open"
+    },
+    "key010.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.search"
+    },
+    "key010.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.table"
+    },
+    "key010.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.legend"
+    },
+    "key010.detail_identity": {
+      "window": "key010.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.detail_identity"
+    },
+    "key010.detail_close": {
+      "window": "key010.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.detail_close"
+    },
+    "key010.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.sort_control"
+    },
+    "key010.detail_extra": {
+      "window": "key010.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.detail_extra"
+    },
+    "key010.restriction.notice": {
+      "window": "key010.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.restriction.notice"
+    },
+    "key010.restriction.dismiss": {
+      "window": "key010.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.restriction.dismiss"
+    },
+    "key010.filters.sucursal": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.sucursal"
+    },
+    "key010.filters.proveedor": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.proveedor"
+    },
+    "key010.filters.estado": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.estado"
+    },
+    "key010.filters.desde": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.desde"
+    },
+    "key010.filters.hasta": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.hasta"
+    },
+    "key010.filters.tipo": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.tipo"
+    },
+    "key010.filters.apply": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.apply"
+    },
+    "key010.filters.cancel": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.cancel"
+    },
+    "key010.filters.close_x": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.close_x"
+    },
+    "key010.filters.reload_revision": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.reload_revision"
+    },
+    "key010.filters.error": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.error"
+    },
+    "key010.filters.error_dismiss": {
+      "window": "key010.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.filters.error_dismiss"
+    },
+    "key010.purchase.remito.identity": {
+      "window": "key010.purchase.remito",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.purchase.remito.identity"
+    },
+    "key010.purchase.remito.close": {
+      "window": "key010.purchase.remito",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.purchase.remito.close"
+    },
+    "key010.purchase.factura.identity": {
+      "window": "key010.purchase.factura",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.purchase.factura.identity"
+    },
+    "key010.purchase.factura.close": {
+      "window": "key010.purchase.factura",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.purchase.factura.close"
+    },
+    "key010.purchase.transferencia.identity": {
+      "window": "key010.purchase.transferencia",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.purchase.transferencia.identity"
+    },
+    "key010.purchase.transferencia.close": {
+      "window": "key010.purchase.transferencia",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.purchase.transferencia.close"
+    },
+    "key010.purchase.carniceria.identity": {
+      "window": "key010.purchase.carniceria",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.purchase.carniceria.identity"
+    },
+    "key010.purchase.carniceria.close": {
+      "window": "key010.purchase.carniceria",
+      "query": "CALIBRAR nombre y rol JAB únicos para key010.purchase.carniceria.close"
+    },
+    "key011.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.open"
+    },
+    "key011.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.search"
+    },
+    "key011.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.table"
+    },
+    "key011.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.legend"
+    },
+    "key011.detail_identity": {
+      "window": "key011.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.detail_identity"
+    },
+    "key011.detail_close": {
+      "window": "key011.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.detail_close"
+    },
+    "key011.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.sort_control"
+    },
+    "key011.detail_extra": {
+      "window": "key011.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.detail_extra"
+    },
+    "key011.restriction.notice": {
+      "window": "key011.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.restriction.notice"
+    },
+    "key011.restriction.dismiss": {
+      "window": "key011.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key011.restriction.dismiss"
+    },
+    "key012.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.open"
+    },
+    "key012.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.search"
+    },
+    "key012.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.table"
+    },
+    "key012.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.legend"
+    },
+    "key012.detail_identity": {
+      "window": "key012.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.detail_identity"
+    },
+    "key012.detail_close": {
+      "window": "key012.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.detail_close"
+    },
+    "key012.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.sort_control"
+    },
+    "key012.detail_extra": {
+      "window": "key012.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.detail_extra"
+    },
+    "key012.restriction.notice": {
+      "window": "key012.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.restriction.notice"
+    },
+    "key012.restriction.dismiss": {
+      "window": "key012.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key012.restriction.dismiss"
+    },
+    "key013.open": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.open"
+    },
+    "key013.search": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.search"
+    },
+    "key013.table": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.table"
+    },
+    "key013.legend": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.legend"
+    },
+    "key013.detail_identity": {
+      "window": "key013.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.detail_identity"
+    },
+    "key013.detail_close": {
+      "window": "key013.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.detail_close"
+    },
+    "key013.sort_control": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.sort_control"
+    },
+    "key013.detail_extra": {
+      "window": "key013.detail",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.detail_extra"
+    },
+    "key013.restriction.notice": {
+      "window": "key013.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.restriction.notice"
+    },
+    "key013.restriction.dismiss": {
+      "window": "key013.restriction",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.restriction.dismiss"
+    },
+    "key013.filters.categoria": {
+      "window": "key013.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.filters.categoria"
+    },
+    "key013.filters.apply": {
+      "window": "key013.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.filters.apply"
+    },
+    "key013.filters.cancel": {
+      "window": "key013.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.filters.cancel"
+    },
+    "key013.filters.close_x": {
+      "window": "key013.filters",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.filters.close_x"
+    },
+    "key013.filters.reload_revision": {
+      "window": "main",
+      "query": "CALIBRAR nombre y rol JAB únicos para key013.filters.reload_revision"
+    }
+  }
+}

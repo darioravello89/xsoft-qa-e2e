@@ -1,5 +1,5 @@
 ---
-{"id": "XG-KEY-012", "title": "Atajos en categorías", "product": "xgestion", "module": "atajos-listados", "priority": "P1", "tags": ["xgestion", "regression", "atajos-listados", "lectura", "p1"], "status": "planned"}
+{"id": "XG-KEY-012", "title": "Atajos en categorías", "product": "xgestion", "module": "atajos-listados", "priority": "P1", "tags": ["xgestion", "regression", "atajos-listados", "lectura", "p1"], "status": "implemented", "test": "products/xgestion/suites/atajos_listados.robot"}
 ---
 
 # XG-KEY-012 — Atajos en categorías
@@ -7,13 +7,12 @@
 ## Objetivo y estado
 
 Operar **Categorías** por teclado conservando identidad y restricciones.
-**Documentado; automatización pendiente; ejecución real no realizada.**
-No hay archivo Robot ni PASS por dry-run. Ver [evidencia del artefacto](../../docs/evidencia-atajos-3f8648035.md).
+**Recorrido Robot implementado; ejecución real JAB no realizada.**
+La [guía de automatización](../../docs/atajos-automatizacion.md) explica el paquete privado y los bloqueos. El dry-run no acredita PASS del ERP.
 
 ## Perfil y datos
 
-PC/VM Windows QA exclusiva, offline y escritorio visible. JAR exacto del commit
-`3f8648035380535f639da140d208fd299a096593`, paquete privado con roles y datos dedicados,
+PC/VM Windows QA exclusiva, offline y escritorio visible. JAR exacto del commit que se ejecutará, con SHA-256 y paquete privado de roles y datos dedicados,
 calibración JAB de nombres/roles/estados. A/B/C inequívocos; búsquedas de cero,
 una y varias filas, filtros iniciales A y borrador B preparados antes de probar.
 Identidad esperada: **Nombre único y orden configurado de la categoría**. No suponer accesible el ID de columna oculta.

@@ -1,12 +1,13 @@
 # Atajos y filtros de los 13 listados
 
 Fuente: XGestion2 `3f8648035380535f639da140d208fd299a096593`, `release/189-lts`.
-**13 escenarios documentados, 0 automatizados, 0 ejecutados con JAB.**
+**13 escenarios documentados y con suite Robot; 0 ejecutados con JAB.**
 El [registro de evidencia](evidencia-atajos-3f8648035.md) identifica el FAT JAR
 construido y los bloqueos. No hay defectos confirmados por ejecución real.
 
-El grupo `atajos-listados` aparece en catálogo/Excel como pendiente. No se
-ofrece como suite ejecutable hasta implementar y calibrar sus recorridos.
+El grupo `atajos-listados` aparece en catálogo/Excel como implementado,
+con validación real pendiente. Ver la [guía de automatización](atajos-automatizacion.md)
+para calibrar el paquete privado y reconocer bloqueos de observabilidad.
 Cada ficha requiere todas las variantes comunes y las específicas de su
 pantalla; una apertura correcta no aprueba el resto del caso.
 
@@ -139,12 +140,11 @@ prueba que no haya aparecido transitoriamente.
    paquete con este JAR y hash, sin usar la instalación cotidiana.
 2. Calibrar el árbol JAB de cada pantalla y editor, datos y controles de filtros.
    Guardar localmente paquete/perfil/calibración; no publicar árboles privados.
-3. Implementar recorrido Robot sólo cuando las variantes tengan acciones y
-   oráculos verificables. Habilitar `atajos-listados` tras pasar controles del
-   framework; conservar `planned` mientras no exista automatización completa.
+3. Calibrar la suite Robot existente contra el JAR exacto. Las variantes sin
+   señal verificable quedan BLOQUEADAS; `implemented` sólo expresa presencia
+   de código de prueba, nunca un PASS de producto.
 4. Ejecutar por pantalla con DEBUG para pasos; INFO resumido; TRACE saneado.
-   Antes de estar implementado, `run --group atajos-listados` debe rechazar la
-   selección. No ejecutar Robot por fuera de `qa.cmd` para saltar preflight.
+   No ejecutar Robot por fuera de `qa.cmd` para saltar preflight.
 5. Guardar por N/F/S: fecha, caso/variante, JAR SHA256, paquete/perfil, versión
    JAB, resolución/DPI, rol, datos QA, paso, esperado/observado, foco/selección,
    capturas sin autenticación y reporte local. Estado: no ejecutado, bloqueado,

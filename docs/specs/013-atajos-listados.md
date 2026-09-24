@@ -66,3 +66,12 @@ con usuarios preparados en el paquete y movimientos de origen conocido.
 No conectar el JAR a la instalación cotidiana para resolver el bloqueo.
 Sin calibración y datos no se inventa una suite ejecutable: las fichas quedan
 `planned`, seleccionables en el catálogo, sin archivo Robot.
+
+## Actualización posterior
+
+La continuación incorporó `suites/atajos_listados.robot` y su biblioteca JAB
+para los trece casos; las fichas pasaron a `implemented`. La restricción de
+este documento correspondía a la entrega anterior sin código de prueba.
+`implemented` no acredita ejecución ni resultado del ERP: el perfil privado,
+la VM, la calibración y las señales ACC-011/012/013 siguen pendientes. Ver
+`products/xgestion/docs/atajos-automatizacion.md` para el estado actual.

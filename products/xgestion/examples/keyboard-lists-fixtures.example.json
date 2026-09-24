@@ -1,0 +1,1351 @@
+{
+  "keyboard_lists": {
+    "schema_version": 1,
+    "cases": {
+      "XG-KEY-001": {
+        "open": [
+          "key001.open"
+        ],
+        "search": "key001.search",
+        "table": "key001.table",
+        "legend": "key001.legend",
+        "detail_identity": "key001.detail_identity",
+        "detail_close": "key001.detail_close",
+        "sort_control": "key001.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key001.detail_identity": "CALIBRAR identidad QA-A",
+            "key001.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key001.detail_identity": "CALIBRAR identidad QA-B",
+            "key001.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key001.detail_identity": "CALIBRAR identidad QA-C",
+            "key001.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key001.restriction.notice",
+          "dismiss": "key001.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "filters": {
+          "first": "key001.filters.comercial",
+          "fields": [
+            {
+              "alias": "key001.filters.comercial",
+              "kind": "choice",
+              "a": "CALIBRAR comercial A",
+              "b": "CALIBRAR comercial B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            },
+            {
+              "alias": "key001.filters.desde",
+              "kind": "text",
+              "a": "CALIBRAR desde A",
+              "b": "CALIBRAR desde B"
+            },
+            {
+              "alias": "key001.filters.hasta",
+              "kind": "text",
+              "a": "CALIBRAR hasta A",
+              "b": "CALIBRAR hasta B"
+            }
+          ],
+          "focus_order": [
+            "key001.filters.comercial",
+            "key001.filters.desde",
+            "key001.filters.hasta",
+            "key001.filters.apply",
+            "key001.filters.cancel"
+          ],
+          "apply": "key001.filters.apply",
+          "cancel": "key001.filters.cancel",
+          "close_x": "key001.filters.close_x",
+          "reload_revision": "key001.filters.reload_revision",
+          "rows_a": [
+            "QA-A",
+            "QA-B",
+            "QA-C"
+          ],
+          "rows_b": [
+            "QA-B"
+          ],
+          "selected_a": [],
+          "special": {
+            "kind": "dates",
+            "from": "key001.filters.desde",
+            "until": "key001.filters.hasta",
+            "invalid_from": "CALIBRAR fecha posterior",
+            "invalid_until": "CALIBRAR fecha anterior",
+            "error": "key001.filters.error",
+            "error_dismiss": "key001.filters.error_dismiss",
+            "error_text": "CALIBRAR aviso",
+            "rows_empty_from": [
+              "QA-A",
+              "QA-B",
+              "QA-C"
+            ]
+          },
+          "selected_before": [
+            "QA-A"
+          ],
+          "selected_b": []
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-002": {
+        "open": [
+          "key002.open"
+        ],
+        "search": "key002.search",
+        "table": "key002.table",
+        "legend": "key002.legend",
+        "detail_identity": "key002.detail_identity",
+        "detail_close": "key002.detail_close",
+        "sort_control": "key002.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key002.detail_identity": "CALIBRAR identidad QA-A",
+            "key002.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key002.detail_identity": "CALIBRAR identidad QA-B",
+            "key002.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key002.detail_identity": "CALIBRAR identidad QA-C",
+            "key002.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key002.restriction.notice",
+          "dismiss": "key002.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "filters": {
+          "first": "key002.filters.desde",
+          "fields": [
+            {
+              "alias": "key002.filters.desde",
+              "kind": "text",
+              "a": "CALIBRAR desde A",
+              "b": "CALIBRAR desde B"
+            },
+            {
+              "alias": "key002.filters.hasta",
+              "kind": "text",
+              "a": "CALIBRAR hasta A",
+              "b": "CALIBRAR hasta B"
+            }
+          ],
+          "focus_order": [
+            "key002.filters.desde",
+            "key002.filters.hasta",
+            "key002.filters.apply",
+            "key002.filters.cancel"
+          ],
+          "apply": "key002.filters.apply",
+          "cancel": "key002.filters.cancel",
+          "close_x": "key002.filters.close_x",
+          "reload_revision": "key002.filters.reload_revision",
+          "rows_a": [
+            "QA-A",
+            "QA-B",
+            "QA-C"
+          ],
+          "rows_b": [
+            "QA-B"
+          ],
+          "selected_a": [],
+          "special": {
+            "kind": "dates",
+            "from": "key002.filters.desde",
+            "until": "key002.filters.hasta",
+            "invalid_from": "CALIBRAR fecha posterior",
+            "invalid_until": "CALIBRAR fecha anterior",
+            "error": "key002.filters.error",
+            "error_dismiss": "key002.filters.error_dismiss",
+            "error_text": "CALIBRAR aviso",
+            "rows_empty_from": [
+              "QA-A",
+              "QA-B",
+              "QA-C"
+            ]
+          },
+          "selected_before": [
+            "QA-A"
+          ],
+          "selected_b": []
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-003": {
+        "open": [
+          "key003.open"
+        ],
+        "search": "key003.search",
+        "table": "key003.table",
+        "legend": "key003.legend",
+        "detail_identity": "key003.detail_identity",
+        "detail_close": "key003.detail_close",
+        "sort_control": "key003.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key003.detail_identity": "CALIBRAR identidad QA-A",
+            "key003.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key003.detail_identity": "CALIBRAR identidad QA-B",
+            "key003.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key003.detail_identity": "CALIBRAR identidad QA-C",
+            "key003.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key003.restriction.notice",
+          "dismiss": "key003.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "filters": {
+          "first": "key003.filters.desde",
+          "fields": [
+            {
+              "alias": "key003.filters.desde",
+              "kind": "text",
+              "a": "CALIBRAR desde A",
+              "b": "CALIBRAR desde B"
+            },
+            {
+              "alias": "key003.filters.hasta",
+              "kind": "text",
+              "a": "CALIBRAR hasta A",
+              "b": "CALIBRAR hasta B"
+            }
+          ],
+          "focus_order": [
+            "key003.filters.desde",
+            "key003.filters.hasta",
+            "key003.filters.apply",
+            "key003.filters.cancel"
+          ],
+          "apply": "key003.filters.apply",
+          "cancel": "key003.filters.cancel",
+          "close_x": "key003.filters.close_x",
+          "reload_revision": "key003.filters.reload_revision",
+          "rows_a": [
+            "QA-A",
+            "QA-B",
+            "QA-C"
+          ],
+          "rows_b": [
+            "QA-B"
+          ],
+          "selected_a": [],
+          "special": {
+            "kind": "dates",
+            "from": "key003.filters.desde",
+            "until": "key003.filters.hasta",
+            "invalid_from": "CALIBRAR fecha posterior",
+            "invalid_until": "CALIBRAR fecha anterior",
+            "error": "key003.filters.error",
+            "error_dismiss": "key003.filters.error_dismiss",
+            "error_text": "CALIBRAR aviso",
+            "rows_empty_from": [
+              "QA-A",
+              "QA-B",
+              "QA-C"
+            ]
+          },
+          "selected_before": [
+            "QA-A"
+          ],
+          "selected_b": []
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-004": {
+        "open": [
+          "key004.open"
+        ],
+        "search": "key004.search",
+        "table": "key004.table",
+        "legend": "key004.legend",
+        "detail_identity": "key004.detail_identity",
+        "detail_close": "key004.detail_close",
+        "sort_control": "key004.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key004.detail_identity": "CALIBRAR identidad QA-A",
+            "key004.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key004.detail_identity": "CALIBRAR identidad QA-B",
+            "key004.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key004.detail_identity": "CALIBRAR identidad QA-C",
+            "key004.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key004.restriction.notice",
+          "dismiss": "key004.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "filters": {
+          "first": "key004.filters.desde",
+          "fields": [
+            {
+              "alias": "key004.filters.desde",
+              "kind": "text",
+              "a": "CALIBRAR desde A",
+              "b": "CALIBRAR desde B"
+            },
+            {
+              "alias": "key004.filters.hasta",
+              "kind": "text",
+              "a": "CALIBRAR hasta A",
+              "b": "CALIBRAR hasta B"
+            },
+            {
+              "alias": "key004.filters.tipo",
+              "kind": "choice",
+              "a": "CALIBRAR tipo A",
+              "b": "CALIBRAR tipo B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            }
+          ],
+          "focus_order": [
+            "key004.filters.desde",
+            "key004.filters.hasta",
+            "key004.filters.tipo",
+            "key004.filters.apply",
+            "key004.filters.cancel"
+          ],
+          "apply": "key004.filters.apply",
+          "cancel": "key004.filters.cancel",
+          "close_x": "key004.filters.close_x",
+          "reload_revision": "key004.filters.reload_revision",
+          "rows_a": [
+            "QA-A",
+            "QA-B",
+            "QA-C"
+          ],
+          "rows_b": [
+            "QA-B"
+          ],
+          "selected_a": [],
+          "special": {
+            "kind": "dates",
+            "from": "key004.filters.desde",
+            "until": "key004.filters.hasta",
+            "invalid_from": "CALIBRAR fecha posterior",
+            "invalid_until": "CALIBRAR fecha anterior",
+            "error": "key004.filters.error",
+            "error_dismiss": "key004.filters.error_dismiss",
+            "error_text": "CALIBRAR aviso",
+            "rows_empty_from": [
+              "QA-A",
+              "QA-B",
+              "QA-C"
+            ]
+          },
+          "selected_before": [
+            "QA-A"
+          ],
+          "selected_b": []
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-005": {
+        "open": [
+          "key005.open"
+        ],
+        "search": "key005.search",
+        "table": "key005.table",
+        "legend": "key005.legend",
+        "detail_identity": "key005.detail_identity",
+        "detail_close": "key005.detail_close",
+        "sort_control": "key005.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key005.detail_identity": "CALIBRAR identidad QA-A",
+            "key005.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key005.detail_identity": "CALIBRAR identidad QA-B",
+            "key005.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key005.detail_identity": "CALIBRAR identidad QA-C",
+            "key005.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key005.restriction.notice",
+          "dismiss": "key005.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-006": {
+        "open": [
+          "key006.open"
+        ],
+        "search": "key006.search",
+        "table": "key006.table",
+        "legend": "key006.legend",
+        "detail_identity": "key006.detail_identity",
+        "detail_close": "key006.detail_close",
+        "sort_control": "key006.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key006.detail_identity": "CALIBRAR identidad QA-A",
+            "key006.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key006.detail_identity": "CALIBRAR identidad QA-B",
+            "key006.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key006.detail_identity": "CALIBRAR identidad QA-C",
+            "key006.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key006.restriction.notice",
+          "dismiss": "key006.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "filters": {
+          "first": "key006.filters.estado",
+          "fields": [
+            {
+              "alias": "key006.filters.estado",
+              "kind": "choice",
+              "a": "CALIBRAR estado A",
+              "b": "CALIBRAR estado B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            },
+            {
+              "alias": "key006.filters.proveedor",
+              "kind": "choice",
+              "a": "CALIBRAR proveedor A",
+              "b": "CALIBRAR proveedor B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            },
+            {
+              "alias": "key006.filters.categoria",
+              "kind": "choice",
+              "a": "CALIBRAR categoria A",
+              "b": "CALIBRAR categoria B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            },
+            {
+              "alias": "key006.filters.subcategoria",
+              "kind": "choice",
+              "a": "CALIBRAR subcategoria A",
+              "b": "CALIBRAR subcategoria B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            },
+            {
+              "alias": "key006.filters.orden",
+              "kind": "choice",
+              "a": "CALIBRAR orden A",
+              "b": "CALIBRAR orden B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            },
+            {
+              "alias": "key006.filters.direccion",
+              "kind": "choice",
+              "a": "CALIBRAR direccion A",
+              "b": "CALIBRAR direccion B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            }
+          ],
+          "focus_order": [
+            "key006.filters.estado",
+            "key006.filters.proveedor",
+            "key006.filters.categoria",
+            "key006.filters.subcategoria",
+            "key006.filters.orden",
+            "key006.filters.direccion",
+            "key006.filters.apply",
+            "key006.filters.cancel"
+          ],
+          "apply": "key006.filters.apply",
+          "cancel": "key006.filters.cancel",
+          "close_x": "key006.filters.close_x",
+          "reload_revision": "key006.filters.reload_revision",
+          "rows_a": [
+            "QA-A",
+            "QA-B",
+            "QA-C"
+          ],
+          "rows_b": [
+            "QA-B"
+          ],
+          "selected_a": [],
+          "special": {
+            "kind": "cascade",
+            "parent": "key006.filters.categoria",
+            "child": "key006.filters.subcategoria",
+            "child_after_parent": "CALIBRAR subcategoría de B"
+          },
+          "selected_before": [
+            "QA-A"
+          ],
+          "selected_b": []
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-007": {
+        "open": [
+          "key007.open"
+        ],
+        "search": "key007.search",
+        "table": "key007.table",
+        "legend": "key007.legend",
+        "detail_identity": "key007.detail_identity",
+        "detail_close": "key007.detail_close",
+        "sort_control": "key007.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key007.detail_identity": "CALIBRAR identidad QA-A",
+            "key007.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key007.detail_identity": "CALIBRAR identidad QA-B",
+            "key007.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key007.detail_identity": "CALIBRAR identidad QA-C",
+            "key007.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key007.restriction.notice",
+          "dismiss": "key007.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "filters": {
+          "first": "key007.filters.zona",
+          "fields": [
+            {
+              "alias": "key007.filters.zona",
+              "kind": "choice",
+              "a": "CALIBRAR zona A",
+              "b": "CALIBRAR zona B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            }
+          ],
+          "focus_order": [
+            "key007.filters.zona",
+            "key007.filters.apply",
+            "key007.filters.cancel"
+          ],
+          "apply": "key007.filters.apply",
+          "cancel": "key007.filters.cancel",
+          "close_x": "key007.filters.close_x",
+          "reload_revision": "key007.filters.reload_revision",
+          "rows_a": [
+            "QA-A",
+            "QA-B",
+            "QA-C"
+          ],
+          "rows_b": [
+            "QA-B"
+          ],
+          "selected_a": [],
+          "special": {
+            "kind": "none"
+          },
+          "selected_before": [
+            "QA-A"
+          ],
+          "selected_b": []
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-008": {
+        "open": [
+          "key008.open"
+        ],
+        "search": "key008.search",
+        "table": "key008.table",
+        "legend": "key008.legend",
+        "detail_identity": "key008.detail_identity",
+        "detail_close": "key008.detail_close",
+        "sort_control": "key008.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key008.detail_identity": "CALIBRAR identidad QA-A",
+            "key008.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key008.detail_identity": "CALIBRAR identidad QA-B",
+            "key008.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key008.detail_identity": "CALIBRAR identidad QA-C",
+            "key008.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key008.restriction.notice",
+          "dismiss": "key008.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-009": {
+        "open": [
+          "key009.open"
+        ],
+        "search": "key009.search",
+        "table": "key009.table",
+        "legend": "key009.legend",
+        "detail_identity": "key009.detail_identity",
+        "detail_close": "key009.detail_close",
+        "sort_control": "key009.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key009.detail_identity": "CALIBRAR identidad QA-A",
+            "key009.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key009.detail_identity": "CALIBRAR identidad QA-B",
+            "key009.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key009.detail_identity": "CALIBRAR identidad QA-C",
+            "key009.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key009.restriction.notice",
+          "dismiss": "key009.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-010": {
+        "open": [
+          "key010.open"
+        ],
+        "search": "key010.search",
+        "table": "key010.table",
+        "legend": "key010.legend",
+        "detail_identity": "key010.detail_identity",
+        "detail_close": "key010.detail_close",
+        "sort_control": "key010.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key010.detail_identity": "CALIBRAR identidad QA-A",
+            "key010.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key010.detail_identity": "CALIBRAR identidad QA-B",
+            "key010.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key010.detail_identity": "CALIBRAR identidad QA-C",
+            "key010.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key010.restriction.notice",
+          "dismiss": "key010.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "filters": {
+          "first": "key010.filters.sucursal",
+          "fields": [
+            {
+              "alias": "key010.filters.sucursal",
+              "kind": "choice",
+              "a": "CALIBRAR sucursal A",
+              "b": "CALIBRAR sucursal B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            },
+            {
+              "alias": "key010.filters.proveedor",
+              "kind": "choice",
+              "a": "CALIBRAR proveedor A",
+              "b": "CALIBRAR proveedor B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            },
+            {
+              "alias": "key010.filters.estado",
+              "kind": "choice",
+              "a": "CALIBRAR estado A",
+              "b": "CALIBRAR estado B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            },
+            {
+              "alias": "key010.filters.desde",
+              "kind": "text",
+              "a": "CALIBRAR desde A",
+              "b": "CALIBRAR desde B"
+            },
+            {
+              "alias": "key010.filters.hasta",
+              "kind": "text",
+              "a": "CALIBRAR hasta A",
+              "b": "CALIBRAR hasta B"
+            },
+            {
+              "alias": "key010.filters.tipo",
+              "kind": "choice",
+              "a": "CALIBRAR tipo A",
+              "b": "CALIBRAR tipo B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            }
+          ],
+          "focus_order": [
+            "key010.filters.sucursal",
+            "key010.filters.proveedor",
+            "key010.filters.estado",
+            "key010.filters.desde",
+            "key010.filters.hasta",
+            "key010.filters.tipo",
+            "key010.filters.apply",
+            "key010.filters.cancel"
+          ],
+          "apply": "key010.filters.apply",
+          "cancel": "key010.filters.cancel",
+          "close_x": "key010.filters.close_x",
+          "reload_revision": "key010.filters.reload_revision",
+          "rows_a": [
+            "QA-A",
+            "QA-B",
+            "QA-C"
+          ],
+          "rows_b": [
+            "QA-B"
+          ],
+          "selected_a": [],
+          "special": {
+            "kind": "dates",
+            "from": "key010.filters.desde",
+            "until": "key010.filters.hasta",
+            "invalid_from": "CALIBRAR fecha posterior",
+            "invalid_until": "CALIBRAR fecha anterior",
+            "error": "key010.filters.error",
+            "error_dismiss": "key010.filters.error_dismiss",
+            "error_text": "CALIBRAR aviso",
+            "rows_empty_from": [
+              "QA-A",
+              "QA-B",
+              "QA-C"
+            ]
+          },
+          "selected_before": [
+            "QA-A"
+          ],
+          "selected_b": []
+        },
+        "purchase_types": [
+          {
+            "type": "Remito",
+            "search": "CALIBRAR búsqueda Remito",
+            "identity": "CALIBRAR fila Remito",
+            "details": {
+              "key010.purchase.remito.identity": "CALIBRAR identidad Remito",
+              "key010.detail_extra": "CALIBRAR proveedor y fecha Remito"
+            },
+            "close": "key010.purchase.remito.close"
+          },
+          {
+            "type": "Factura",
+            "search": "CALIBRAR búsqueda Factura",
+            "identity": "CALIBRAR fila Factura",
+            "details": {
+              "key010.purchase.factura.identity": "CALIBRAR identidad Factura",
+              "key010.detail_extra": "CALIBRAR proveedor y fecha Factura"
+            },
+            "close": "key010.purchase.factura.close"
+          },
+          {
+            "type": "Transferencia",
+            "search": "CALIBRAR búsqueda Transferencia",
+            "identity": "CALIBRAR fila Transferencia",
+            "details": {
+              "key010.purchase.transferencia.identity": "CALIBRAR identidad Transferencia",
+              "key010.detail_extra": "CALIBRAR proveedor y fecha Transferencia"
+            },
+            "close": "key010.purchase.transferencia.close"
+          },
+          {
+            "type": "Carniceria",
+            "search": "CALIBRAR búsqueda Carniceria",
+            "identity": "CALIBRAR fila Carniceria",
+            "details": {
+              "key010.purchase.carniceria.identity": "CALIBRAR identidad Carniceria",
+              "key010.detail_extra": "CALIBRAR proveedor y fecha Carniceria"
+            },
+            "close": "key010.purchase.carniceria.close"
+          }
+        ],
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-011": {
+        "open": [
+          "key011.open"
+        ],
+        "search": "key011.search",
+        "table": "key011.table",
+        "legend": "key011.legend",
+        "detail_identity": "key011.detail_identity",
+        "detail_close": "key011.detail_close",
+        "sort_control": "key011.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key011.detail_identity": "CALIBRAR identidad QA-A",
+            "key011.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key011.detail_identity": "CALIBRAR identidad QA-B",
+            "key011.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key011.detail_identity": "CALIBRAR identidad QA-C",
+            "key011.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key011.restriction.notice",
+          "dismiss": "key011.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-012": {
+        "open": [
+          "key012.open"
+        ],
+        "search": "key012.search",
+        "table": "key012.table",
+        "legend": "key012.legend",
+        "detail_identity": "key012.detail_identity",
+        "detail_close": "key012.detail_close",
+        "sort_control": "key012.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key012.detail_identity": "CALIBRAR identidad QA-A",
+            "key012.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key012.detail_identity": "CALIBRAR identidad QA-B",
+            "key012.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key012.detail_identity": "CALIBRAR identidad QA-C",
+            "key012.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key012.restriction.notice",
+          "dismiss": "key012.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      },
+      "XG-KEY-013": {
+        "open": [
+          "key013.open"
+        ],
+        "search": "key013.search",
+        "table": "key013.table",
+        "legend": "key013.legend",
+        "detail_identity": "key013.detail_identity",
+        "detail_close": "key013.detail_close",
+        "sort_control": "key013.sort_control",
+        "identity_column": 0,
+        "none": "CALIBRAR búsqueda inexistente",
+        "one": "CALIBRAR búsqueda B",
+        "many": "CALIBRAR búsqueda A/B/C",
+        "rows": [
+          "QA-A",
+          "QA-B",
+          "QA-C"
+        ],
+        "details": {
+          "QA-A": {
+            "key013.detail_identity": "CALIBRAR identidad QA-A",
+            "key013.detail_extra": "CALIBRAR dato independiente QA-A"
+          },
+          "QA-B": {
+            "key013.detail_identity": "CALIBRAR identidad QA-B",
+            "key013.detail_extra": "CALIBRAR dato independiente QA-B"
+          },
+          "QA-C": {
+            "key013.detail_identity": "CALIBRAR identidad QA-C",
+            "key013.detail_extra": "CALIBRAR dato independiente QA-C"
+          }
+        },
+        "sorted_rows": [
+          "QA-C",
+          "QA-B",
+          "QA-A"
+        ],
+        "legend_evidence": {
+          "app_sha256": "CALIBRAR SHA256 JAR",
+          "capture": "CALIBRAR ruta .local/xgestion/evidence/imagen.png"
+        },
+        "restricted": {
+          "user_label": "CALIBRAR operador restringido",
+          "search": "CALIBRAR búsqueda protegida",
+          "identity": "CALIBRAR registro protegido",
+          "outcome": "notice",
+          "notice": "key013.restriction.notice",
+          "dismiss": "key013.restriction.dismiss",
+          "expected_notice": "CALIBRAR texto exacto"
+        },
+        "filters": {
+          "first": "key013.filters.categoria",
+          "fields": [
+            {
+              "alias": "key013.filters.categoria",
+              "kind": "choice",
+              "a": "CALIBRAR categoria A",
+              "b": "CALIBRAR categoria B",
+              "keys_a": [
+                "home"
+              ],
+              "keys_b": [
+                "home",
+                "down"
+              ]
+            }
+          ],
+          "focus_order": [
+            "key013.filters.categoria",
+            "key013.filters.apply",
+            "key013.filters.cancel"
+          ],
+          "apply": "key013.filters.apply",
+          "cancel": "key013.filters.cancel",
+          "close_x": "key013.filters.close_x",
+          "reload_revision": "key013.filters.reload_revision",
+          "rows_a": [
+            "QA-A",
+            "QA-B",
+            "QA-C"
+          ],
+          "rows_b": [
+            "QA-B"
+          ],
+          "selected_a": [],
+          "special": {
+            "kind": "none"
+          },
+          "selected_before": [
+            "QA-A"
+          ],
+          "selected_b": []
+        },
+        "sort_keys": [
+          "home",
+          "down",
+          "enter"
+        ]
+      }
+    }
+  }
+}

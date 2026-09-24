@@ -607,9 +607,9 @@
     "backlog_restobar": 20,
     "documented": 315,
     "groups": 77,
-    "implemented": 99,
+    "implemented": 112,
     "manual": 0,
-    "planned": 216,
+    "planned": 203,
     "real_validated": 0,
     "roadmap_variant_families": 16,
     "seed_examples": 26
@@ -641,9 +641,9 @@
     {
       "counts": {
         "documented": 315,
-        "implemented": 99,
+        "implemented": 112,
         "manual": 0,
-        "planned": 216,
+        "planned": 203,
         "real_validated": 0
       },
       "description": "Reunir los escenarios implementados; no implica cubrir todo el ERP.",
@@ -3336,12 +3336,12 @@
     {
       "counts": {
         "documented": 13,
-        "implemented": 0,
+        "implemented": 13,
         "manual": 0,
-        "planned": 13,
+        "planned": 0,
         "real_validated": 0
       },
-      "description": "13 recorridos pendientes de teclado, identidad, búsqueda, orden y restricciones.",
+      "description": "13 recorridos automatizados de teclado, identidad, búsqueda, orden y restricciones; validación JAB pendiente.",
       "id": "atajos-listados",
       "members": [
         "XG-KEY-001",
@@ -3360,19 +3360,19 @@
       ],
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
+      "status": "partial",
       "title": "Atajos de los listados",
       "validation": "pending"
     },
     {
       "counts": {
         "documented": 8,
-        "implemented": 0,
+        "implemented": 8,
         "manual": 0,
-        "planned": 8,
+        "planned": 0,
         "real_validated": 0
       },
-      "description": "Ocho modales pendientes: foco, borrador, aplicar una vez y cancelar por cada salida.",
+      "description": "Ocho recorridos automatizados de filtros; validación JAB pendiente.",
       "id": "filtros-listados",
       "members": [
         "XG-KEY-001",
@@ -3386,7 +3386,7 @@
       ],
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
+      "status": "partial",
       "title": "Filtros por teclado",
       "validation": "pending"
     }
@@ -3402,9 +3402,9 @@
     {
       "counts": {
         "documented": 315,
-        "implemented": 99,
+        "implemented": 112,
         "manual": 0,
-        "planned": 216,
+        "planned": 203,
         "real_validated": 0
       },
       "doc_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/README.md",
@@ -5459,9 +5459,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en cuentas corrientes de clientes",
       "validation": "pending"
     },
@@ -5479,9 +5479,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en cuenta corriente de cliente",
       "validation": "pending"
     },
@@ -5499,9 +5499,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en cuentas corrientes de proveedores",
       "validation": "pending"
     },
@@ -5519,9 +5519,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en cuenta corriente de proveedor",
       "validation": "pending"
     },
@@ -5538,9 +5538,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en clientes",
       "validation": "pending"
     },
@@ -5558,9 +5558,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en productos",
       "validation": "pending"
     },
@@ -5578,9 +5578,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en mesas",
       "validation": "pending"
     },
@@ -5597,9 +5597,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en usuarios",
       "validation": "pending"
     },
@@ -5616,9 +5616,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en turnos",
       "validation": "pending"
     },
@@ -5636,9 +5636,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en compras",
       "validation": "pending"
     },
@@ -5655,9 +5655,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en proveedores",
       "validation": "pending"
     },
@@ -5674,9 +5674,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en categorías",
       "validation": "pending"
     },
@@ -5694,9 +5694,9 @@
       "priority_basis": "scenario",
       "product": "xgestion",
       "stage": 0,
-      "status": "planned",
-      "test_path": null,
-      "test_url": null,
+      "status": "implemented",
+      "test_path": "products/xgestion/suites/atajos_listados.robot",
+      "test_url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot",
       "title": "Atajos en subcategorías",
       "validation": "pending"
     },
@@ -10674,22 +10674,22 @@
     },
     {
       "path": "products/xgestion/README.md",
-      "sha256": "ea3354c138573f4d9b8995b7daace2fa2c92619adf8f21a901298df86dc77111",
+      "sha256": "e086e7c088ef1dbf747e4bcf23aa9459a3d0504fe3dc401b67a164e766eeaf9b",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/README.md"
     },
     {
       "path": "products/xgestion/docs/cobertura.md",
-      "sha256": "1c83fbfa2a64c1b79057d98e6148639637f67c2a902d07a369c4af60bd3f7ca7",
+      "sha256": "a849715c8b06310186e115f1d7afd0a4fd3b6c824ce31e734fb150d48d4d3cc3",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/cobertura.md"
     },
     {
       "path": "products/xgestion/docs/roadmap.md",
-      "sha256": "c1efdd488e1533f0d8625c2867db5306b38026e023b4b4b186848a8071fde97c",
+      "sha256": "0e421c985f6434c50184a8359ebca07f435f0dc6019d0f05dae0776bf8f33463",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/docs/roadmap.md"
     },
     {
       "path": "products/xgestion/groups.json",
-      "sha256": "33c4dcead23015c43fb54a836cd41cbebf73b92b9d7af670d6cb9096ccab9181",
+      "sha256": "8e64fbdddc95a29aa9aeb697d513715489390da448ea61aa49d96fdf00e49193",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/groups.json"
     },
     {
@@ -10714,67 +10714,67 @@
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-001.md",
-      "sha256": "c92d81cd96340ca7d8345f4d6091b3b7919c1c5658cc0bd13f6b7cf69ee9b19d",
+      "sha256": "7f03cba5dd2d841f9163335b366f5c136c1d806034bab49a61bc9d904cd42170",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-001.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-002.md",
-      "sha256": "9acbdf8cf9387ed066acd4d14009862897fc84deaba1a10418f59746ebbdbd42",
+      "sha256": "bfac68cb7dab805026d5c6e4b433e0815865e9230179fde2c6f0a9be0ce80d6b",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-002.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-003.md",
-      "sha256": "c10ce800420e6ec8b18400dd09340f976fab44d16774485c9bf8595870f5d28a",
+      "sha256": "43c5f47d8e863c469bb8db35e4f4fdccb2e7e18c07773f8562c27dcab0439ac0",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-003.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-004.md",
-      "sha256": "f3322bff5ac3a3f8ffcef445716d65fee0f193f7d243434b470448c34922338e",
+      "sha256": "bbfbb09719b4684db8d38e941603a7a3b4b6c0db3a27bfebcfc5f94fc472b35a",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-004.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-005.md",
-      "sha256": "bcf75bdbc577a7a8134aa3d5e02367c47724d8bbb385bb475ceb568be3769c02",
+      "sha256": "0e9cf5ddea3e1651e3dc4cce8356dbf4786d7e74b8dad3e7fbcd5502c4796967",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-005.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-006.md",
-      "sha256": "b9eeeb00211e32669e28090425b17136499f2ea35e15493a19f5518356464ad9",
+      "sha256": "7a8c5f504bfc32ee2cc3d83b178757ff527a443b397618e35c6d784dfd13785b",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-006.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-007.md",
-      "sha256": "17f4210b8277a1ef0f9858bdee2f9da48bf164cc10e62cfb9cb91c935e9ae6d8",
+      "sha256": "bcb6e5dd8369eb2eaf36128e3f9c4ef268c7190031ff3a49432fcb4d65ba770b",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-007.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-008.md",
-      "sha256": "c1ef30c16e306981bef4b36a418a7321928859af1323276d2678cf4ca30a72c7",
+      "sha256": "b172db0bbbdbc3743d021499df90d9d1591dc06c2af55037de486a3018f66503",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-008.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-009.md",
-      "sha256": "81ebc2f0abb2099759839e3231b99ab41809ce6a74d5f79032fbaf1cbdda1de3",
+      "sha256": "38afbc020e7c2bf04fc49a88980c2ed2a22fcd8916ccc667b9be9b37600bbd49",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-009.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-010.md",
-      "sha256": "dc0925916b391711299ec01ef466faf4d265a98344a239a1ccfb4d7dfaf4ee40",
+      "sha256": "9280a5f9462eeef43268d1d4c24998dbda7d80f9121c5f605bbe8191fc465123",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-010.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-011.md",
-      "sha256": "ee3ab1c7a1fba4da24174e91c73e2fa938ad5c00bb8c99740bd222bde2f7697c",
+      "sha256": "d18aedfbfc052a765c50778f91072a02f2bc30a47cf2d17410adf4379a51be86",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-011.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-012.md",
-      "sha256": "13c089435133cf1a73bd249e7a5ecb176beb6c10c00a73dbbb863d5424836913",
+      "sha256": "837d53df461eddf6513cc19e8442a5e5c704e3736da910d30f67b3b8caf10fbd",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-012.md"
     },
     {
       "path": "products/xgestion/scenarios/atajos-listados/XG-KEY-013.md",
-      "sha256": "b3ab5453a017960dfe9ec77f5ef58446c0e667d22cd33e632f0421e36d862dbb",
+      "sha256": "b62a17af5b2624a5dad23dd476d53e816fa6ba626ad94ab0e6d17085e80ecaac",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/scenarios/atajos-listados/XG-KEY-013.md"
     },
     {
@@ -12271,6 +12271,11 @@
       "path": "products/xgestion/seeds/pricing.py",
       "sha256": "e4b1ee09837fe79e87dc18bf1828ee5d2be5323d9624321110c16c2adbc83c24",
       "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/seeds/pricing.py"
+    },
+    {
+      "path": "products/xgestion/suites/atajos_listados.robot",
+      "sha256": "5af7a749a2dbd0de297bf040234c7fe667785b305047e287c4dedfd45dda2a81",
+      "url": "https://github.com/darioravello89/xsoft-qa-e2e/blob/main/products/xgestion/suites/atajos_listados.robot"
     },
     {
       "path": "products/xgestion/suites/circuitos.robot",

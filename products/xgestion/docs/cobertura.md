@@ -20,7 +20,7 @@ Consultar el **[Excel de cobertura](../../../docs/coverage/xgestion-cobertura.xl
 | Complemento crítico | [50 fichas COB/PRE/DEV/FEL/PEX/REC/CON/ACT/BEN](complementos-criticos.md), todas `planned`. | Datos, pasos, riesgos y dependencias; no añade pruebas ejecutables. |
 | Contextos pendientes | PRM-077/078. | Falta el paquete QA de varias sucursales/empresas; sin suite ejecutable. |
 | Controles del repositorio | Lint, tests del framework, catálogo y dry-run. | Coherencia técnica; registrar el resultado de cada ejecución. |
-| Atajos de listados | [KEY-001..013](atajos-listados.md), 13 `planned`; ocho con filtros. | FAT JAR 3f8648035 construido; automatización y ejecución JAB pendientes. |
+| Atajos de listados | [KEY-001..013](atajos-listados.md), 13 `implemented`; ocho con filtros. | Suite Robot disponible; ejecución JAB y aceptación del JAR actual pendientes. |
 | Producto real | Pendiente de paquete privado, calibración y ejecución. | Todavía no acredita acceso, venta ni recuperación en el JAR. |
 
 `implemented` no significa validado en el producto; `planned` no significa fallado. Un caso `manual` describe un procedimiento sin automatización ejecutable y necesita su propia evidencia. Ninguno cambia a aprobado por pertenecer a un grupo.
@@ -51,7 +51,7 @@ Consultar el **[Excel de cobertura](../../../docs/coverage/xgestion-cobertura.xl
 | [XG-PRM-006](../scenarios/promociones/XG-PRM-006.md) | Conservar el precio normal antes del inicio de una promoción. | Disponible | Pendiente |
 | [XG-PRM-007](../scenarios/promociones/XG-PRM-007.md) | Conservar el precio normal cuando la promoción está desactivada. | Disponible | Pendiente |
 
-Los conteos vivos salen del catálogo: `qa.cmd list --product xgestion --groups`. Hoy `smoke` tiene cinco implementados; `regression`, 99 implementados y 216 pendientes; `ventas`, nueve implementados; y `promociones`, 82 implementados y 2 pendientes. Los subgrupos de alcances, agrupadas, combos y condiciones tienen 36, 21, 5 y 13 implementados; condiciones conserva 2 pendientes. Un escenario puede pertenecer a varios grupos: no sumar sus conteos como si fueran casos diferentes. Los tags iniciales se conservan para no alterar selecciones existentes.
+Los conteos vivos salen del catálogo: `qa.cmd list --product xgestion --groups`. Hoy `smoke` tiene cinco implementados; `regression`, 112 implementados y 203 pendientes; `ventas`, nueve implementados; y `promociones`, 82 implementados y 2 pendientes. Los subgrupos de alcances, agrupadas, combos y condiciones tienen 36, 21, 5 y 13 implementados; condiciones conserva 2 pendientes. Un escenario puede pertenecer a varios grupos: no sumar sus conteos como si fueran casos diferentes. Los tags iniciales se conservan para no alterar selecciones existentes.
 
 El efectivo exacto, el vuelto y el reintento pertenecen a sus grupos según los tags del catálogo; los conteos de esas familias no implican cobertura de pagos múltiples, crédito ni otras monedas. R01–R20 son referencias del roadmap vinculadas a las fichas XG-RES; no agregan casos a las 315 fichas ni al denominador de automatización.
 
